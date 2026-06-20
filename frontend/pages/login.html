@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F7F3EC;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 8px 28px rgba(26,60,46,0.12);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.75rem;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: #1A3C2E;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #1A3C2E;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #1A3C2E;
+      margin-bottom: 0.5rem;
+    }
+    p.sub { font-size: 0.875rem; color: #737373; margin-bottom: 1.75rem; }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #404040;
+      margin-bottom: 0.35rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #D4D4D4;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-family: 'Inter', sans-serif;
+      color: #2C1810;
+      background: #FAFAFA;
+      margin-bottom: 1.1rem;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: #2E6B4F; background: white; }
+    .btn-submit {
+      width: 100%;
+      padding: 0.8rem;
+      background: #1A3C2E;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .btn-submit:hover { background: #2E6B4F; }
+    .divider {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9E9E9E;
+      margin: 1.25rem 0;
+    }
+    .link-register {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #737373;
+    }
+    .link-register a { color: #2E6B4F; font-weight: 600; text-decoration: none; }
+    .back { display: block; text-align: center; margin-top: 1.25rem; font-size: 0.8rem; color: #9E9E9E; text-decoration: none; }
+    .back:hover { color: #1A3C2E; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a href="../index.html" class="logo">
+      <div class="logo-mark">🌾</div>
+      <span class="logo-name">KrushiConnect</span>
+    </a>
+    <h2>Welcome Back</h2>
+    <p class="sub">Log in to your farmer account</p>
+
+    <form id="loginForm">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="your@email.com" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required />
+
+      <button type="submit" class="btn-submit">Login</button>
+    </form>
+
+    <div class="divider">— or —</div>
+
+    <p class="link-register">
+      New here? <a href="register.html">Create a farmer account</a>
+    </p>
+
+    <a href="../index.html" class="back">← Back to homepage</a>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Login functionality will be connected to the backend in Phase 8.');
+    });
+  </script>
+</body>
+</html>

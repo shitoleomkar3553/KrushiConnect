@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="KrushiConnect — Quality agricultural products for farmers of Maharashtra. Shri Sideshwar Agro Agency, Pimpalgaon, Pune." />
+  <meta name="description" content="KrushiConnect — Quality agricultural products for farmers. Shri Sideshwar Agro Agency, Pimpalgaon (Rahu), Daund, Pune." />
   <title>KrushiConnect — Shri Sideshwar Agro Agency</title>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet" />
 
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="css/hero.css" />
@@ -19,36 +17,18 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     NAVBAR
-═══════════════════════════════════════ -->
+<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="container">
 
-    <!-- Logo -->
     <a href="index.html" class="nav-logo">
-      <!-- SVG Logo -->
-      <svg class="nav-logo-icon" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="42" height="42" rx="10" fill="#1A3C2E"/>
-        <!-- Wheat stalk -->
-        <line x1="21" y1="34" x2="21" y2="12" stroke="#C8960C" stroke-width="2" stroke-linecap="round"/>
-        <!-- Grain clusters -->
-        <ellipse cx="21" cy="14" rx="3" ry="5" fill="#C8960C" opacity="0.9"/>
-        <ellipse cx="17" cy="18" rx="2.5" ry="4.5" fill="#4A9B6F" transform="rotate(-20 17 18)"/>
-        <ellipse cx="25" cy="18" rx="2.5" ry="4.5" fill="#4A9B6F" transform="rotate(20 25 18)"/>
-        <ellipse cx="15" cy="23" rx="2" ry="4" fill="#4A9B6F" transform="rotate(-30 15 23)" opacity="0.85"/>
-        <ellipse cx="27" cy="23" rx="2" ry="4" fill="#4A9B6F" transform="rotate(30 27 23)" opacity="0.85"/>
-        <!-- Roots suggestion -->
-        <path d="M21 34 Q17 37 14 36" stroke="#C8960C" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-        <path d="M21 34 Q25 37 28 36" stroke="#C8960C" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-      </svg>
+      <div class="nav-logo-mark">🌾</div>
       <div class="nav-logo-text">
         <span class="nav-logo-name">KrushiConnect</span>
-        <span class="nav-logo-sub" data-t="nav.tagline">Shri Sideshwar Agro Agency</span>
+        <span class="nav-logo-sub" data-t="nav.sub">Shri Sideshwar Agro Agency</span>
       </div>
     </a>
 
-    <!-- Nav links -->
     <ul class="nav-links" id="navLinks">
       <li><a href="#home"       class="nav-link active" data-t="nav.home">Home</a></li>
       <li><a href="#categories" class="nav-link"        data-t="nav.products">Products</a></li>
@@ -56,15 +36,12 @@
       <li><a href="#contact"    class="nav-link"        data-t="nav.contact">Contact</a></li>
     </ul>
 
-    <!-- Right side -->
-    <div class="nav-right">
-      <!-- Language -->
-      <div class="lang-switcher">
+    <div class="nav-actions">
+      <div class="lang-toggle">
         <button class="lang-btn active" id="langEN" onclick="setLanguage('en')">ENG</button>
         <button class="lang-btn"        id="langMR" onclick="setLanguage('mr')">MARATHI</button>
       </div>
       <a href="pages/login.html" class="btn-nav-login" data-t="nav.login">Login</a>
-      <!-- Hamburger -->
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -73,224 +50,206 @@
   </div>
 </nav>
 
-
-<!-- ═══════════════════════════════════════
-     HERO
-═══════════════════════════════════════ -->
+<!-- HERO — split screen -->
 <section class="hero" id="home">
 
-  <!-- Left: Farm photo -->
-  <div class="hero-image-side">
+  <!-- Left panel: uploaded sugarcane image -->
+  <!-- CHANGE 1: src updated to local uploaded sugarcane image.
+       If sugarcane.png is not yet in assets/images/, save it there as shown in the instructions. -->
+  <div class="hero-image-panel">
     <img
-      src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=900&q=85&auto=format&fit=crop"
-      alt="Farmer in field"
+      src="assets/images/sugarcane.png"
+      alt="Sugarcane field — Daund, Pune"
       loading="eager"
+      onerror="this.src='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=900&auto=format&fit=crop&q=80'"
     />
-    <!-- Crop tag card -->
-    <div class="hero-crop-tag">
-      <span>🌾</span>
-      <div>
-        <div class="hero-crop-label" data-t="hero.crop.lbl">Main Crops Served</div>
-        <div class="hero-crop-label"><small data-t="hero.crop.sub">Sugarcane · Onion · Wheat</small></div>
-      </div>
+
+    <div class="hero-crop-tags">
+      <span class="crop-tag">🌿 Sugarcane</span>
+      <span class="crop-tag">🧅 Onion</span>
+      <span class="crop-tag">🌾 Wheat</span>
+      <span class="crop-tag">🍅 Tomato</span>
+      <span class="crop-tag">🌿 Coriander</span>
+      <span class="crop-tag">🌱 Fenugreek</span>
     </div>
   </div>
 
-  <!-- Right: Content -->
-  <div class="hero-content-side">
-    <div class="hero-content">
+  <!-- Right panel: content (unchanged) -->
+  <div class="hero-content-panel">
+    <p class="hero-eyebrow" data-t="hero.eyebrow">Pimpalgaon · Daund · Pune</p>
 
-      <div class="hero-eyebrow" data-t="hero.eyebrow">
-        Quality Agro Products · Pimpalgaon, Pune
+    <h1 class="hero-title" data-t="hero.title">
+      Quality Agro Products<br />
+      for Every <em>Season</em>
+    </h1>
+
+    <p class="hero-desc" data-t="hero.desc">
+      Fertilizers, insecticides, pesticides, herbicides and seeds —
+      trusted by farmers across Daund taluka.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="#categories" class="btn btn-gold" data-t="hero.browse">Browse Products</a>
+      <!-- CHANGE 4: WhatsApp number updated to 8390703553 -->
+      <a href="https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20have%20a%20product%20enquiry."
+         target="_blank" class="btn btn-outline" data-t="hero.whatsapp">WhatsApp Us</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num" data-t="hero.stat1.num" data-target="500+">500+</span>
+        <span class="hero-stat-label" data-t="hero.stat1.label">Farmers Served</span>
       </div>
-
-      <h1 class="hero-heading">
-        <span data-t="hero.heading1">Connecting Farmers to</span><br />
-        <em data-t="hero.heading2">Quality Agricultural</em><br />
-        <span data-t="hero.heading3">Products</span>
-      </h1>
-
-      <p class="hero-subtext" data-t="hero.sub">
-        Find trusted fertilizers, insecticides, pesticides and seeds
-        for your crops — all from one reliable source in Pimpalgaon.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#categories" class="btn btn-gold" data-t="hero.btn1">
-          🌱 Browse Products
-        </a>
-        <a href="#contact" class="btn btn-outline" data-t="hero.btn2">
-          📞 Contact Us
-        </a>
+      <div class="hero-stat">
+        <span class="hero-stat-num" data-t="hero.stat2.num" data-target="100+">100+</span>
+        <span class="hero-stat-label" data-t="hero.stat2.label">Products</span>
       </div>
-
-      <div class="hero-stats">
-        <div>
-          <span class="hero-stat-num" data-t="hero.stat1n">5+</span>
-          <span class="hero-stat-lbl" data-t="hero.stat1l">Categories</span>
-        </div>
-        <div>
-          <span class="hero-stat-num" data-t="hero.stat2n">100+</span>
-          <span class="hero-stat-lbl" data-t="hero.stat2l">Products</span>
-        </div>
-        <div>
-          <span class="hero-stat-num" data-t="hero.stat3n">10+</span>
-          <span class="hero-stat-lbl" data-t="hero.stat3l">Years Trusted</span>
-        </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num" data-t="hero.stat3.num" data-target="10+">10+</span>
+        <span class="hero-stat-label" data-t="hero.stat3.label">Years of Trust</span>
       </div>
-
     </div>
   </div>
 
 </section>
 
-
-<!-- ═══════════════════════════════════════
-     PRODUCT CATEGORIES
-═══════════════════════════════════════ -->
+<!-- CATEGORIES (unchanged) -->
 <section class="section categories" id="categories">
   <div class="container">
 
     <div class="categories-header">
       <div>
-        <span class="section-label" data-t="cat.heading">Product Categories</span>
-        <h2 class="section-title" data-t="cat.sub">Everything your farm needs, under one roof</h2>
+        <span class="section-label" data-t="cat.title">Product Categories</span>
+        <h2 class="section-title" data-t="cat.sub" style="max-width:420px">
+          Everything your crop needs, in one place
+        </h2>
       </div>
     </div>
 
     <div class="categories-grid">
-
-      <a href="#" class="cat-card" data-category="Water Soluble Fertilizers">
+      <a href="#" class="cat-card reveal">
         <div class="cat-icon">💧</div>
-        <div class="cat-name" data-t="cat.water">Water Soluble Fertilizers</div>
-        <div class="cat-explore" data-t="cat.explore">Explore →</div>
+        <div class="cat-name" data-t="cat.1">Water Soluble Fertilizers</div>
+        <div class="cat-sub">Drip &amp; spray ready</div>
       </a>
-
-      <a href="#" class="cat-card" data-category="Insecticides">
+      <a href="#" class="cat-card reveal reveal-delay-1">
         <div class="cat-icon">🐛</div>
-        <div class="cat-name" data-t="cat.insect">Insecticides</div>
-        <div class="cat-explore" data-t="cat.explore">Explore →</div>
+        <div class="cat-name" data-t="cat.2">Insecticides</div>
+        <div class="cat-sub">Pest control solutions</div>
       </a>
-
-      <a href="#" class="cat-card" data-category="Pesticides">
-        <div class="cat-icon">🌿</div>
-        <div class="cat-name" data-t="cat.pest">Pesticides</div>
-        <div class="cat-explore" data-t="cat.explore">Explore →</div>
+      <a href="#" class="cat-card reveal reveal-delay-2">
+        <div class="cat-icon">🌾</div>
+        <div class="cat-name" data-t="cat.3">Pesticides</div>
+        <div class="cat-sub">Crop protection</div>
       </a>
-
-      <a href="#" class="cat-card" data-category="Herbicides">
+      <a href="#" class="cat-card reveal reveal-delay-3">
         <div class="cat-icon">🍃</div>
-        <div class="cat-name" data-t="cat.herb">Herbicides</div>
-        <div class="cat-explore" data-t="cat.explore">Explore →</div>
+        <div class="cat-name" data-t="cat.4">Herbicides</div>
+        <div class="cat-sub">Weed management</div>
       </a>
-
-      <a href="#" class="cat-card" data-category="Seeds">
+      <a href="#" class="cat-card reveal reveal-delay-4">
         <div class="cat-icon">🌱</div>
-        <div class="cat-name" data-t="cat.seeds">Seeds</div>
-        <div class="cat-explore" data-t="cat.explore">Explore →</div>
+        <div class="cat-name" data-t="cat.5">Seeds</div>
+        <div class="cat-sub">Certified varieties</div>
       </a>
-
     </div>
+
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════
-     FEATURED PRODUCTS
-═══════════════════════════════════════ -->
+<!-- FEATURED PRODUCTS -->
 <section class="section featured" id="featured">
   <div class="container">
 
     <div class="featured-header">
       <div>
-        <span class="section-label" data-t="feat.heading">Featured Products</span>
-        <h2 class="section-title" data-t="feat.sub">Top picks for the current season</h2>
+        <span class="section-label">Featured Products</span>
+        <h2 class="section-title" data-t="featured.title">Featured Products</h2>
+        <p class="section-sub" data-t="featured.sub">Top picks for this Kharif &amp; Rabi season</p>
       </div>
-      <a href="#" class="btn btn-primary" data-t="feat.viewAll">View All Products →</a>
+      <a href="#" class="btn btn-primary" data-t="featured.all">View All Products</a>
     </div>
 
-    <div class="products-grid" id="productsGrid">
+    <div class="products-grid">
 
-      <!-- Product 1: NPK 19:19:19 -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- CHANGE 2a: NPK 19:19:19 — local uploaded image -->
+      <div class="product-card reveal">
+        <div class="product-card-img">
           <img
-            src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&auto=format&fit=crop"
-            alt="NPK 19:19:19"
+            src="assets/images/npk-191919.jpg"
+            alt="NPK 19:19:19 Water Soluble Fertilizer"
             loading="lazy"
-            onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'>💧</div>'"
           />
+          <span class="product-badge"><span class="badge badge-green">Popular</span></span>
         </div>
         <div class="product-body">
-          <div class="product-cat">Water Soluble Fertilizers</div>
+          <div class="product-category">Water Soluble Fertilizer</div>
           <div class="product-name">NPK 19:19:19</div>
           <div class="product-company">Jai Kisaan</div>
           <div class="product-footer">
-            <div class="product-price">₹200 <small>/kg</small></div>
-            <a href="#" class="btn-view-sm" data-t="feat.view">View Details</a>
+            <div class="product-price">₹200 <span>/ kg</span></div>
+            <a href="pages/product-detail.html" class="btn-card-view">View</a>
           </div>
         </div>
       </div>
 
-      <!-- Product 2: Cannon -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- CHANGE 2b: Cannon — local uploaded image -->
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-card-img">
           <img
-            src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80&auto=format&fit=crop"
-            alt="Cannon Insecticide"
+            src="assets/images/cannon.jpg"
+            alt="Cannon Insecticide — NACL Industries"
             loading="lazy"
-            onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'>🐛</div>'"
           />
         </div>
         <div class="product-body">
-          <div class="product-cat">Insecticides</div>
+          <div class="product-category">Insecticide</div>
           <div class="product-name">Cannon</div>
           <div class="product-company">NACL Industries Limited</div>
           <div class="product-footer">
-            <div class="product-price">₹700 <small>/ltr</small></div>
-            <a href="#" class="btn-view-sm" data-t="feat.view">View Details</a>
+            <div class="product-price">₹700 <span>/ ltr</span></div>
+            <a href="pages/product-detail.html" class="btn-card-view">View</a>
           </div>
         </div>
       </div>
 
-      <!-- Product 3: Coragen -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- CHANGE 2c: Coragen — local uploaded image -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-card-img">
           <img
-            src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?w=400&q=80&auto=format&fit=crop"
-            alt="Coragen Pesticide"
+            src="assets/images/coragen.jpg"
+            alt="Coragen Insecticide — FMC"
             loading="lazy"
-            onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'>🌿</div>'"
           />
+          <span class="product-badge"><span class="badge badge-gold">Premium</span></span>
         </div>
         <div class="product-body">
-          <div class="product-cat">Pesticides</div>
+          <div class="product-category">Pesticide</div>
           <div class="product-name">Coragen</div>
           <div class="product-company">FMC</div>
           <div class="product-footer">
-            <div class="product-price">₹2,250 <small>/ltr</small></div>
-            <a href="#" class="btn-view-sm" data-t="feat.view">View Details</a>
+            <div class="product-price">₹2,250 <span>/ ltr</span></div>
+            <a href="pages/product-detail.html" class="btn-card-view">View</a>
           </div>
         </div>
       </div>
 
-      <!-- Product 4: Coriander Seeds -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- CHANGE 2d: Coriander Seeds — local uploaded image -->
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-card-img">
           <img
-            src="https://images.unsplash.com/photo-1628613122748-3c3e6e9f2e7e?w=400&q=80&auto=format&fit=crop"
-            alt="Coriander Seeds"
+            src="assets/images/coriander.jpg"
+            alt="Coriander Seeds — Ashoka"
             loading="lazy"
-            onerror="this.parentElement.innerHTML='<div class=\'product-img-placeholder\'>🌱</div>'"
           />
         </div>
         <div class="product-body">
-          <div class="product-cat">Seeds</div>
+          <div class="product-category">Seeds</div>
           <div class="product-name">Coriander Seeds</div>
           <div class="product-company">Ashoka</div>
           <div class="product-footer">
-            <div class="product-price">₹425 <small>/kg</small></div>
-            <a href="#" class="btn-view-sm" data-t="feat.view">View Details</a>
+            <div class="product-price">₹425 <span>/ kg</span></div>
+            <a href="pages/product-detail.html" class="btn-card-view">View</a>
           </div>
         </div>
       </div>
@@ -299,260 +258,262 @@
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════
-     ABOUT KRUSHICONNECT
-═══════════════════════════════════════ -->
+<!-- ABOUT KRUSHICONNECT (unchanged) -->
 <section class="section about-kc" id="about-kc">
   <div class="container">
     <div class="about-kc-grid">
 
-      <!-- Image with gold accent -->
-      <div class="about-kc-visual">
+      <div style="position:relative;" class="reveal">
+        <div class="about-kc-img">
+          <img
+            src="https://images.unsplash.com/photo-1591389703635-e15a07b842d7?w=700&auto=format&fit=crop&q=80"
+            alt="Indian farmer in field"
+            loading="lazy"
+          />
+        </div>
+        <div class="about-kc-accent">
+          <strong>10+</strong>
+          <span>Years Serving<br/>Farmers</span>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <span class="section-label" data-t="about.label">About KrushiConnect</span>
+        <h2 class="section-title" data-t="about.title">
+          Built for the Farmers of Maharashtra
+        </h2>
+        <p data-t="about.desc1">
+          KrushiConnect is the digital storefront of Shri Sideshwar Agro Agency,
+          bringing certified agricultural inputs to the farmers of Daund taluka.
+        </p>
+        <p data-t="about.desc2">
+          Browse products, check prices, and contact us directly —
+          no middlemen, no guesswork.
+        </p>
+
+        <div class="about-kc-features">
+          <div class="feature-item">
+            <div class="feature-icon">✅</div>
+            <div class="feature-text">
+              <h4 data-t="about.f1.title">Certified Products Only</h4>
+              <p data-t="about.f1.desc">Every product from government-approved brands</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💰</div>
+            <div class="feature-text">
+              <h4 data-t="about.f2.title">Transparent Pricing</h4>
+              <p data-t="about.f2.desc">Prices updated in real-time by the shop owner</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💬</div>
+            <div class="feature-text">
+              <h4 data-t="about.f3.title">WhatsApp Inquiry</h4>
+              <p data-t="about.f3.desc">Ask questions directly on WhatsApp, anytime</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SHOP -->
+<section class="section about-shop" id="about-shop">
+  <div class="container">
+
+    <div class="text-center" style="margin-bottom:2.5rem;">
+      <span class="section-label" data-t="shop.label">Our Shop</span>
+      <h2 class="section-title" data-t="shop.title">Shri Sideshwar Agro Agency</h2>
+      <!-- CHANGE 3: subtitle updated to new address -->
+      <p class="section-sub" style="margin:0.5rem auto 0;" data-t="shop.sub">
+        C.S.M. Chowk, Pimpalgaon (Rahu), Tal: Daund, Dist: Pune
+      </p>
+    </div>
+
+    <div class="shop-grid">
+
+      <div class="shop-card reveal">
+        <div class="shop-card-header">
+          <div class="shop-card-icon-wrap">🏪</div>
+          <div>
+            <div class="shop-card-title" data-t="shop.title">Shri Sideshwar Agro Agency</div>
+            <div class="shop-card-owner">Owner: Ishwar Shitole</div>
+          </div>
+        </div>
+
+        <!-- CHANGE 3: full new address -->
+        <div class="shop-detail">
+          <span class="shop-detail-icon">📍</span>
+          <div>
+            <div class="shop-detail-label" data-t="shop.address.label">Address</div>
+            <div class="shop-detail-val" data-t="shop.address.val">
+              C.S.M. Chowk, Pimpalgaon (Rahu), Tal: Daund, Dist: Pune, Maharashtra, India
+            </div>
+          </div>
+        </div>
+
+        <div class="shop-detail">
+          <span class="shop-detail-icon">📞</span>
+          <div>
+            <div class="shop-detail-label" data-t="shop.phone.label">Phone</div>
+            <div class="shop-detail-val">
+              <a href="tel:9881553653">9881553653</a> &nbsp;/&nbsp;
+              <a href="tel:9175314747">9175314747</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHANGE 4: WhatsApp number updated to 8390703553 -->
+        <div class="shop-detail">
+          <span class="shop-detail-icon">💬</span>
+          <div>
+            <div class="shop-detail-label" data-t="shop.wa.label">WhatsApp</div>
+            <div class="shop-detail-val">
+              <a href="https://wa.me/918390703553" target="_blank">8390703553</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="shop-detail">
+          <span class="shop-detail-icon">🗓️</span>
+          <div>
+            <div class="shop-detail-label" data-t="shop.days.label">Open</div>
+            <div class="shop-detail-val" data-t="shop.days.val">
+              All Days — Open for Business
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="shop-img-panel reveal reveal-delay-2">
         <img
-          class="about-kc-img"
-          src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=85&auto=format&fit=crop"
-          alt="Farmer in sugarcane field"
+          src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&auto=format&fit=crop&q=80"
+          alt="Agricultural products and fields"
           loading="lazy"
         />
       </div>
 
-      <!-- Text -->
-      <div class="about-kc-text">
-        <span class="section-label" data-t="akc.label">About KrushiConnect</span>
-        <h2 class="section-title" data-t="akc.heading">Built for Farmers, Backed by Trust</h2>
-
-        <p data-t="akc.p1">
-          KrushiConnect is the digital face of Shri Sideshwar Agro Agency — bringing quality
-          agricultural products to the farmers of Pimpalgaon and the surrounding region.
-        </p>
-        <p data-t="akc.p2">
-          Whether you grow sugarcane, onion, wheat, or tomatoes, we carry the right inputs
-          for every stage of your crop cycle.
-        </p>
-
-        <div class="about-features">
-          <div class="about-feat">
-            <div class="about-feat-icon">✅</div>
-            <div>
-              <div class="about-feat-title" data-t="akc.f1t">Genuine Products</div>
-              <div class="about-feat-desc"  data-t="akc.f1d">Only certified and trusted brands stocked</div>
-            </div>
-          </div>
-          <div class="about-feat">
-            <div class="about-feat-icon">💰</div>
-            <div>
-              <div class="about-feat-title" data-t="akc.f2t">Transparent Pricing</div>
-              <div class="about-feat-desc"  data-t="akc.f2d">Clear prices — no hidden costs</div>
-            </div>
-          </div>
-          <div class="about-feat">
-            <div class="about-feat-icon">📱</div>
-            <div>
-              <div class="about-feat-title" data-t="akc.f3t">Works on Any Phone</div>
-              <div class="about-feat-desc"  data-t="akc.f3d">Browse from your field, no app needed</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════
-     ABOUT SHOP
-═══════════════════════════════════════ -->
-<section class="section about-shop" id="about-shop">
-  <div class="container">
-
-    <div class="text-center" style="margin-bottom:2.5rem">
-      <span class="section-label" data-t="shop.heading">About the Shop</span>
-      <h2 class="section-title" data-t="shop.sub">Your trusted agricultural partner</h2>
-    </div>
-
-    <div class="about-shop-grid">
-
-      <img
-        class="about-shop-img"
-        src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=85&auto=format&fit=crop"
-        alt="Agricultural shop"
-        loading="lazy"
-      />
-
-      <div class="shop-card">
-        <div class="shop-card-name" data-t="shop.name">Shri Sideshwar Agro Agency</div>
-        <div class="shop-card-owner" data-t="shop.owner">Owner: Ishwar Shitole</div>
-
-        <div class="shop-details">
-
-          <div class="shop-row">
-            <span class="shop-row-icon">📍</span>
-            <div>
-              <div class="shop-row-label" data-t="shop.addr.l">Address</div>
-              <div class="shop-row-val"   data-t="shop.addr.v">
-                Chhatrapati Shivaji Maharaj Chowk,<br />
-                Pimpalgaon, Tal: Daund, Dist: Pune
-              </div>
-            </div>
-          </div>
-
-          <div class="shop-row">
-            <span class="shop-row-icon">📞</span>
-            <div>
-              <div class="shop-row-label" data-t="shop.ph.l">Phone</div>
-              <div class="shop-row-val">
-                <a href="tel:9881553653">9881553653</a> &nbsp;/&nbsp;
-                <a href="tel:9175314747">9175314747</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="shop-row">
-            <span class="shop-row-icon">💬</span>
-            <div>
-              <div class="shop-row-label" data-t="shop.wa.l">WhatsApp</div>
-              <div class="shop-row-val">
-                <a href="https://wa.me/919881553653" target="_blank">9881553653</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="shop-row">
-            <span class="shop-row-icon">🕐</span>
-            <div>
-              <div class="shop-row-label" data-t="shop.hrs.l">Availability</div>
-              <div class="shop-row-val"   data-t="shop.hrs.v">Open all days</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════
-     CONTACT
-═══════════════════════════════════════ -->
+<!-- CONTACT -->
 <section class="section contact" id="contact">
   <div class="container">
 
-    <div class="text-center" style="margin-bottom:2.5rem">
-      <span class="section-label" data-t="contact.heading">Get in Touch</span>
-      <h2 class="section-title" data-t="contact.sub">Reach us any day — we are always here for you</h2>
+    <div class="text-center" style="margin-bottom:0.5rem;">
+      <span class="section-label" data-t="contact.label">Contact Us</span>
+      <h2 class="section-title" data-t="contact.title">We're Here to Help</h2>
+      <p class="section-sub" style="margin:0.5rem auto 0;" data-t="contact.sub">
+        Reach out for product availability, pricing, or any farming advice.
+      </p>
     </div>
 
     <div class="contact-grid">
 
-      <div class="contact-card">
-        <div class="contact-card-icon">📞</div>
-        <h4 data-t="contact.call">Call Us</h4>
+      <div class="contact-card reveal">
+        <span class="contact-card-icon">📞</span>
+        <h4 data-t="contact.call.title">Call Us</h4>
         <a href="tel:9881553653">9881553653</a>
         <a href="tel:9175314747">9175314747</a>
       </div>
 
-      <div class="contact-card">
-        <div class="contact-card-icon">💬</div>
-        <h4 data-t="contact.wa">WhatsApp</h4>
-        <a href="https://wa.me/919881553653" target="_blank">Chat Now</a>
-        <p>9881553653</p>
+      <!-- CHANGE 4: WhatsApp number and link updated -->
+      <div class="contact-card reveal reveal-delay-1">
+        <span class="contact-card-icon">💬</span>
+        <h4 data-t="contact.wa.title">WhatsApp</h4>
+        <a href="https://wa.me/918390703553" target="_blank" data-t="contact.wa.link">Chat Now</a>
+        <p style="font-size:0.8rem;opacity:0.6;margin-top:0.25rem;">8390703553</p>
       </div>
 
-      <div class="contact-card">
-        <div class="contact-card-icon">📍</div>
-        <h4 data-t="contact.visit">Visit Us</h4>
-        <p>CSM Chowk, Pimpalgaon</p>
-        <p>Tal: Daund, Dist: Pune</p>
+      <!-- CHANGE 3: address updated in contact card -->
+      <div class="contact-card reveal reveal-delay-2">
+        <span class="contact-card-icon">📍</span>
+        <h4 data-t="contact.visit.title">Find Us</h4>
+        <p>C.S.M. Chowk, Pimpalgaon (Rahu)</p>
+        <p>Tal: Daund, Dist: Pune, Maharashtra</p>
       </div>
 
     </div>
 
+    <!-- CHANGE 4: WhatsApp CTA link updated -->
     <div class="contact-cta">
       <a
-        href="https://wa.me/919881553653?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20inquire%20about%20your%20products."
+        href="https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20enquire%20about%20your%20products."
         target="_blank"
         class="btn btn-whatsapp"
-        data-t="contact.wa.btn"
+        data-t="contact.cta"
       >
-        💬 Chat on WhatsApp
+        💬 Send a WhatsApp Message
       </a>
     </div>
 
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
-
     <div class="footer-grid">
 
-      <div class="footer-brand">
-        <div class="footer-brand-name">🌾 KrushiConnect</div>
-        <p class="footer-brand-desc" data-t="footer.desc">
-          Connecting farmers to quality agricultural inputs.
-          Powered by Shri Sideshwar Agro Agency, Pimpalgaon.
+      <div>
+        <div class="footer-brand">🌾 KrushiConnect</div>
+        <p class="footer-desc" data-t="footer.desc">
+          Quality agricultural inputs for the farmers of Daund taluka.
+          Trusted since over 10 years.
         </p>
       </div>
 
-      <div class="footer-col">
-        <h4 data-t="footer.links">Quick Links</h4>
-        <ul>
-          <li><a href="#home"       data-t="nav.home">Home</a></li>
-          <li><a href="#categories" data-t="nav.products">Products</a></li>
-          <li><a href="#about-kc"   data-t="nav.about">About</a></li>
-          <li><a href="#contact"    data-t="nav.contact">Contact</a></li>
+      <div>
+        <div class="footer-col-title" data-t="footer.links">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#home"        data-t="nav.home">Home</a></li>
+          <li><a href="#categories"  data-t="nav.products">Products</a></li>
+          <li><a href="#about-kc"    data-t="nav.about">About</a></li>
+          <li><a href="#contact"     data-t="nav.contact">Contact</a></li>
           <li><a href="pages/login.html" data-t="nav.login">Login</a></li>
         </ul>
       </div>
 
-      <div class="footer-col">
-        <h4 data-t="footer.cats">Categories</h4>
-        <ul>
-          <li><a href="#" data-t="cat.water">Water Soluble</a></li>
-          <li><a href="#" data-t="cat.insect">Insecticides</a></li>
-          <li><a href="#" data-t="cat.pest">Pesticides</a></li>
-          <li><a href="#" data-t="cat.herb">Herbicides</a></li>
-          <li><a href="#" data-t="cat.seeds">Seeds</a></li>
+      <div>
+        <div class="footer-col-title" data-t="footer.cats">Categories</div>
+        <ul class="footer-links">
+          <li><a href="#" data-t="cat.1">Water Soluble Fertilizers</a></li>
+          <li><a href="#" data-t="cat.2">Insecticides</a></li>
+          <li><a href="#" data-t="cat.3">Pesticides</a></li>
+          <li><a href="#" data-t="cat.4">Herbicides</a></li>
+          <li><a href="#" data-t="cat.5">Seeds</a></li>
         </ul>
       </div>
 
     </div>
 
     <div class="footer-bottom">
-      <p data-t="footer.copy">© 2024 KrushiConnect · Shri Sideshwar Agro Agency. All rights reserved.</p>
-      <p data-t="footer.made">Made with ❤️ for farmers of Maharashtra</p>
+      <p class="footer-copy" data-t="footer.copy">
+        © 2025 KrushiConnect · Shri Sideshwar Agro Agency
+      </p>
+      <p class="footer-copy" data-t="footer.made">
+        Made for Farmers of Maharashtra
+      </p>
     </div>
-
   </div>
 </footer>
 
-
-<!-- WhatsApp floating button -->
+<!-- CHANGE 4: WhatsApp float button number updated -->
 <a
-  href="https://wa.me/919881553653?text=Hello%20Shri%20Sideshwar%20Agro%20Agency!"
+  href="https://wa.me/918390703553"
   target="_blank"
   class="wa-float"
   title="Chat on WhatsApp"
-  aria-label="Chat on WhatsApp"
->
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.608L0 24l6.545-1.371A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.374l-.359-.214-3.731.979.997-3.645-.234-.374A9.818 9.818 0 0112 2.182c5.426 0 9.818 4.392 9.818 9.818S17.426 21.818 12 21.818z"/>
-  </svg>
-</a>
+>💬</a>
 
-
-<!-- JavaScript -->
 <script src="js/language.js"></script>
 <script src="js/navbar.js"></script>
+<script src="js/main.js"></script>
 
 </body>
 </html>
