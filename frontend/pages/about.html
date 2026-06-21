@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About KrushiConnect and Shri Sideshwar Agro Agency — Pimpalgaon (Rahu), Daund, Pune" />
+  <title>About — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+  <style>
+    .about-page { padding-top: var(--nav-h); }
+
+    /* Hero */
+    .about-hero {
+      background: var(--green-deep);
+      padding: 4rem 0 3.5rem;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 70% 50%, rgba(200,150,12,0.12), transparent 60%);
+    }
+    .about-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: white; margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .about-hero h1 em { font-style: normal; color: var(--gold-light); }
+    .about-hero p {
+      color: rgba(255,255,255,0.72);
+      font-size: 1.0625rem;
+      max-width: 520px; margin: 0 auto;
+      position: relative;
+    }
+
+    /* Section spacing */
+    .about-section { padding: 5rem 0; }
+    .about-section.cream { background: var(--cream); }
+    .about-section.white { background: white; }
+    .about-section.dark  { background: var(--green-deep); }
+
+    /* Two-col grid */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .two-col.reverse { }
+
+    /* Image panel */
+    .about-img-panel {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+    .about-img-panel img {
+      width: 100%; height: 380px;
+      object-fit: cover; display: block;
+    }
+    .img-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(26,60,46,0.8));
+      padding: 1.5rem 1.25rem 1rem;
+      color: white;
+      font-size: 0.85rem;
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      box-shadow: var(--shadow-card);
+      margin-top: 2.5rem;
+    }
+    .strip-stat { text-align: center; }
+    .strip-num {
+      font-family: var(--font-display);
+      font-size: 2rem; font-weight: 700;
+      color: var(--green-deep); display: block;
+    }
+    .strip-lbl { font-size: 0.78rem; color: var(--gray-500); margin-top: 0.2rem; }
+
+    /* Feature grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .feature-box {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(26,60,46,0.08);
+      transition: all 0.25s;
+    }
+    .feature-box:hover {
+      background: white;
+      box-shadow: var(--shadow-lift);
+      transform: translateY(-4px);
+    }
+    .feature-box-icon {
+      font-size: 2.25rem; margin-bottom: 1rem; display: block;
+    }
+    .feature-box h3 {
+      font-family: var(--font-body);
+      font-size: 1rem; font-weight: 700;
+      color: var(--green-deep); margin-bottom: 0.4rem;
+    }
+    .feature-box p { font-size: 0.875rem; color: var(--gray-500); margin: 0; line-height: 1.65; }
+
+    /* Crops served */
+    .crops-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+    }
+    .crop-box {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 0.75rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .crop-box:hover { background: rgba(255,255,255,0.18); }
+    .crop-box-icon { font-size: 2rem; margin-bottom: 0.6rem; display: block; }
+    .crop-box-name { font-size: 0.8rem; font-weight: 600; color: white; }
+
+    /* Contact card row */
+    .contact-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .contact-info-card {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+      border: 1px solid rgba(26,60,46,0.09);
+      transition: all 0.25s;
+    }
+    .contact-info-card:hover { box-shadow: var(--shadow-card); }
+    .contact-info-icon { font-size: 2rem; margin-bottom: 0.85rem; display: block; }
+    .contact-info-label {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--green-fresh); margin-bottom: 0.4rem;
+    }
+    .contact-info-val { font-size: 0.9375rem; color: var(--earth); font-weight: 500; line-height: 1.6; }
+    .contact-info-val a { color: var(--green-mid); text-decoration: none; }
+    .contact-info-val a:hover { color: var(--green-deep); }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 6px; top: 0; bottom: 0;
+      width: 2px; background: var(--green-light);
+    }
+    .timeline-item { position: relative; margin-bottom: 2rem; }
+    .timeline-dot {
+      position: absolute; left: -2rem; top: 4px;
+      width: 14px; height: 14px;
+      border-radius: 50%; background: var(--green-deep);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--green-light);
+    }
+    .timeline-year { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-fresh); margin-bottom: 0.2rem; }
+    .timeline-title { font-weight: 700; color: var(--green-deep); font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .timeline-desc  { font-size: 0.875rem; color: var(--gray-500); line-height: 1.6; margin: 0; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .two-col       { grid-template-columns: 1fr; gap: 2rem; }
+      .feature-grid  { grid-template-columns: 1fr 1fr; }
+      .crops-grid    { grid-template-columns: repeat(3, 1fr); }
+      .contact-row   { grid-template-columns: 1fr; }
+      .stats-strip   { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .feature-grid  { grid-template-columns: 1fr; }
+      .crops-grid    { grid-template-columns: repeat(2, 1fr); }
+      .stats-strip   { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body class="page-body">
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-mark">🌾</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-name">KrushiConnect</span>
+        <span class="nav-logo-sub">Shri Sideshwar Agro Agency</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html"  class="nav-link">Home</a></li>
+      <li><a href="products.html"  class="nav-link">Products</a></li>
+      <li><a href="about.html"     class="nav-link active">About</a></li>
+      <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="langEN">ENG</button>
+        <button class="lang-btn"        id="langMR">MARATHI</button>
+      </div>
+      <a href="login.html" class="btn-nav-login" id="navLoginBtn">Login</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="about-page">
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="container">
+      <h1>About <em>KrushiConnect</em></h1>
+      <p>The digital home of Shri Sideshwar Agro Agency — serving the farmers of Daund taluka for over a decade.</p>
+    </div>
+  </div>
+
+  <!-- Section 1: Our Story -->
+  <section class="about-section white">
+    <div class="container">
+      <div class="two-col">
+
+        <div class="about-img-panel">
+          <img
+            src="https://images.unsplash.com/photo-1591389703635-e15a07b842d7?w=700&auto=format&fit=crop&q=80"
+            alt="Farmer in Maharashtra field"
+            loading="lazy"
+          />
+          <div class="img-caption">Serving farmers across Daund taluka since 2013</div>
+        </div>
+
+        <div>
+          <span class="section-label">Our Story</span>
+          <h2 class="section-title">A Shop Built on Trust</h2>
+          <p>
+            Shri Sideshwar Agro Agency was founded by <strong>Ishwar Shitole</strong> at
+            C.S.M. Chowk, Pimpalgaon (Rahu) with a single mission — to give farmers in
+            Daund taluka access to genuine, certified agricultural products at honest prices.
+          </p>
+          <p>
+            Over the years we have grown from a small fertilizer counter to a full-service
+            agro input shop trusted by hundreds of farming families across sugarcane, onion,
+            wheat, and vegetable belts of Pune district.
+          </p>
+          <p style="margin:0;">
+            KrushiConnect is our next step — bringing our product catalog online so every
+            farmer can check availability, compare prices, and contact us directly from
+            their phone without traveling to the shop.
+          </p>
+
+          <div class="stats-strip">
+            <div class="strip-stat">
+              <span class="strip-num">10+</span>
+              <span class="strip-lbl">Years in Business</span>
+            </div>
+            <div class="strip-stat">
+              <span class="strip-num">500+</span>
+              <span class="strip-lbl">Farmers Served</span>
+            </div>
+            <div class="strip-stat">
+              <span class="strip-num">100+</span>
+              <span class="strip-lbl">Products Stocked</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Why KrushiConnect -->
+  <section class="about-section cream">
+    <div class="container">
+
+      <div style="text-align:center;margin-bottom:3rem;">
+        <span class="section-label">Why KrushiConnect</span>
+        <h2 class="section-title">What Makes Us Different</h2>
+        <p class="section-sub" style="margin:0 auto;">
+          We are not just a shop — we are a partner in your farming journey.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-box reveal">
+          <span class="feature-box-icon">✅</span>
+          <h3>Certified Products Only</h3>
+          <p>Every product we stock is sourced from government-approved manufacturers. No duplicate, no expired stock.</p>
+        </div>
+        <div class="feature-box reveal reveal-delay-1">
+          <span class="feature-box-icon">💰</span>
+          <h3>Transparent Pricing</h3>
+          <p>Prices shown on KrushiConnect are updated directly by the shop owner — no hidden markups, no surprises at the counter.</p>
+        </div>
+        <div class="feature-box reveal reveal-delay-2">
+          <span class="feature-box-icon">📱</span>
+          <h3>WhatsApp First</h3>
+          <p>Can't come to the shop? Send us a WhatsApp message. We respond within hours and arrange delivery or pickup.</p>
+        </div>
+        <div class="feature-box reveal reveal-delay-1">
+          <span class="feature-box-icon">🌐</span>
+          <h3>Bilingual Support</h3>
+          <p>KrushiConnect works in both English and Marathi. Every farmer in the taluka can use it comfortably.</p>
+        </div>
+        <div class="feature-box reveal reveal-delay-2">
+          <span class="feature-box-icon">📅</span>
+          <h3>Open All Days</h3>
+          <p>We are open every day of the week. Farming does not take holidays — neither do we.</p>
+        </div>
+        <div class="feature-box reveal reveal-delay-3">
+          <span class="feature-box-icon">🔔</span>
+          <h3>Stock Alerts</h3>
+          <p>Low stock and expiry dates are monitored automatically. You always see the real availability before visiting.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 3: Crops we serve -->
+  <section class="about-section dark">
+    <div class="container">
+
+      <div style="text-align:center;margin-bottom:2.75rem;">
+        <span class="section-label" style="color:var(--gold-light);">Crops We Serve</span>
+        <h2 class="section-title" style="color:white;">Products for Every Crop</h2>
+        <p style="color:rgba(255,255,255,0.65);max-width:480px;margin:0 auto;">
+          Our product range covers all major crops grown in Daund taluka and surrounding villages.
+        </p>
+      </div>
+
+      <div class="crops-grid">
+        <div class="crop-box">
+          <span class="crop-box-icon">🌿</span>
+          <div class="crop-box-name">Sugarcane</div>
+        </div>
+        <div class="crop-box">
+          <span class="crop-box-icon">🧅</span>
+          <div class="crop-box-name">Onion</div>
+        </div>
+        <div class="crop-box">
+          <span class="crop-box-icon">🌾</span>
+          <div class="crop-box-name">Wheat</div>
+        </div>
+        <div class="crop-box">
+          <span class="crop-box-icon">🍅</span>
+          <div class="crop-box-name">Tomato</div>
+        </div>
+        <div class="crop-box">
+          <span class="crop-box-icon">🌿</span>
+          <div class="crop-box-name">Coriander</div>
+        </div>
+        <div class="crop-box">
+          <span class="crop-box-icon">🌱</span>
+          <div class="crop-box-name">Fenugreek</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 4: Our Journey -->
+  <section class="about-section white">
+    <div class="container">
+      <div class="two-col">
+
+        <div>
+          <span class="section-label">Our Journey</span>
+          <h2 class="section-title">How We Got Here</h2>
+          <p style="margin-bottom:2rem;">From a small agro counter to a digital platform — every step was for the farmer.</p>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2013</div>
+              <div class="timeline-title">Shop Founded</div>
+              <p class="timeline-desc">Ishwar Shitole opens Shri Sideshwar Agro Agency at C.S.M. Chowk, Pimpalgaon (Rahu).</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2016</div>
+              <div class="timeline-title">Expanded Product Range</div>
+              <p class="timeline-desc">Added insecticides, pesticides, and seeds alongside fertilizers. Became a one-stop agro shop.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2020</div>
+              <div class="timeline-title">WhatsApp Ordering</div>
+              <p class="timeline-desc">Farmers started ordering via WhatsApp during lockdown. We adapted and made it a permanent service.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2025</div>
+              <div class="timeline-title">KrushiConnect Launched</div>
+              <p class="timeline-desc">Full digital catalog with admin panel, farmer accounts, favorites, and inquiry system — live for all farmers.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-img-panel">
+          <img
+            src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&auto=format&fit=crop&q=80"
+            alt="Agricultural fields in Maharashtra"
+            loading="lazy"
+          />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Contact / Find us -->
+  <section class="about-section cream">
+    <div class="container">
+
+      <div style="text-align:center;margin-bottom:2.75rem;">
+        <span class="section-label">Get in Touch</span>
+        <h2 class="section-title">Visit or Contact Us</h2>
+        <p class="section-sub" style="margin:0 auto;">
+          We are open all days. Come visit or reach us on WhatsApp.
+        </p>
+      </div>
+
+      <div class="contact-row">
+
+        <div class="contact-info-card">
+          <span class="contact-info-icon">📍</span>
+          <div class="contact-info-label">Address</div>
+          <div class="contact-info-val">
+            Shri Sideshwar Agro Agency<br />
+            C.S.M. Chowk, Pimpalgaon (Rahu)<br />
+            Tal: Daund, Dist: Pune<br />
+            Maharashtra, India
+          </div>
+        </div>
+
+        <div class="contact-info-card">
+          <span class="contact-info-icon">📞</span>
+          <div class="contact-info-label">Phone & WhatsApp</div>
+          <div class="contact-info-val">
+            <a href="tel:9881553653">9881553653</a><br />
+            <a href="tel:9175314747">9175314747</a><br />
+            <a href="https://wa.me/918390703553" target="_blank"
+               style="display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.5rem;background:#25D366;color:white;padding:0.4rem 0.85rem;border-radius:50px;font-size:0.8rem;font-weight:600;">
+              💬 WhatsApp: 8390703553
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-info-card">
+          <span class="contact-info-icon">🕐</span>
+          <div class="contact-info-label">Working Hours</div>
+          <div class="contact-info-val">
+            All Days<br />
+            Open for Business<br />
+            <span style="font-size:0.8rem;color:var(--gray-500);margin-top:0.35rem;display:block;">
+              WhatsApp available anytime
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align:center;margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="products.html" class="btn btn-primary">Browse Products</a>
+        <a href="https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20enquire%20about%20your%20products."
+           target="_blank" class="btn btn-whatsapp">💬 Chat on WhatsApp</a>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- WhatsApp float -->
+<a href="https://wa.me/918390703553" target="_blank" class="wa-float" title="Chat on WhatsApp">💬</a>
+
+<script src="../js/navbar.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  // Update nav if logged in
+  const user = JSON.parse(localStorage.getItem('kc_user') || 'null');
+  if (user) {
+    const btn = document.getElementById('navLoginBtn');
+    if (btn) { btn.textContent = user.name.split(' ')[0]; btn.href = 'profile.html'; }
+  }
+</script>
+
+</body>
+</html>

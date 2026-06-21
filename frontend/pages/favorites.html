@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Favorites — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+  <style>
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+    .fav-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(26,60,46,0.07);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .fav-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+    .fav-card-img {
+      height: 180px;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      border-bottom: 1px solid rgba(26,60,46,0.06);
+    }
+    .fav-card-img img {
+      width: 100%; height: 100%;
+      object-fit: contain; padding: 1rem;
+    }
+    .fav-card-img .fallback { font-size: 3.5rem; }
+    .fav-card-body { padding: 1rem; }
+    .fav-card-cat  { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-fresh); margin-bottom: 0.3rem; }
+    .fav-card-name { font-family: var(--font-display); font-size: 1rem; color: var(--green-deep); margin-bottom: 0.2rem; }
+    .fav-card-co   { font-size: 0.78rem; color: var(--gray-500); margin-bottom: 0.85rem; }
+    .fav-card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.75rem; border-top: 1px solid var(--gray-100);
+    }
+    .fav-price { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--green-deep); }
+    .fav-price span { font-family: var(--font-body); font-size: 0.72rem; font-weight: 400; color: var(--gray-500); }
+    .fav-actions { display: flex; gap: 0.4rem; }
+    .btn-remove {
+      font-size: 0.72rem; font-weight: 600; padding: 0.35rem 0.7rem;
+      border-radius: 6px; border: none; cursor: pointer;
+      background: #FEE2E2; color: #DC2626; transition: background 0.2s;
+    }
+    .btn-remove:hover { background: #FECACA; }
+  </style>
+</head>
+<body class="page-body">
+
+<nav class="inner-nav">
+  <a href="../index.html" class="inner-nav-logo">
+    <div class="inner-nav-mark">🌾</div>
+    <span class="inner-nav-name">KrushiConnect</span>
+  </a>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:1rem;">
+    <a href="profile.html" style="font-size:0.8125rem;color:var(--gray-500);text-decoration:none;">My Profile</a>
+    <a href="../index.html" class="inner-nav-back">← Home</a>
+  </div>
+</nav>
+
+<div class="page-layout">
+
+  <div class="page-header">
+    <h1>My Favorites</h1>
+    <p>Products you saved for quick access</p>
+  </div>
+
+  <!-- Loading -->
+  <div id="loadingState" style="text-align:center;padding:3rem;color:var(--gray-500);">
+    Loading your favorites…
+  </div>
+
+  <!-- Not logged in -->
+  <div class="empty-state" id="notLoggedIn" style="display:none;">
+    <div class="empty-state-icon">🔐</div>
+    <h3>Login Required</h3>
+    <p>Please login to view your saved favorites.</p>
+    <a href="login.html" class="btn btn-primary">Login</a>
+  </div>
+
+  <!-- Empty favorites -->
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-state-icon">♡</div>
+    <h3>No Favorites Yet</h3>
+    <p>Browse products and tap the heart icon to save them here.</p>
+    <a href="../index.html#categories" class="btn btn-primary">Browse Products</a>
+  </div>
+
+  <!-- Products grid -->
+  <div class="fav-grid" id="favGrid" style="display:none;"></div>
+
+</div>
+
+<script>
+  const API   = 'http://localhost:5000/api';
+  const token = localStorage.getItem('kc_token');
+
+  async function loadFavorites() {
+    document.getElementById('loadingState').style.display = 'block';
+
+    if (!token) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('notLoggedIn').style.display  = 'block';
+      return;
+    }
+
+    try {
+      const res  = await fetch(`${API}/favorites`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      document.getElementById('loadingState').style.display = 'none';
+
+      const products = data.favorites || data || [];
+      if (!products.length) {
+        document.getElementById('emptyState').style.display = 'block';
+        return;
+      }
+      renderGrid(products);
+    } catch {
+      // Demo mode when backend is offline
+      document.getElementById('loadingState').style.display = 'none';
+      renderGrid(demoProducts());
+    }
+  }
+
+  function renderGrid(products) {
+    const grid = document.getElementById('favGrid');
+    grid.style.display = 'grid';
+    grid.innerHTML = products.map(p => {
+      const imgSrc = p.image
+        ? (p.image.startsWith('http') ? p.image : `${API.replace('/api','')}/uploads/${p.image}`)
+        : null;
+      return `
+        <div class="fav-card" id="card-${p._id || p.id}">
+          <div class="fav-card-img">
+            ${imgSrc
+              ? `<img src="${imgSrc}" alt="${p.name}" />`
+              : `<span class="fallback">🌿</span>`}
+          </div>
+          <div class="fav-card-body">
+            <div class="fav-card-cat">${p.category}</div>
+            <div class="fav-card-name">${p.name}</div>
+            <div class="fav-card-co">${p.company}</div>
+            <div class="fav-card-foot">
+              <div class="fav-price">₹${(p.price||0).toLocaleString('en-IN')} <span>/ ${p.unit||'unit'}</span></div>
+              <div class="fav-actions">
+                <a href="product-detail.html?id=${p._id||p.id}" class="btn-action btn-view-sm">View</a>
+                <button class="btn-remove" onclick="removeFav('${p._id||p.id}')">✕ Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  async function removeFav(id) {
+    try {
+      await fetch(`${API}/favorites/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch {}
+    // Remove card from DOM regardless
+    const card = document.getElementById(`card-${id}`);
+    if (card) card.remove();
+    // Check if grid is now empty
+    if (!document.getElementById('favGrid').children.length) {
+      document.getElementById('favGrid').style.display  = 'none';
+      document.getElementById('emptyState').style.display = 'block';
+    }
+  }
+
+  function demoProducts() {
+    return [
+      { _id:'1', name:'NPK 19:19:19', company:'Jai Kisaan',           category:'Water Soluble Fertilizer', price:200,  unit:'kg',  image:'../assets/images/npk-191919.jpg' },
+      { _id:'2', name:'Coragen',      company:'FMC',                  category:'Pesticide',                price:2250, unit:'ltr', image:'../assets/images/coragen.jpg' },
+      { _id:'3', name:'Cannon',       company:'NACL Industries Ltd.', category:'Insecticide',              price:700,  unit:'ltr', image:'../assets/images/cannon.jpg' },
+    ];
+  }
+
+  loadFavorites();
+</script>
+
+</body>
+</html>

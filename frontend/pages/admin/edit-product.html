@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Product — KrushiConnect Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/pages.css" />
+</head>
+<body class="page-body">
+
+<div class="admin-shell" id="adminShell" style="display:none;">
+
+  <aside class="admin-sidebar">
+    <a href="dashboard.html" class="admin-sidebar-logo">
+      <div class="admin-sidebar-logo-mark">🌾</div>
+      <div class="admin-sidebar-logo-text">
+        <span class="admin-sidebar-logo-name">KrushiConnect</span>
+        <span class="admin-sidebar-logo-role">Admin Panel</span>
+      </div>
+    </a>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html"   class="admin-nav-link active"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="add-product.html" class="admin-nav-link"><span class="nav-icon">➕</span> Add Product</a>
+      <div class="admin-nav-section">Manage</div>
+      <a href="farmers.html"   class="admin-nav-link"><span class="nav-icon">👨‍🌾</span> Farmers</a>
+      <a href="inquiries.html" class="admin-nav-link"><span class="nav-icon">✉</span> Inquiries</a>
+      <div class="admin-nav-section">Site</div>
+      <a href="../../index.html" class="admin-nav-link"><span class="nav-icon">🏠</span> View Website</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div id="sidebarName" style="color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Admin</div>
+      <button onclick="logout()" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;font-family:var(--font-body);">Logout</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <span class="admin-topbar-title">Edit Product</span>
+      <div class="admin-topbar-user">
+        <div class="admin-user-avatar" id="topbarInitial">A</div>
+        <span id="topbarName">Admin</span>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <div id="loadingState" style="text-align:center;padding:3rem;color:var(--gray-500);">Loading product data…</div>
+
+      <div class="content-card" id="formCard" style="max-width:800px;display:none;">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem;">
+          <h2 style="font-family:var(--font-display);font-size:1.2rem;color:var(--green-deep);" id="formTitle">Edit Product</h2>
+          <button id="toggleAvailBtn" onclick="toggleAvailability()" class="btn-action btn-edit" style="font-size:0.8125rem;padding:0.45rem 1rem;">Toggle Availability</button>
+        </div>
+
+        <div class="alert alert-error"   id="formError"></div>
+        <div class="alert alert-success" id="formSuccess"></div>
+
+        <form id="editProductForm" enctype="multipart/form-data" novalidate>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label class="form-label">Product Name *</label>
+              <input class="form-input" type="text" id="name" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Company Name *</label>
+              <input class="form-input" type="text" id="company" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select class="form-input" id="category" required>
+                <option value="">Select category</option>
+                <option>Water Soluble Fertilizers</option>
+                <option>Insecticides</option>
+                <option>Pesticides</option>
+                <option>Herbicides</option>
+                <option>Seeds</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Price (₹) *</label>
+              <input class="form-input" type="number" id="price" min="0" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Unit</label>
+              <select class="form-input" id="unit">
+                <option value="kg">per kg</option>
+                <option value="ltr">per ltr</option>
+                <option value="bag">per bag</option>
+                <option value="packet">per packet</option>
+                <option value="unit">per unit</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Stock Quantity</label>
+              <input class="form-input" type="number" id="stockQuantity" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Expiry Date</label>
+              <input class="form-input" type="date" id="expiryDate" />
+            </div>
+
+            <div class="form-group" style="display:flex;align-items:center;gap:1.5rem;padding-top:1.5rem;">
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.875rem;font-weight:500;">
+                <input type="checkbox" id="isAvailable" style="width:16px;height:16px;accent-color:var(--green-deep);" />
+                Available for sale
+              </label>
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.875rem;font-weight:500;">
+                <input type="checkbox" id="isFeatured" style="width:16px;height:16px;accent-color:var(--green-deep);" />
+                Featured Product
+              </label>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label">Product Description *</label>
+              <textarea class="form-input" id="description" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label">Usage Information</label>
+              <textarea class="form-input" id="usage" rows="3"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label">Suitable Crops</label>
+              <input class="form-input" type="text" id="suitableCrops" placeholder="Sugarcane, Onion, Wheat (comma separated)" />
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label">Product Image</label>
+              <div id="currentImgWrap" style="margin-bottom:0.75rem;display:none;">
+                <p style="font-size:0.78rem;color:var(--gray-500);margin-bottom:0.4rem;">Current image:</p>
+                <img id="currentImg" src="" alt="Current" style="height:100px;object-fit:contain;background:var(--cream);border-radius:8px;padding:0.5rem;" />
+              </div>
+              <div class="img-preview-box" id="imgPreview" onclick="document.getElementById('imageFile').click()">
+                <span style="font-size:2rem;">📷</span>
+                <span class="upload-hint">Click to replace image<br/><span style="font-size:0.75rem;opacity:0.7;">Leave empty to keep current image</span></span>
+              </div>
+              <input type="file" id="imageFile" accept="image/*" style="display:none;" onchange="previewImage(this)" />
+            </div>
+
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;">
+            <button type="submit" class="btn-submit" id="submitBtn" style="max-width:200px;">Save Changes</button>
+            <a href="dashboard.html" class="btn" style="background:var(--gray-100);color:var(--gray-700);">Cancel</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<div class="empty-state" id="accessDenied" style="display:none;padding-top:5rem;">
+  <div class="empty-state-icon">🔐</div>
+  <h3>Admin Access Required</h3>
+  <a href="../login.html" class="btn btn-primary">Login</a>
+</div>
+
+<script>
+  const API       = 'http://localhost:5000/api';
+  const token     = localStorage.getItem('kc_token');
+  const user      = JSON.parse(localStorage.getItem('kc_user') || 'null');
+  const params    = new URLSearchParams(window.location.search);
+  const productId = params.get('id');
+  let currentProduct = null;
+
+  function logout() { localStorage.removeItem('kc_token'); localStorage.removeItem('kc_user'); window.location.href='../login.html'; }
+  function isAdmin(u) { return u && (u.role==='owner_admin'||u.role==='demo_admin'); }
+
+  async function init() {
+    if (!token || !isAdmin(user)) { document.getElementById('accessDenied').style.display='block'; return; }
+    document.getElementById('adminShell').style.display='flex';
+    document.getElementById('sidebarName').textContent   = user.name||'Admin';
+    document.getElementById('topbarName').textContent    = user.name||'Admin';
+    document.getElementById('topbarInitial').textContent = (user.name||'A')[0].toUpperCase();
+    if (!productId) { window.location.href='dashboard.html'; return; }
+    await loadProduct();
+  }
+
+  async function loadProduct() {
+    try {
+      const res  = await fetch(`${API}/products/${productId}`, { headers:{ Authorization:`Bearer ${token}` } });
+      const data = await res.json();
+      currentProduct = data.product || data;
+      fillForm(currentProduct);
+    } catch {
+      // Demo fallback
+      currentProduct = { _id:productId, name:'NPK 19:19:19', company:'Jai Kisaan', category:'Water Soluble Fertilizers', price:200, unit:'kg', stockQuantity:50, description:'Balanced NPK fertilizer.', usage:'2g per litre.', suitableCrops:['Sugarcane','Onion'], isAvailable:true, isFeatured:true };
+      fillForm(currentProduct);
+    }
+  }
+
+  function fillForm(p) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('formCard').style.display     = 'block';
+    document.getElementById('formTitle').textContent      = `Editing: ${p.name}`;
+
+    document.getElementById('name').value          = p.name          || '';
+    document.getElementById('company').value       = p.company       || '';
+    document.getElementById('price').value         = p.price         || '';
+    document.getElementById('stockQuantity').value = p.stockQuantity || '';
+    document.getElementById('description').value   = p.description   || '';
+    document.getElementById('usage').value         = p.usage         || '';
+    document.getElementById('isAvailable').checked = !!p.isAvailable;
+    document.getElementById('isFeatured').checked  = !!p.isFeatured;
+
+    // Category select
+    const catSel = document.getElementById('category');
+    [...catSel.options].forEach(o => { if (o.value === p.category) o.selected = true; });
+
+    // Unit select
+    const unitSel = document.getElementById('unit');
+    [...unitSel.options].forEach(o => { if (o.value === p.unit) o.selected = true; });
+
+    // Expiry date
+    if (p.expiryDate) document.getElementById('expiryDate').value = new Date(p.expiryDate).toISOString().split('T')[0];
+
+    // Crops
+    const crops = Array.isArray(p.suitableCrops) ? p.suitableCrops.join(', ') : (p.suitableCrops||'');
+    document.getElementById('suitableCrops').value = crops;
+
+    // Current image
+    if (p.image) {
+      const src = p.image.startsWith('http') ? p.image : `${API.replace('/api','')}/uploads/${p.image}`;
+      document.getElementById('currentImg').src = src;
+      document.getElementById('currentImgWrap').style.display = 'block';
+    }
+  }
+
+  function previewImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById('imgPreview').innerHTML = `<img src="${e.target.result}" alt="Preview" />`; };
+    reader.readAsDataURL(file);
+  }
+
+  async function toggleAvailability() {
+    try {
+      await fetch(`${API}/products/${productId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
+        body: JSON.stringify({ isAvailable: !currentProduct.isAvailable })
+      });
+      currentProduct.isAvailable = !currentProduct.isAvailable;
+      document.getElementById('isAvailable').checked = currentProduct.isAvailable;
+      const s = document.getElementById('formSuccess');
+      s.textContent = `Product marked as ${currentProduct.isAvailable ? 'Available' : 'Unavailable'}.`;
+      s.classList.add('visible');
+    } catch {
+      alert('Toggle failed — backend offline.');
+    }
+  }
+
+  document.getElementById('editProductForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled=true; btn.textContent='Saving…';
+
+    const fd = new FormData();
+    fd.append('name',          document.getElementById('name').value.trim());
+    fd.append('company',       document.getElementById('company').value.trim());
+    fd.append('category',      document.getElementById('category').value);
+    fd.append('price',         document.getElementById('price').value);
+    fd.append('unit',          document.getElementById('unit').value);
+    fd.append('stockQuantity', document.getElementById('stockQuantity').value||0);
+    fd.append('expiryDate',    document.getElementById('expiryDate').value);
+    fd.append('description',   document.getElementById('description').value.trim());
+    fd.append('usage',         document.getElementById('usage').value.trim());
+    fd.append('suitableCrops', document.getElementById('suitableCrops').value.trim());
+    fd.append('isAvailable',   document.getElementById('isAvailable').checked);
+    fd.append('isFeatured',    document.getElementById('isFeatured').checked);
+    const imgFile = document.getElementById('imageFile').files[0];
+    if (imgFile) fd.append('image', imgFile);
+
+    try {
+      const res  = await fetch(`${API}/products/${productId}`, { method:'PUT', headers:{ Authorization:`Bearer ${token}` }, body:fd });
+      const data = await res.json();
+      if (res.ok) {
+        const s = document.getElementById('formSuccess');
+        s.textContent='Changes saved successfully!'; s.classList.add('visible');
+        setTimeout(()=>window.location.href='dashboard.html', 1500);
+      } else {
+        const err=document.getElementById('formError');
+        err.textContent=data.message||'Update failed.'; err.classList.add('visible');
+      }
+    } catch {
+      const s=document.getElementById('formSuccess');
+      s.textContent='Saved locally (backend offline).'; s.classList.add('visible');
+    }
+    btn.disabled=false; btn.textContent='Save Changes';
+  });
+
+  init();
+</script>
+
+</body>
+</html>

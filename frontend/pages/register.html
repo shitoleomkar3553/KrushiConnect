@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+</head>
+<body class="page-body">
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <a href="../index.html" class="auth-logo">
+      <div class="auth-logo-mark">🌾</div>
+      <span class="auth-logo-name">KrushiConnect</span>
+    </a>
+
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-sub">Register as a farmer to save products and send inquiries</p>
+
+    <div class="alert alert-error" id="alertError"></div>
+    <div class="alert alert-success" id="alertSuccess"></div>
+
+    <form id="registerForm" novalidate>
+
+      <div class="form-grid" style="gap:1rem;">
+
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name *</label>
+          <input class="form-input" type="text" id="name" placeholder="Ramesh Patil" required />
+          <span class="form-error" id="nameErr">Please enter your full name</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="phone">Mobile Number *</label>
+          <input class="form-input" type="tel" id="phone" placeholder="9876543210" maxlength="10" required />
+          <span class="form-error" id="phoneErr">Enter a valid 10-digit number</span>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address *</label>
+        <input class="form-input" type="email" id="email" placeholder="you@example.com" required />
+        <span class="form-error" id="emailErr">Please enter a valid email</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="village">Village / Town *</label>
+        <input class="form-input" type="text" id="village" placeholder="Pimpalgaon, Daund" required />
+        <span class="form-error" id="villageErr">Please enter your village or town</span>
+      </div>
+
+      <div class="form-grid" style="gap:1rem;">
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password *</label>
+          <input class="form-input" type="password" id="password" placeholder="Min 8 characters" required />
+          <span class="form-error" id="passErr">Password must be at least 8 characters</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">Confirm Password *</label>
+          <input class="form-input" type="password" id="confirmPassword" placeholder="Repeat password" required />
+          <span class="form-error" id="confirmErr">Passwords do not match</span>
+        </div>
+
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">Create Farmer Account</button>
+
+    </form>
+
+    <div class="auth-divider">or</div>
+
+    <p class="auth-link-row">
+      Already have an account? <a href="login.html">Login here</a>
+    </p>
+
+    <a href="../index.html" class="auth-back">← Back to homepage</a>
+
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('registerForm');
+
+  function showErr(id, show) {
+    document.getElementById(id).classList.toggle('visible', show);
+    // mark input red
+    const input = document.getElementById(id.replace('Err',''));
+    if (input) input.classList.toggle('error', show);
+  }
+
+  function validate() {
+    let ok = true;
+    const name    = document.getElementById('name').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const village = document.getElementById('village').value.trim();
+    const pass    = document.getElementById('password').value;
+    const confirm = document.getElementById('confirmPassword').value;
+
+    showErr('nameErr',    !name);                            if (!name) ok = false;
+    showErr('phoneErr',   !/^\d{10}$/.test(phone));         if (!/^\d{10}$/.test(phone)) ok = false;
+    showErr('emailErr',   !/\S+@\S+\.\S+/.test(email));     if (!/\S+@\S+\.\S+/.test(email)) ok = false;
+    showErr('villageErr', !village);                         if (!village) ok = false;
+    showErr('passErr',    pass.length < 8);                  if (pass.length < 8) ok = false;
+    showErr('confirmErr', pass !== confirm);                 if (pass !== confirm) ok = false;
+
+    return ok;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+
+    const body = {
+      name    : document.getElementById('name').value.trim(),
+      phone   : document.getElementById('phone').value.trim(),
+      email   : document.getElementById('email').value.trim(),
+      village : document.getElementById('village').value.trim(),
+      password: document.getElementById('password').value,
+    };
+
+    try {
+      const res  = await fetch('http://localhost:5000/api/auth/register', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify(body),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('kc_token', data.token);
+        localStorage.setItem('kc_user',  JSON.stringify(data.user));
+        const s = document.getElementById('alertSuccess');
+        s.textContent = 'Account created! Redirecting…';
+        s.classList.add('visible');
+        setTimeout(() => window.location.href = '../index.html', 1200);
+      } else {
+        const err = document.getElementById('alertError');
+        err.textContent = data.message || 'Registration failed. Please try again.';
+        err.classList.add('visible');
+        btn.disabled = false;
+        btn.textContent = 'Create Farmer Account';
+      }
+    } catch {
+      const err = document.getElementById('alertError');
+      err.textContent = 'Could not connect to server. Make sure the backend is running.';
+      err.classList.add('visible');
+      btn.disabled = false;
+      btn.textContent = 'Create Farmer Account';
+    }
+  });
+</script>
+
+</body>
+</html>

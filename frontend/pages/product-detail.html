@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Detail — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+  <style>
+    .pd-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .pd-img-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(26,60,46,0.07);
+      position: sticky;
+      top: 80px;
+    }
+    .pd-img-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .pd-img-fallback {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg,#E8F5E9,#C8E6C9);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+    }
+    .pd-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .pd-category {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--green-fresh); margin-bottom: 0.4rem;
+    }
+    .pd-name {
+      font-family: var(--font-display);
+      font-size: 2rem; color: var(--green-deep); margin-bottom: 0.35rem;
+    }
+    .pd-company { font-size: 0.95rem; color: var(--gray-500); margin-bottom: 1.25rem; }
+    .pd-price-row {
+      display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 1.5rem;
+    }
+    .pd-price {
+      font-family: var(--font-display);
+      font-size: 2.25rem; font-weight: 700; color: var(--green-deep);
+    }
+    .pd-unit { font-size: 0.9rem; color: var(--gray-500); }
+    .pd-section-title {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--gray-500); margin-bottom: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .pd-desc { font-size: 0.95rem; color: var(--gray-700); line-height: 1.75; }
+    .pd-crops {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;
+    }
+    .pd-crop-tag {
+      background: #E8F5E9; color: var(--green-deep);
+      font-size: 0.78rem; font-weight: 600;
+      padding: 0.3rem 0.75rem; border-radius: 50px;
+    }
+    .pd-meta-row {
+      display: flex; gap: 0.5rem; align-items: center;
+      padding: 0.65rem 0; border-bottom: 1px solid var(--gray-100);
+      font-size: 0.875rem;
+    }
+    .pd-meta-row:last-child { border-bottom: none; }
+    .pd-meta-label { color: var(--gray-500); min-width: 110px; }
+    .pd-meta-val { color: var(--earth); font-weight: 500; }
+    .pd-actions {
+      display: flex; gap: 0.75rem; margin-top: 1.75rem; flex-wrap: wrap;
+    }
+    .btn-fav {
+      padding: 0.75rem 1.5rem; border-radius: 50px;
+      border: 2px solid var(--green-deep); background: transparent;
+      color: var(--green-deep); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body); transition: all 0.25s;
+    }
+    .btn-fav:hover, .btn-fav.saved {
+      background: var(--green-deep); color: white;
+    }
+    .btn-inquiry {
+      padding: 0.75rem 1.5rem; border-radius: 50px;
+      border: none; background: var(--cream); color: var(--green-deep);
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body); transition: all 0.25s;
+    }
+    .btn-inquiry:hover { background: var(--cream-dark); }
+    /* Inquiry form modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 500;
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: white; border-radius: var(--radius-lg);
+      padding: 2rem; max-width: 480px; width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-title {
+      font-family: var(--font-display); font-size: 1.3rem;
+      color: var(--green-deep); margin-bottom: 0.35rem;
+    }
+    .modal-sub { font-size: 0.85rem; color: var(--gray-500); margin-bottom: 1.5rem; }
+    .modal-close {
+      float: right; background: none; border: none;
+      font-size: 1.4rem; cursor: pointer; color: var(--gray-500); margin-top: -0.25rem;
+    }
+    @media (max-width: 860px) {
+      .pd-grid { grid-template-columns: 1fr; }
+      .pd-img-card { position: static; }
+    }
+  </style>
+</head>
+<body class="page-body">
+
+<!-- Simple top nav -->
+<nav class="inner-nav">
+  <a href="../index.html" class="inner-nav-logo">
+    <div class="inner-nav-mark">🌾</div>
+    <span class="inner-nav-name">KrushiConnect</span>
+  </a>
+  <a href="../index.html" class="inner-nav-back">← Back to Products</a>
+</nav>
+
+<div class="page-layout">
+
+  <!-- Loading state -->
+  <div id="loadingState" style="text-align:center;padding:4rem;color:var(--gray-500);">
+    Loading product…
+  </div>
+
+  <!-- Product detail -->
+  <div class="pd-grid" id="productDetail" style="display:none;">
+
+    <!-- Left: image -->
+    <div class="pd-img-card">
+      <div id="productImg" class="pd-img-fallback">🌿</div>
+      <div id="pdBadges" class="pd-badges" style="margin-top:1rem;"></div>
+    </div>
+
+    <!-- Right: info -->
+    <div>
+      <div class="pd-category" id="pdCategory">Category</div>
+      <h1 class="pd-name" id="pdName">Product Name</h1>
+      <div class="pd-company" id="pdCompany">Company</div>
+
+      <div class="pd-price-row">
+        <span class="pd-price" id="pdPrice">₹0</span>
+        <span class="pd-unit" id="pdUnit">/ kg</span>
+      </div>
+
+      <div id="pdAvailability"></div>
+
+      <div class="pd-section-title">Description</div>
+      <p class="pd-desc" id="pdDesc">—</p>
+
+      <div class="pd-section-title">Usage Information</div>
+      <p class="pd-desc" id="pdUsage">—</p>
+
+      <div class="pd-section-title">Suitable Crops</div>
+      <div class="pd-crops" id="pdCrops"></div>
+
+      <div class="pd-section-title" style="margin-top:1.75rem;">Product Details</div>
+      <div id="pdMeta">
+        <div class="pd-meta-row">
+          <span class="pd-meta-label">Expiry Date</span>
+          <span class="pd-meta-val" id="pdExpiry">—</span>
+        </div>
+        <div class="pd-meta-row">
+          <span class="pd-meta-label">Stock</span>
+          <span class="pd-meta-val" id="pdStock">—</span>
+        </div>
+      </div>
+
+      <div class="pd-actions">
+        <a id="waBtn"
+           href="https://wa.me/918390703553"
+           target="_blank"
+           class="btn btn-whatsapp">
+          💬 WhatsApp Inquiry
+        </a>
+        <button class="btn-fav" id="favBtn" onclick="toggleFav()">♡ Save to Favorites</button>
+        <button class="btn-inquiry" onclick="openInquiry()">✉ Send Inquiry</button>
+      </div>
+
+      <p style="font-size:0.75rem;color:var(--gray-500);margin-top:1rem;">
+        📞 Call us: <a href="tel:9881553653" style="color:var(--green-mid);">9881553653</a> &nbsp;/&nbsp;
+        <a href="tel:9175314747" style="color:var(--green-mid);">9175314747</a>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Not found state -->
+  <div class="empty-state" id="notFound" style="display:none;">
+    <div class="empty-state-icon">🔍</div>
+    <h3>Product Not Found</h3>
+    <p>This product may have been removed or the link is incorrect.</p>
+    <a href="../index.html" class="btn btn-primary">← Back to Products</a>
+  </div>
+
+</div>
+
+<!-- Inquiry Modal -->
+<div class="modal-overlay" id="inquiryModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeInquiry()">×</button>
+    <h2 class="modal-title">Send Inquiry</h2>
+    <p class="modal-sub">We'll get back to you on WhatsApp or phone.</p>
+    <div class="alert alert-error" id="inquiryError"></div>
+    <div class="alert alert-success" id="inquirySuccess"></div>
+    <div class="form-group">
+      <label class="form-label">Your Message</label>
+      <textarea class="form-input" id="inquiryMsg" rows="4"
+        placeholder="e.g. Is this product available in 500ml pack? What is the discount for bulk order?"></textarea>
+    </div>
+    <button class="btn-submit" onclick="sendInquiry()">Send Inquiry</button>
+    <p style="font-size:0.75rem;color:var(--gray-500);margin-top:1rem;text-align:center;">
+      You must be logged in to send an inquiry.
+    </p>
+  </div>
+</div>
+
+<script>
+  // Read product ID from URL: product-detail.html?id=PRODUCT_ID
+  const params    = new URLSearchParams(window.location.search);
+  const productId = params.get('id');
+  const API       = 'http://localhost:5000/api';
+  const token     = localStorage.getItem('kc_token');
+
+  async function loadProduct() {
+    if (!productId) { showNotFound(); return; }
+    try {
+      const res  = await fetch(`${API}/products/${productId}`);
+      if (!res.ok) { showNotFound(); return; }
+      const data = await res.json();
+      render(data.product || data);
+    } catch {
+      // Offline demo: show static placeholder
+      renderDemo();
+    }
+  }
+
+  function render(p) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('productDetail').style.display = 'grid';
+    document.title = `${p.name} — KrushiConnect`;
+
+    // Image
+    const imgWrap = document.getElementById('productImg');
+    if (p.image) {
+      imgWrap.outerHTML = `<img id="productImg" src="${p.image.startsWith('http') ? p.image : API.replace('/api','') + '/uploads/' + p.image}" alt="${p.name}" style="width:100%;height:300px;object-fit:contain;border-radius:10px;padding:1rem;background:var(--cream);" />`;
+    }
+
+    document.getElementById('pdCategory').textContent = p.category;
+    document.getElementById('pdName').textContent     = p.name;
+    document.getElementById('pdCompany').textContent  = `by ${p.company}`;
+    document.getElementById('pdPrice').textContent    = `₹${p.price.toLocaleString('en-IN')}`;
+    document.getElementById('pdDesc').textContent     = p.description  || '—';
+    document.getElementById('pdUsage').textContent    = p.usage        || '—';
+    document.getElementById('pdExpiry').textContent   = p.expiryDate ? new Date(p.expiryDate).toLocaleDateString('en-IN') : '—';
+    document.getElementById('pdStock').textContent    = p.stockQuantity ? `${p.stockQuantity} units` : '—';
+
+    // Availability badge
+    const avDiv = document.getElementById('pdAvailability');
+    avDiv.innerHTML = p.isAvailable
+      ? '<span class="status-pill pill-green">✓ In Stock</span>'
+      : '<span class="status-pill pill-red">✗ Out of Stock</span>';
+
+    // Badges
+    const badges = document.getElementById('pdBadges');
+    if (p.isFeatured) badges.innerHTML += '<span class="badge badge-gold">Featured</span>';
+
+    // Crops
+    const cropsDiv = document.getElementById('pdCrops');
+    const crops = Array.isArray(p.suitableCrops) ? p.suitableCrops : (p.suitableCrops || '').split(',');
+    crops.forEach(c => {
+      if (c.trim()) cropsDiv.innerHTML += `<span class="pd-crop-tag">${c.trim()}</span>`;
+    });
+
+    // WhatsApp with product name
+    document.getElementById('waBtn').href =
+      `https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20inquire%20about%20*${encodeURIComponent(p.name)}*%20(${encodeURIComponent(p.category)}).`;
+  }
+
+  function renderDemo() {
+    // Static demo when backend not running
+    render({
+      name: 'NPK 19:19:19', company: 'Jai Kisaan', category: 'Water Soluble Fertilizer',
+      price: 200, description: 'Balanced NPK fertilizer suitable for all crops. Improves root growth and overall yield.',
+      usage: 'Dissolve 2–3 grams per litre of water. Apply through drip or foliar spray.',
+      suitableCrops: ['Sugarcane', 'Onion', 'Wheat', 'Tomato', 'Coriander'],
+      expiryDate: '2027-12-31', stockQuantity: 200, isAvailable: true, isFeatured: true,
+      image: '../assets/images/npk-191919.jpg'
+    });
+  }
+
+  function showNotFound() {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('notFound').style.display     = 'block';
+  }
+
+  function toggleFav() {
+    if (!token) { alert('Please login to save favorites.'); return; }
+    const btn = document.getElementById('favBtn');
+    const saved = btn.classList.contains('saved');
+    if (saved) {
+      fetch(`${API}/favorites/${productId}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` }});
+      btn.classList.remove('saved');
+      btn.textContent = '♡ Save to Favorites';
+    } else {
+      fetch(`${API}/favorites/${productId}`, { method:'POST', headers:{ Authorization:`Bearer ${token}` }});
+      btn.classList.add('saved');
+      btn.textContent = '♥ Saved!';
+    }
+  }
+
+  function openInquiry()  { document.getElementById('inquiryModal').classList.add('open'); }
+  function closeInquiry() { document.getElementById('inquiryModal').classList.remove('open'); }
+
+  async function sendInquiry() {
+    if (!token) {
+      const e = document.getElementById('inquiryError');
+      e.textContent = 'Please login to send an inquiry.'; e.classList.add('visible'); return;
+    }
+    const msg = document.getElementById('inquiryMsg').value.trim();
+    if (!msg) return;
+    try {
+      const res  = await fetch(`${API}/inquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
+        body: JSON.stringify({ productId, message: msg })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        const s = document.getElementById('inquirySuccess');
+        s.textContent = 'Inquiry sent! We will contact you soon.'; s.classList.add('visible');
+        setTimeout(closeInquiry, 2000);
+      } else {
+        const e = document.getElementById('inquiryError');
+        e.textContent = data.message || 'Failed to send inquiry.'; e.classList.add('visible');
+      }
+    } catch {
+      const e = document.getElementById('inquiryError');
+      e.textContent = 'Server not reachable.'; e.classList.add('visible');
+    }
+  }
+
+  loadProduct();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/pages.css" />
+  <style>
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .profile-sidebar-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      box-shadow: var(--shadow-card);
+      text-align: center;
+      position: sticky;
+      top: 80px;
+    }
+    .avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--green-deep);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: white;
+      margin: 0 auto 1rem;
+      font-family: var(--font-display);
+    }
+    .profile-name  { font-family: var(--font-display); font-size: 1.3rem; color: var(--green-deep); }
+    .profile-email { font-size: 0.82rem; color: var(--gray-500); margin-bottom: 1.5rem; }
+    .profile-stat  {
+      display: flex; justify-content: center; gap: 2rem;
+      padding: 1rem 0; border-top: 1px solid var(--gray-100);
+    }
+    .stat-item { text-align: center; }
+    .stat-num  { font-family: var(--font-display); font-size: 1.4rem; color: var(--green-deep); display: block; }
+    .stat-lbl  { font-size: 0.72rem; color: var(--gray-500); }
+    .sidebar-links { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .sidebar-link {
+      display: block; padding: 0.6rem 0.85rem; border-radius: 8px;
+      text-decoration: none; font-size: 0.875rem; color: var(--gray-700);
+      transition: all 0.2s; text-align: left;
+    }
+    .sidebar-link:hover, .sidebar-link.active { background: var(--cream); color: var(--green-deep); font-weight: 600; }
+    .logout-btn {
+      margin-top: 1.5rem; width: 100%; padding: 0.65rem;
+      background: #FEE2E2; color: #DC2626; border: none; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: var(--font-body);
+      transition: background 0.2s;
+    }
+    .logout-btn:hover { background: #FECACA; }
+    /* Tabs */
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--gray-100); margin-bottom: 1.75rem; }
+    .tab-btn {
+      padding: 0.75rem 1.25rem; border: none; background: none;
+      font-size: 0.9rem; font-weight: 500; color: var(--gray-500);
+      cursor: pointer; font-family: var(--font-body); border-bottom: 2px solid transparent;
+      margin-bottom: -2px; transition: all 0.2s;
+    }
+    .tab-btn.active { color: var(--green-deep); border-bottom-color: var(--green-deep); font-weight: 700; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    /* Inquiry list */
+    .inquiry-item {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.85rem;
+      border-left: 3px solid var(--green-light);
+    }
+    .inquiry-product-name { font-weight: 600; font-size: 0.875rem; color: var(--green-deep); margin-bottom: 0.3rem; }
+    .inquiry-msg          { font-size: 0.875rem; color: var(--gray-700); line-height: 1.6; }
+    .inquiry-footer       { display: flex; gap: 1rem; margin-top: 0.6rem; align-items: center; }
+    .inquiry-date         { font-size: 0.72rem; color: var(--gray-500); }
+    @media (max-width: 768px) {
+      .profile-layout { grid-template-columns: 1fr; }
+      .profile-sidebar-card { position: static; }
+    }
+  </style>
+</head>
+<body class="page-body">
+
+<nav class="inner-nav">
+  <a href="../index.html" class="inner-nav-logo">
+    <div class="inner-nav-mark">🌾</div>
+    <span class="inner-nav-name">KrushiConnect</span>
+  </a>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:1rem;">
+    <a href="favorites.html" style="font-size:0.8125rem;color:var(--gray-500);text-decoration:none;">♡ Favorites</a>
+    <a href="../index.html" class="inner-nav-back">← Home</a>
+  </div>
+</nav>
+
+<!-- Not logged in -->
+<div class="empty-state" id="notLoggedIn" style="display:none;padding-top:5rem;">
+  <div class="empty-state-icon">🔐</div>
+  <h3>Login Required</h3>
+  <p>Please login to view your profile.</p>
+  <a href="login.html" class="btn btn-primary">Login</a>
+</div>
+
+<div class="page-layout" id="profilePage" style="display:none;">
+<div class="profile-layout">
+
+  <!-- Sidebar -->
+  <div class="profile-sidebar-card">
+    <div class="avatar" id="avatarInitial">R</div>
+    <div class="profile-name"  id="sidebarName">Farmer Name</div>
+    <div class="profile-email" id="sidebarEmail">email@example.com</div>
+    <div class="profile-stat">
+      <div class="stat-item">
+        <span class="stat-num" id="favCount">0</span>
+        <span class="stat-lbl">Favorites</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="inqCount">0</span>
+        <span class="stat-lbl">Inquiries</span>
+      </div>
+    </div>
+    <div class="sidebar-links">
+      <a href="favorites.html" class="sidebar-link">♡ My Favorites</a>
+      <a href="../index.html#categories" class="sidebar-link">🌿 Browse Products</a>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Main content -->
+  <div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('editTab', this)">Edit Profile</button>
+      <button class="tab-btn"        onclick="switchTab('inqTab',  this)">My Inquiries</button>
+    </div>
+
+    <!-- Edit Profile Tab -->
+    <div class="tab-panel active content-card" id="editTab">
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;color:var(--green-deep);margin-bottom:1.5rem;">Profile Information</h2>
+
+      <div class="alert alert-error"   id="editError"></div>
+      <div class="alert alert-success" id="editSuccess"></div>
+
+      <form id="editForm" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" id="editName" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number</label>
+            <input class="form-input" type="tel"  id="editPhone" maxlength="10" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" type="email" id="editEmail" disabled style="opacity:0.6;cursor:not-allowed;" />
+            <span class="form-hint">Email cannot be changed</span>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Village / Town</label>
+            <input class="form-input" type="text" id="editVillage" />
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" style="max-width:200px;margin-top:0.5rem;">Save Changes</button>
+      </form>
+    </div>
+
+    <!-- Inquiries Tab -->
+    <div class="tab-panel" id="inqTab">
+      <div id="inqLoading" style="color:var(--gray-500);padding:1rem;">Loading inquiries…</div>
+      <div class="empty-state" id="inqEmpty" style="display:none;padding:2.5rem 1rem;">
+        <div class="empty-state-icon">✉</div>
+        <h3>No Inquiries Yet</h3>
+        <p>Visit a product page and send an inquiry — we'll respond via WhatsApp or phone.</p>
+        <a href="../index.html#categories" class="btn btn-primary">Browse Products</a>
+      </div>
+      <div id="inqList"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+  const API   = 'http://localhost:5000/api';
+  const token = localStorage.getItem('kc_token');
+  const user  = JSON.parse(localStorage.getItem('kc_user') || 'null');
+
+  function switchTab(panelId, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(panelId).classList.add('active');
+    btn.classList.add('active');
+    if (panelId === 'inqTab') loadInquiries();
+  }
+
+  function logout() {
+    localStorage.removeItem('kc_token');
+    localStorage.removeItem('kc_user');
+    window.location.href = '../index.html';
+  }
+
+  async function init() {
+    if (!token || !user) {
+      document.getElementById('notLoggedIn').style.display = 'block';
+      return;
+    }
+    document.getElementById('profilePage').style.display = 'block';
+
+    // Populate sidebar
+    document.getElementById('sidebarName').textContent    = user.name  || 'Farmer';
+    document.getElementById('sidebarEmail').textContent   = user.email || '';
+    document.getElementById('avatarInitial').textContent  = (user.name || 'F')[0].toUpperCase();
+
+    // Populate edit form
+    document.getElementById('editName').value    = user.name    || '';
+    document.getElementById('editEmail').value   = user.email   || '';
+    document.getElementById('editPhone').value   = user.phone   || '';
+    document.getElementById('editVillage').value = user.village || '';
+
+    // Load counts
+    try {
+      const [favRes, inqRes] = await Promise.all([
+        fetch(`${API}/favorites`,        { headers:{ Authorization:`Bearer ${token}` } }),
+        fetch(`${API}/inquiries/mine`,   { headers:{ Authorization:`Bearer ${token}` } }),
+      ]);
+      const favData = await favRes.json();
+      const inqData = await inqRes.json();
+      document.getElementById('favCount').textContent = (favData.favorites || favData || []).length;
+      document.getElementById('inqCount').textContent = (inqData.inquiries || inqData || []).length;
+    } catch {}
+  }
+
+  document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = e.submitter;
+    btn.disabled = true; btn.textContent = 'Saving…';
+
+    const body = {
+      name   : document.getElementById('editName').value.trim(),
+      phone  : document.getElementById('editPhone').value.trim(),
+      village: document.getElementById('editVillage').value.trim(),
+    };
+
+    try {
+      const res  = await fetch(`${API}/farmers/profile`, {
+        method : 'PUT',
+        headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
+        body   : JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('kc_user', JSON.stringify({ ...user, ...body }));
+        document.getElementById('editSuccess').textContent = 'Profile updated successfully!';
+        document.getElementById('editSuccess').classList.add('visible');
+        document.getElementById('sidebarName').textContent = body.name;
+      } else {
+        document.getElementById('editError').textContent = data.message || 'Update failed.';
+        document.getElementById('editError').classList.add('visible');
+      }
+    } catch {
+      document.getElementById('editSuccess').textContent = 'Saved locally (backend offline).';
+      document.getElementById('editSuccess').classList.add('visible');
+      localStorage.setItem('kc_user', JSON.stringify({ ...user, ...body }));
+    }
+    btn.disabled = false; btn.textContent = 'Save Changes';
+  });
+
+  async function loadInquiries() {
+    try {
+      const res  = await fetch(`${API}/inquiries/mine`, { headers:{ Authorization:`Bearer ${token}` } });
+      const data = await res.json();
+      const list = data.inquiries || data || [];
+      document.getElementById('inqLoading').style.display = 'none';
+      if (!list.length) { document.getElementById('inqEmpty').style.display = 'block'; return; }
+      renderInquiries(list);
+    } catch {
+      document.getElementById('inqLoading').style.display = 'none';
+      renderInquiries(demoInquiries());
+    }
+  }
+
+  function renderInquiries(list) {
+    document.getElementById('inqList').innerHTML = list.map(i => `
+      <div class="inquiry-item">
+        <div class="inquiry-product-name">
+          ${i.productId?.name || i.productName || 'Product'}
+          <span style="font-weight:400;color:var(--gray-500);font-size:0.78rem;"> — ${i.productId?.category || ''}</span>
+        </div>
+        <div class="inquiry-msg">${i.message}</div>
+        <div class="inquiry-footer">
+          <span class="inquiry-date">${new Date(i.createdAt || Date.now()).toLocaleDateString('en-IN')}</span>
+          <span class="status-pill ${i.status === 'responded' ? 'pill-green' : 'pill-orange'}">
+            ${i.status === 'responded' ? 'Responded' : 'Pending'}
+          </span>
+        </div>
+      </div>`).join('');
+  }
+
+  function demoInquiries() {
+    return [
+      { productName:'Coragen', message:'Is 150ml pack available? What is the price?', status:'pending', createdAt: new Date() },
+      { productName:'NPK 19:19:19', message:'What is the discount on 10kg bulk order?', status:'responded', createdAt: new Date(Date.now()-86400000) },
+    ];
+  }
+
+  init();
+</script>
+
+</body>
+</html>

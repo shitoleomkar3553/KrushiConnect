@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — KrushiConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/pages.css" />
+</head>
+<body class="page-body">
+
+<!-- Not logged in / not admin -->
+<div class="empty-state" id="accessDenied" style="display:none;padding-top:5rem;">
+  <div class="empty-state-icon">🔐</div>
+  <h3>Admin Access Required</h3>
+  <p>You must be logged in as an admin to view this page.</p>
+  <a href="../login.html" class="btn btn-primary">Login</a>
+</div>
+
+<div class="admin-shell" id="adminShell" style="display:none;">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <a href="dashboard.html" class="admin-sidebar-logo">
+      <div class="admin-sidebar-logo-mark">🌾</div>
+      <div class="admin-sidebar-logo-text">
+        <span class="admin-sidebar-logo-name">KrushiConnect</span>
+        <span class="admin-sidebar-logo-role">Admin Panel</span>
+      </div>
+    </a>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html"   class="admin-nav-link active"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="add-product.html" class="admin-nav-link"><span class="nav-icon">➕</span> Add Product</a>
+
+      <div class="admin-nav-section">Manage</div>
+      <a href="farmers.html"    class="admin-nav-link"><span class="nav-icon">👨‍🌾</span> Farmers</a>
+      <a href="inquiries.html"  class="admin-nav-link"><span class="nav-icon">✉</span> Inquiries</a>
+
+      <div class="admin-nav-section">Site</div>
+      <a href="../../index.html" class="admin-nav-link"><span class="nav-icon">🏠</span> View Website</a>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+      <div id="sidebarAdminName" style="color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Admin</div>
+      <button onclick="logout()" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;font-family:var(--font-body);">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <span class="admin-topbar-title">Dashboard</span>
+      <div class="admin-topbar-user">
+        <div class="admin-user-avatar" id="topbarInitial">A</div>
+        <span id="topbarName">Admin</span>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- Stat cards -->
+      <div class="stat-cards">
+        <div class="stat-card">
+          <span class="stat-card-icon">📦</span>
+          <span class="stat-card-num" id="totalProducts">—</span>
+          <div class="stat-card-label">Total Products</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-icon">👨‍🌾</span>
+          <span class="stat-card-num" id="totalFarmers">—</span>
+          <div class="stat-card-label">Registered Farmers</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-icon">✉</span>
+          <span class="stat-card-num" id="pendingInquiries">—</span>
+          <div class="stat-card-label">Pending Inquiries</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-icon">⚠️</span>
+          <span class="stat-card-num" id="lowStockCount">—</span>
+          <div class="stat-card-label">Low Stock Alerts</div>
+        </div>
+      </div>
+
+      <!-- Alerts row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem;">
+
+        <!-- Low stock -->
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <span class="admin-table-title">⚠️ Low Stock Alerts</span>
+            <span style="font-size:0.75rem;color:var(--gray-500);">Stock &lt; 10 units</span>
+          </div>
+          <div id="lowStockList" style="padding:0.5rem 0;">
+            <div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">Loading…</div>
+          </div>
+        </div>
+
+        <!-- Expiry alerts -->
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <span class="admin-table-title">📅 Expiry Alerts</span>
+            <span style="font-size:0.75rem;color:var(--gray-500);">Expiring in 30 days</span>
+          </div>
+          <div id="expiryList" style="padding:0.5rem 0;">
+            <div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">Loading…</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent products table -->
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <span class="admin-table-title">📦 All Products</span>
+          <a href="add-product.html" class="btn btn-primary" style="padding:0.5rem 1.1rem;font-size:0.8125rem;">+ Add Product</a>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <tr><td colspan="7" style="padding:2rem;text-align:center;color:var(--gray-500);">Loading products…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const API   = 'http://localhost:5000/api';
+  const token = localStorage.getItem('kc_token');
+  const user  = JSON.parse(localStorage.getItem('kc_user') || 'null');
+
+  function logout() {
+    localStorage.removeItem('kc_token');
+    localStorage.removeItem('kc_user');
+    window.location.href = '../login.html';
+  }
+
+  function isAdmin(u) {
+    return u && (u.role === 'owner_admin' || u.role === 'demo_admin');
+  }
+
+  async function init() {
+    if (!token || !isAdmin(user)) {
+      document.getElementById('accessDenied').style.display = 'block';
+      return;
+    }
+    document.getElementById('adminShell').style.display = 'flex';
+    document.getElementById('sidebarAdminName').textContent = user.name || 'Admin';
+    document.getElementById('topbarName').textContent       = user.name || 'Admin';
+    document.getElementById('topbarInitial').textContent    = (user.name||'A')[0].toUpperCase();
+
+    loadStats();
+    loadProducts();
+    loadAlerts();
+  }
+
+  async function loadStats() {
+    try {
+      const [pRes, fRes, iRes] = await Promise.all([
+        fetch(`${API}/products`,         { headers:{ Authorization:`Bearer ${token}` } }),
+        fetch(`${API}/farmers`,          { headers:{ Authorization:`Bearer ${token}` } }),
+        fetch(`${API}/inquiries`,        { headers:{ Authorization:`Bearer ${token}` } }),
+      ]);
+      const products  = (await pRes.json()).products  || [];
+      const farmers   = (await fRes.json()).farmers   || [];
+      const inquiries = (await iRes.json()).inquiries || [];
+      const pending   = inquiries.filter(i => i.status === 'pending').length;
+      document.getElementById('totalProducts').textContent    = products.length;
+      document.getElementById('totalFarmers').textContent     = farmers.length;
+      document.getElementById('pendingInquiries').textContent = pending;
+    } catch {
+      document.getElementById('totalProducts').textContent    = '—';
+      document.getElementById('totalFarmers').textContent     = '—';
+      document.getElementById('pendingInquiries').textContent = '—';
+    }
+  }
+
+  async function loadAlerts() {
+    try {
+      const [lsRes, exRes] = await Promise.all([
+        fetch(`${API}/alerts/low-stock`, { headers:{ Authorization:`Bearer ${token}` } }),
+        fetch(`${API}/alerts/expiry`,    { headers:{ Authorization:`Bearer ${token}` } }),
+      ]);
+      const ls = (await lsRes.json()).products || [];
+      const ex = (await exRes.json()).products || [];
+
+      document.getElementById('lowStockCount').textContent = ls.length;
+
+      document.getElementById('lowStockList').innerHTML = ls.length
+        ? ls.map(p => `<div class="alert-row"><div class="alert-dot dot-red"></div><span>${p.name}</span><span style="margin-left:auto;font-size:0.75rem;color:#DC2626;">${p.stockQuantity} left</span></div>`).join('')
+        : '<div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">No low stock alerts ✓</div>';
+
+      document.getElementById('expiryList').innerHTML = ex.length
+        ? ex.map(p => `<div class="alert-row"><div class="alert-dot dot-orange"></div><span>${p.name}</span><span style="margin-left:auto;font-size:0.75rem;color:#F59E0B;">${new Date(p.expiryDate).toLocaleDateString('en-IN')}</span></div>`).join('')
+        : '<div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">No expiry alerts ✓</div>';
+    } catch {
+      const msg = '<div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">Backend offline — connect server to see alerts</div>';
+      document.getElementById('lowStockList').innerHTML = msg;
+      document.getElementById('expiryList').innerHTML   = msg;
+      document.getElementById('lowStockCount').textContent = '—';
+    }
+  }
+
+  async function loadProducts() {
+    try {
+      const res  = await fetch(`${API}/products`, { headers:{ Authorization:`Bearer ${token}` } });
+      const data = await res.json();
+      const list = data.products || data || [];
+      renderProducts(list);
+    } catch {
+      renderProducts(demoProducts());
+    }
+  }
+
+  function renderProducts(list) {
+    const tbody = document.getElementById('productsTableBody');
+    if (!list.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="padding:2rem;text-align:center;color:var(--gray-500);">No products yet. <a href="add-product.html">Add one →</a></td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map(p => {
+      const imgSrc = p.image ? (p.image.startsWith('http') ? p.image : `${API.replace('/api','')}/uploads/${p.image}`) : null;
+      return `
+        <tr>
+          <td>${imgSrc ? `<img class="thumb" src="${imgSrc}" alt="${p.name}" />` : '<span style="font-size:1.5rem;">🌿</span>'}</td>
+          <td><strong>${p.name}</strong><div style="font-size:0.75rem;color:var(--gray-500);">${p.company}</div></td>
+          <td>${p.category}</td>
+          <td>₹${(p.price||0).toLocaleString('en-IN')}</td>
+          <td><span class="${(p.stockQuantity||0) < 10 ? 'status-pill pill-red' : 'status-pill pill-green'}">${p.stockQuantity ?? '—'}</span></td>
+          <td><span class="status-pill ${p.isAvailable ? 'pill-green' : 'pill-gray'}">${p.isAvailable ? 'Available' : 'Unavailable'}</span></td>
+          <td style="white-space:nowrap;">
+            <a href="edit-product.html?id=${p._id||p.id}" class="btn-action btn-edit">Edit</a>
+            <button class="btn-action btn-delete" onclick="deleteProduct('${p._id||p.id}', this)">Delete</button>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  async function deleteProduct(id, btn) {
+    if (!confirm('Delete this product? This cannot be undone.')) return;
+    try {
+      await fetch(`${API}/products/${id}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` } });
+      btn.closest('tr').remove();
+    } catch { alert('Could not delete — backend offline.'); }
+  }
+
+  function demoProducts() {
+    return [
+      { _id:'1', name:'NPK 19:19:19', company:'Jai Kisaan',  category:'Water Soluble Fertilizer', price:200,  stockQuantity:50,  isAvailable:true,  image:'../../assets/images/npk-191919.jpg' },
+      { _id:'2', name:'Cannon',       company:'NACL Ind.',    category:'Insecticide',              price:700,  stockQuantity:5,   isAvailable:true,  image:'../../assets/images/cannon.jpg' },
+      { _id:'3', name:'Coragen',      company:'FMC',          category:'Pesticide',                price:2250, stockQuantity:20,  isAvailable:true,  image:'../../assets/images/coragen.jpg' },
+      { _id:'4', name:'Coriander',    company:'Ashoka',       category:'Seeds',                    price:425,  stockQuantity:100, isAvailable:true,  image:'../../assets/images/coriander.jpg' },
+    ];
+  }
+
+  init();
+</script>
+
+</body>
+</html>

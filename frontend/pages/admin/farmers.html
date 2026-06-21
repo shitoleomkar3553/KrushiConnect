@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmers — KrushiConnect Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/pages.css" />
+</head>
+<body class="page-body">
+
+<div class="admin-shell" id="adminShell" style="display:none;">
+
+  <aside class="admin-sidebar">
+    <a href="dashboard.html" class="admin-sidebar-logo">
+      <div class="admin-sidebar-logo-mark">🌾</div>
+      <div class="admin-sidebar-logo-text">
+        <span class="admin-sidebar-logo-name">KrushiConnect</span>
+        <span class="admin-sidebar-logo-role">Admin Panel</span>
+      </div>
+    </a>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html"   class="admin-nav-link"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="add-product.html" class="admin-nav-link"><span class="nav-icon">➕</span> Add Product</a>
+      <div class="admin-nav-section">Manage</div>
+      <a href="farmers.html"   class="admin-nav-link active"><span class="nav-icon">👨‍🌾</span> Farmers</a>
+      <a href="inquiries.html" class="admin-nav-link"><span class="nav-icon">✉</span> Inquiries</a>
+      <div class="admin-nav-section">Site</div>
+      <a href="../../index.html" class="admin-nav-link"><span class="nav-icon">🏠</span> View Website</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div id="sidebarName" style="color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Admin</div>
+      <button onclick="logout()" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;font-family:var(--font-body);">Logout</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <span class="admin-topbar-title">Registered Farmers</span>
+      <div class="admin-topbar-user">
+        <div class="admin-user-avatar" id="topbarInitial">A</div>
+        <span id="topbarName">Admin</span>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <span class="admin-table-title">All Registered Farmers</span>
+          <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+            <input class="search-input" type="text" id="searchInput" placeholder="Search by name or village…" oninput="filterFarmers()" />
+            <span id="farmerCount" style="font-size:0.8rem;color:var(--gray-500);white-space:nowrap;"></span>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Village</th>
+                <th>Registered On</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="farmersTableBody">
+              <tr><td colspan="7" style="padding:2rem;text-align:center;color:var(--gray-500);">Loading farmers…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<div class="empty-state" id="accessDenied" style="display:none;padding-top:5rem;">
+  <div class="empty-state-icon">🔐</div>
+  <h3>Admin Access Required</h3>
+  <a href="../login.html" class="btn btn-primary">Login</a>
+</div>
+
+<script>
+  const API   = 'http://localhost:5000/api';
+  const token = localStorage.getItem('kc_token');
+  const user  = JSON.parse(localStorage.getItem('kc_user') || 'null');
+  let allFarmers = [];
+
+  function logout() { localStorage.removeItem('kc_token'); localStorage.removeItem('kc_user'); window.location.href='../login.html'; }
+  function isAdmin(u) { return u && (u.role==='owner_admin'||u.role==='demo_admin'); }
+
+  async function init() {
+    if (!token || !isAdmin(user)) { document.getElementById('accessDenied').style.display='block'; return; }
+    document.getElementById('adminShell').style.display='flex';
+    document.getElementById('sidebarName').textContent   = user.name||'Admin';
+    document.getElementById('topbarName').textContent    = user.name||'Admin';
+    document.getElementById('topbarInitial').textContent = (user.name||'A')[0].toUpperCase();
+    loadFarmers();
+  }
+
+  async function loadFarmers() {
+    try {
+      const res  = await fetch(`${API}/farmers`, { headers:{ Authorization:`Bearer ${token}` } });
+      const data = await res.json();
+      allFarmers = data.farmers || data || [];
+      renderFarmers(allFarmers);
+    } catch {
+      allFarmers = demoFarmers();
+      renderFarmers(allFarmers);
+    }
+  }
+
+  function renderFarmers(list) {
+    document.getElementById('farmerCount').textContent = `${list.length} farmer${list.length!==1?'s':''}`;
+    const tbody = document.getElementById('farmersTableBody');
+    if (!list.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="padding:2rem;text-align:center;color:var(--gray-500);">No farmers registered yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map((f, i) => `
+      <tr id="row-${f._id||f.id}">
+        <td style="color:var(--gray-500);">${i+1}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:0.65rem;">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--green-deep);display:flex;align-items:center;justify-content:center;color:white;font-size:0.82rem;font-weight:700;flex-shrink:0;">${(f.name||'F')[0].toUpperCase()}</div>
+            <strong>${f.name||'—'}</strong>
+          </div>
+        </td>
+        <td>${f.email||'—'}</td>
+        <td>${f.phone ? `<a href="tel:${f.phone}" style="color:var(--green-mid);text-decoration:none;">${f.phone}</a>` : '—'}</td>
+        <td>${f.village||'—'}</td>
+        <td>${f.createdAt ? new Date(f.createdAt).toLocaleDateString('en-IN') : '—'}</td>
+        <td>
+          <button class="btn-action btn-delete" onclick="deleteFarmer('${f._id||f.id}')">Delete</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  function filterFarmers() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allFarmers.filter(f =>
+      (f.name||'').toLowerCase().includes(q) ||
+      (f.village||'').toLowerCase().includes(q) ||
+      (f.email||'').toLowerCase().includes(q)
+    );
+    renderFarmers(filtered);
+  }
+
+  async function deleteFarmer(id) {
+    if (!confirm('Delete this farmer account? This cannot be undone.')) return;
+    try {
+      await fetch(`${API}/farmers/${id}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` } });
+    } catch {}
+    document.getElementById(`row-${id}`)?.remove();
+    allFarmers = allFarmers.filter(f => (f._id||f.id) !== id);
+    document.getElementById('farmerCount').textContent = `${allFarmers.length} farmer${allFarmers.length!==1?'s':''}`;
+  }
+
+  function demoFarmers() {
+    return [
+      { _id:'1', name:'Ramesh Patil',  email:'ramesh@gmail.com',  phone:'9876543210', village:'Pimpalgaon', createdAt: new Date('2025-01-10') },
+      { _id:'2', name:'Suresh Shinde', email:'suresh@gmail.com',  phone:'9765432109', village:'Daund',      createdAt: new Date('2025-02-15') },
+      { _id:'3', name:'Anita More',    email:'anita@gmail.com',   phone:'9654321098', village:'Rahu',       createdAt: new Date('2025-03-20') },
+      { _id:'4', name:'Vijay Jadhav',  email:'vijay@gmail.com',   phone:'9543210987', village:'Yewat',      createdAt: new Date('2025-04-05') },
+    ];
+  }
+
+  init();
+</script>
+
+</body>
+</html>
