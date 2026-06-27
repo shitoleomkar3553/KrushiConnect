@@ -1,5 +1,7 @@
-const express = require("express");
-const router = express.Router();
+// backend/routes/productRoutes.js
+
+const express = require('express');
+const router  = express.Router();
 
 const {
   getAllProducts,
@@ -7,17 +9,25 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
-} = require("../controllers/productController");
+  updateStock,
+  toggleFeatured,
+} = require('../controllers/productController');
 
-const { protect } = require("../middleware/authMiddleware");
+const { protect } = require('../middleware/authMiddleware');
+const upload      = require('../middleware/upload');
 
-// Public routes
-router.get("/", getAllProducts);
-router.get("/:id", getProductById);
+// ── Public routes ─────────────────────────────────────────────
+router.get('/',    getAllProducts);
+router.get('/:id', getProductById);
 
-// Protected routes
-router.post("/", protect, createProduct);
-router.put("/:id", protect, updateProduct);
-router.delete("/:id", protect, deleteProduct);
+// ── Admin routes (protected + image upload) ───────────────────
+// upload.single('image') handles the image field from FormData
+router.post('/',    protect, upload.single('image'), createProduct);
+router.put('/:id',  protect, upload.single('image'), updateProduct);
+router.delete('/:id', protect, deleteProduct);
+
+// ── Extra admin routes ────────────────────────────────────────
+router.patch('/:id/stock',   protect, updateStock);
+router.patch('/:id/feature', protect, toggleFeatured);
 
 module.exports = router;
