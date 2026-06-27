@@ -41,7 +41,7 @@
         <button class="lang-btn active" id="langEN" onclick="setLanguage('en')">ENG</button>
         <button class="lang-btn"        id="langMR" onclick="setLanguage('mr')">MARATHI</button>
       </div>
-      <a href="pages/login.html" class="btn-nav-login" data-t="nav.login">Login</a>
+      <a href="pages/login.html" class="btn-nav-login" id="navLoginBtn" data-t="nav.login">Login</a>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -50,12 +50,9 @@
   </div>
 </nav>
 
-<!-- HERO — split screen -->
+<!-- HERO -->
 <section class="hero" id="home">
 
-  <!-- Left panel: uploaded sugarcane image -->
-  <!-- CHANGE 1: src updated to local uploaded sugarcane image.
-       If sugarcane.png is not yet in assets/images/, save it there as shown in the instructions. -->
   <div class="hero-image-panel">
     <img
       src="assets/images/sugarcane.png"
@@ -63,7 +60,6 @@
       loading="eager"
       onerror="this.src='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=900&auto=format&fit=crop&q=80'"
     />
-
     <div class="hero-crop-tags">
       <span class="crop-tag">🌿 Sugarcane</span>
       <span class="crop-tag">🧅 Onion</span>
@@ -74,7 +70,6 @@
     </div>
   </div>
 
-  <!-- Right panel: content (unchanged) -->
   <div class="hero-content-panel">
     <p class="hero-eyebrow" data-t="hero.eyebrow">Pimpalgaon · Daund · Pune</p>
 
@@ -90,7 +85,6 @@
 
     <div class="hero-buttons">
       <a href="#categories" class="btn btn-gold" data-t="hero.browse">Browse Products</a>
-      <!-- CHANGE 4: WhatsApp number updated to 8390703553 -->
       <a href="https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20have%20a%20product%20enquiry."
          target="_blank" class="btn btn-outline" data-t="hero.whatsapp">WhatsApp Us</a>
     </div>
@@ -113,7 +107,7 @@
 
 </section>
 
-<!-- CATEGORIES (unchanged) -->
+<!-- CATEGORIES -->
 <section class="section categories" id="categories">
   <div class="container">
 
@@ -126,28 +120,29 @@
       </div>
     </div>
 
+    <!-- Static category cards — NO id here -->
     <div class="categories-grid">
-      <a href="#" class="cat-card reveal">
+      <a href="pages/products.html?cat=Water Soluble Fertilizers" class="cat-card reveal">
         <div class="cat-icon">💧</div>
         <div class="cat-name" data-t="cat.1">Water Soluble Fertilizers</div>
         <div class="cat-sub">Drip &amp; spray ready</div>
       </a>
-      <a href="#" class="cat-card reveal reveal-delay-1">
+      <a href="pages/products.html?cat=Insecticides" class="cat-card reveal reveal-delay-1">
         <div class="cat-icon">🐛</div>
         <div class="cat-name" data-t="cat.2">Insecticides</div>
         <div class="cat-sub">Pest control solutions</div>
       </a>
-      <a href="#" class="cat-card reveal reveal-delay-2">
+      <a href="pages/products.html?cat=Pesticides" class="cat-card reveal reveal-delay-2">
         <div class="cat-icon">🌾</div>
         <div class="cat-name" data-t="cat.3">Pesticides</div>
         <div class="cat-sub">Crop protection</div>
       </a>
-      <a href="#" class="cat-card reveal reveal-delay-3">
+      <a href="pages/products.html?cat=Herbicides" class="cat-card reveal reveal-delay-3">
         <div class="cat-icon">🍃</div>
         <div class="cat-name" data-t="cat.4">Herbicides</div>
         <div class="cat-sub">Weed management</div>
       </a>
-      <a href="#" class="cat-card reveal reveal-delay-4">
+      <a href="pages/products.html?cat=Seeds" class="cat-card reveal reveal-delay-4">
         <div class="cat-icon">🌱</div>
         <div class="cat-name" data-t="cat.5">Seeds</div>
         <div class="cat-sub">Certified varieties</div>
@@ -161,25 +156,23 @@
 <section class="section featured" id="featured">
   <div class="container">
 
+    <!-- Header row: title + View All button -->
     <div class="featured-header">
       <div>
         <span class="section-label">Featured Products</span>
         <h2 class="section-title" data-t="featured.title">Featured Products</h2>
         <p class="section-sub" data-t="featured.sub">Top picks for this Kharif &amp; Rabi season</p>
       </div>
-      <a href="#" class="btn btn-primary" data-t="featured.all">View All Products</a>
+      <a href="pages/products.html" class="btn btn-primary" data-t="featured.all">View All Products</a>
     </div>
 
-    <div class="products-grid">
+    <!-- ✅ Products grid is OUTSIDE featured-header, INSIDE container -->
+    <!-- JS will replace these static cards with real API data -->
+    <div class="products-grid" id="featuredProductsGrid">
 
-      <!-- CHANGE 2a: NPK 19:19:19 — local uploaded image -->
       <div class="product-card reveal">
         <div class="product-card-img">
-          <img
-            src="assets/images/npk-191919.jpg"
-            alt="NPK 19:19:19 Water Soluble Fertilizer"
-            loading="lazy"
-          />
+          <img src="assets/images/npk-191919.jpg" alt="NPK 19:19:19" loading="lazy" />
           <span class="product-badge"><span class="badge badge-green">Popular</span></span>
         </div>
         <div class="product-body">
@@ -193,14 +186,9 @@
         </div>
       </div>
 
-      <!-- CHANGE 2b: Cannon — local uploaded image -->
       <div class="product-card reveal reveal-delay-1">
         <div class="product-card-img">
-          <img
-            src="assets/images/cannon.jpg"
-            alt="Cannon Insecticide — NACL Industries"
-            loading="lazy"
-          />
+          <img src="assets/images/cannon.jpg" alt="Cannon" loading="lazy" />
         </div>
         <div class="product-body">
           <div class="product-category">Insecticide</div>
@@ -213,14 +201,9 @@
         </div>
       </div>
 
-      <!-- CHANGE 2c: Coragen — local uploaded image -->
       <div class="product-card reveal reveal-delay-2">
         <div class="product-card-img">
-          <img
-            src="assets/images/coragen.jpg"
-            alt="Coragen Insecticide — FMC"
-            loading="lazy"
-          />
+          <img src="assets/images/coragen.jpg" alt="Coragen" loading="lazy" />
           <span class="product-badge"><span class="badge badge-gold">Premium</span></span>
         </div>
         <div class="product-body">
@@ -234,14 +217,9 @@
         </div>
       </div>
 
-      <!-- CHANGE 2d: Coriander Seeds — local uploaded image -->
       <div class="product-card reveal reveal-delay-3">
         <div class="product-card-img">
-          <img
-            src="assets/images/coriander.jpg"
-            alt="Coriander Seeds — Ashoka"
-            loading="lazy"
-          />
+          <img src="assets/images/coriander.jpg" alt="Coriander Seeds" loading="lazy" />
         </div>
         <div class="product-body">
           <div class="product-category">Seeds</div>
@@ -255,10 +233,12 @@
       </div>
 
     </div>
+    <!-- end #featuredProductsGrid -->
+
   </div>
 </section>
 
-<!-- ABOUT KRUSHICONNECT (unchanged) -->
+<!-- ABOUT KRUSHICONNECT -->
 <section class="section about-kc" id="about-kc">
   <div class="container">
     <div class="about-kc-grid">
@@ -327,7 +307,6 @@
     <div class="text-center" style="margin-bottom:2.5rem;">
       <span class="section-label" data-t="shop.label">Our Shop</span>
       <h2 class="section-title" data-t="shop.title">Shri Sideshwar Agro Agency</h2>
-      <!-- CHANGE 3: subtitle updated to new address -->
       <p class="section-sub" style="margin:0.5rem auto 0;" data-t="shop.sub">
         C.S.M. Chowk, Pimpalgaon (Rahu), Tal: Daund, Dist: Pune
       </p>
@@ -344,7 +323,6 @@
           </div>
         </div>
 
-        <!-- CHANGE 3: full new address -->
         <div class="shop-detail">
           <span class="shop-detail-icon">📍</span>
           <div>
@@ -366,7 +344,6 @@
           </div>
         </div>
 
-        <!-- CHANGE 4: WhatsApp number updated to 8390703553 -->
         <div class="shop-detail">
           <span class="shop-detail-icon">💬</span>
           <div>
@@ -422,7 +399,6 @@
         <a href="tel:9175314747">9175314747</a>
       </div>
 
-      <!-- CHANGE 4: WhatsApp number and link updated -->
       <div class="contact-card reveal reveal-delay-1">
         <span class="contact-card-icon">💬</span>
         <h4 data-t="contact.wa.title">WhatsApp</h4>
@@ -430,7 +406,6 @@
         <p style="font-size:0.8rem;opacity:0.6;margin-top:0.25rem;">8390703553</p>
       </div>
 
-      <!-- CHANGE 3: address updated in contact card -->
       <div class="contact-card reveal reveal-delay-2">
         <span class="contact-card-icon">📍</span>
         <h4 data-t="contact.visit.title">Find Us</h4>
@@ -440,7 +415,6 @@
 
     </div>
 
-    <!-- CHANGE 4: WhatsApp CTA link updated -->
     <div class="contact-cta">
       <a
         href="https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20enquire%20about%20your%20products."
@@ -471,10 +445,10 @@
       <div>
         <div class="footer-col-title" data-t="footer.links">Quick Links</div>
         <ul class="footer-links">
-          <li><a href="#home"        data-t="nav.home">Home</a></li>
-          <li><a href="#categories"  data-t="nav.products">Products</a></li>
-          <li><a href="#about-kc"    data-t="nav.about">About</a></li>
-          <li><a href="#contact"     data-t="nav.contact">Contact</a></li>
+          <li><a href="#home"            data-t="nav.home">Home</a></li>
+          <li><a href="#categories"      data-t="nav.products">Products</a></li>
+          <li><a href="#about-kc"        data-t="nav.about">About</a></li>
+          <li><a href="#contact"         data-t="nav.contact">Contact</a></li>
           <li><a href="pages/login.html" data-t="nav.login">Login</a></li>
         </ul>
       </div>
@@ -482,11 +456,11 @@
       <div>
         <div class="footer-col-title" data-t="footer.cats">Categories</div>
         <ul class="footer-links">
-          <li><a href="#" data-t="cat.1">Water Soluble Fertilizers</a></li>
-          <li><a href="#" data-t="cat.2">Insecticides</a></li>
-          <li><a href="#" data-t="cat.3">Pesticides</a></li>
-          <li><a href="#" data-t="cat.4">Herbicides</a></li>
-          <li><a href="#" data-t="cat.5">Seeds</a></li>
+          <li><a href="pages/products.html?cat=Water Soluble Fertilizers" data-t="cat.1">Water Soluble Fertilizers</a></li>
+          <li><a href="pages/products.html?cat=Insecticides"              data-t="cat.2">Insecticides</a></li>
+          <li><a href="pages/products.html?cat=Pesticides"                data-t="cat.3">Pesticides</a></li>
+          <li><a href="pages/products.html?cat=Herbicides"                data-t="cat.4">Herbicides</a></li>
+          <li><a href="pages/products.html?cat=Seeds"                     data-t="cat.5">Seeds</a></li>
         </ul>
       </div>
 
@@ -503,7 +477,7 @@
   </div>
 </footer>
 
-<!-- CHANGE 4: WhatsApp float button number updated -->
+<!-- WhatsApp Float Button -->
 <a
   href="https://wa.me/918390703553"
   target="_blank"
@@ -511,9 +485,12 @@
   title="Chat on WhatsApp"
 >💬</a>
 
+<!-- ✅ config.js MUST be first so API_BASE_URL is available -->
+<script src="js/config.js"></script>
 <script src="js/language.js"></script>
 <script src="js/navbar.js"></script>
 <script src="js/main.js"></script>
+<script src="js/products.js"></script>
 
 </body>
 </html>

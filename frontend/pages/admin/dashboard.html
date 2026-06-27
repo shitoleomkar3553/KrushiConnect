@@ -8,50 +8,274 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="stylesheet" href="../../css/pages.css" />
+  <style>
+    /* ── Admin Shell Layout ── */
+    .admin-shell {
+      display: flex;
+      min-height: 100vh;
+      background: #F5F7F2;
+    }
+
+    /* ── Sidebar ── */
+    .admin-sidebar {
+      width: 220px;
+      min-height: 100vh;
+      background: #1A3C2E;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 0;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 100;
+    }
+    .admin-sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 1rem;
+      text-decoration: none;
+    }
+    .admin-sidebar-logo span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: white;
+    }
+    .admin-nav-section {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      padding: 1rem 1.25rem 0.4rem;
+    }
+    .admin-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.25rem;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .admin-nav-link:hover,
+    .admin-nav-link.active {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border-left-color: #C8A96E;
+    }
+    .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .admin-sidebar-footer {
+      margin-top: auto;
+      padding: 1rem 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── Main Content ── */
+    .admin-main {
+      margin-left: 220px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-topbar {
+      background: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #E5E7EB;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .admin-topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #1A3C2E;
+      font-weight: 700;
+    }
+    .admin-topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: #555;
+    }
+    .admin-user-avatar {
+      width: 32px; height: 32px;
+      background: #1A3C2E;
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.875rem;
+    }
+    .admin-content { padding: 2rem; }
+
+    /* ── Stat Cards ── */
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .stat-card-icon { font-size: 1.75rem; }
+    .stat-card-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1A3C2E;
+    }
+    .stat-card-label { font-size: 0.8rem; color: #737373; }
+
+    /* ── Table ── */
+    .admin-table-wrap {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .admin-table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #F0F0F0;
+    }
+    .admin-table-title {
+      font-weight: 700;
+      color: #1A3C2E;
+      font-size: 0.95rem;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .admin-table th {
+      background: #F9FAFB;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6B7280;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .admin-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #F3F4F6;
+      color: #374151;
+      vertical-align: middle;
+    }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: #FAFAFA; }
+    .thumb {
+      width: 44px; height: 44px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: #F0F7F0;
+      padding: 2px;
+    }
+
+    /* ── Action Buttons ── */
+    .btn-action {
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      text-decoration: none;
+      margin-right: 0.25rem;
+    }
+    .btn-edit   { background: #E8F5E9; color: #2E7D32; }
+    .btn-delete { background: #FFEBEE; color: #C62828; }
+    .btn-edit:hover   { background: #C8E6C9; }
+    .btn-delete:hover { background: #FFCDD2; }
+
+    /* ── Alert Rows ── */
+    .alert-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1.5rem;
+      border-bottom: 1px solid #F3F4F6;
+      font-size: 0.875rem;
+    }
+    .alert-row:last-child { border-bottom: none; }
+    .alert-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-red    { background: #DC2626; }
+    .dot-orange { background: #F59E0B; }
+  </style>
 </head>
 <body class="page-body">
 
-<!-- Not logged in / not admin -->
+<!-- Access Denied -->
 <div class="empty-state" id="accessDenied" style="display:none;padding-top:5rem;">
-  <div class="empty-state-icon">🔐</div>
-  <h3>Admin Access Required</h3>
-  <p>You must be logged in as an admin to view this page.</p>
-  <a href="../login.html" class="btn btn-primary">Login</a>
+  <div class="empty-state-icon">🔒</div>
+  <h3>Access Denied</h3>
+  <p>You must be an admin to view this page.</p>
+  <a href="../login.html" class="btn btn-primary">Login as Admin</a>
 </div>
 
+<!-- Admin Shell -->
 <div class="admin-shell" id="adminShell" style="display:none;">
 
   <!-- Sidebar -->
   <aside class="admin-sidebar">
-    <a href="dashboard.html" class="admin-sidebar-logo">
-      <div class="admin-sidebar-logo-mark">🌾</div>
-      <div class="admin-sidebar-logo-text">
-        <span class="admin-sidebar-logo-name">KrushiConnect</span>
-        <span class="admin-sidebar-logo-role">Admin Panel</span>
-      </div>
+    <a href="../../index.html" class="admin-sidebar-logo">
+      <span style="font-size:1.4rem;">🌾</span>
+      <span>KrushiConnect</span>
     </a>
 
-    <nav class="admin-nav">
-      <div class="admin-nav-section">Main</div>
-      <a href="dashboard.html"   class="admin-nav-link active"><span class="nav-icon">📊</span> Dashboard</a>
-      <a href="add-product.html" class="admin-nav-link"><span class="nav-icon">➕</span> Add Product</a>
+    <div class="admin-nav-section">Products</div>
+    <a href="dashboard.html"   class="admin-nav-link active"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="add-product.html" class="admin-nav-link"><span class="nav-icon">➕</span> Add Product</a>
 
-      <div class="admin-nav-section">Manage</div>
-      <a href="farmers.html"    class="admin-nav-link"><span class="nav-icon">👨‍🌾</span> Farmers</a>
-      <a href="inquiries.html"  class="admin-nav-link"><span class="nav-icon">✉</span> Inquiries</a>
+    <div class="admin-nav-section">Users</div>
+    <a href="farmers.html"    class="admin-nav-link"><span class="nav-icon">👨‍🌾</span> Farmers</a>
+    <a href="inquiries.html"  class="admin-nav-link"><span class="nav-icon">✉</span> Inquiries</a>
 
-      <div class="admin-nav-section">Site</div>
-      <a href="../../index.html" class="admin-nav-link"><span class="nav-icon">🏠</span> View Website</a>
-    </nav>
+    <div class="admin-nav-section">Site</div>
+    <a href="../../index.html" class="admin-nav-link"><span class="nav-icon">🏠</span> View Website</a>
 
     <div class="admin-sidebar-footer">
-      <div id="sidebarAdminName" style="color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Admin</div>
-      <button onclick="logout()" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;font-family:var(--font-body);">Logout</button>
+      <div id="sidebarAdminName" style="color:rgba(255,255,255,0.7);margin-bottom:0.4rem;font-size:0.85rem;"></div>
+      <button onclick="logout()"
+        style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);
+               border:none;border-radius:6px;padding:0.4rem 0.75rem;
+               font-size:0.75rem;cursor:pointer;font-family:inherit;">
+        Logout
+      </button>
     </div>
   </aside>
 
   <!-- Main -->
   <main class="admin-main">
+
+    <!-- Topbar -->
     <div class="admin-topbar">
       <span class="admin-topbar-title">Dashboard</span>
       <div class="admin-topbar-user">
@@ -62,7 +286,7 @@
 
     <div class="admin-content">
 
-      <!-- Stat cards -->
+      <!-- Stat Cards -->
       <div class="stat-cards">
         <div class="stat-card">
           <span class="stat-card-icon">📦</span>
@@ -86,38 +310,41 @@
         </div>
       </div>
 
-      <!-- Alerts row -->
+      <!-- Alerts Row -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem;">
 
-        <!-- Low stock -->
+        <!-- Low Stock -->
         <div class="admin-table-wrap">
           <div class="admin-table-header">
             <span class="admin-table-title">⚠️ Low Stock Alerts</span>
-            <span style="font-size:0.75rem;color:var(--gray-500);">Stock &lt; 10 units</span>
+            <span style="font-size:0.75rem;color:#737373;">Stock &lt; 10 units</span>
           </div>
-          <div id="lowStockList" style="padding:0.5rem 0;">
-            <div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">Loading…</div>
+          <div id="lowStockList">
+            <div style="padding:1rem 1.5rem;color:#737373;font-size:0.875rem;">Loading...</div>
           </div>
         </div>
 
-        <!-- Expiry alerts -->
+        <!-- Expiry Alerts -->
         <div class="admin-table-wrap">
           <div class="admin-table-header">
             <span class="admin-table-title">📅 Expiry Alerts</span>
-            <span style="font-size:0.75rem;color:var(--gray-500);">Expiring in 30 days</span>
+            <span style="font-size:0.75rem;color:#737373;">Expiring in 30 days</span>
           </div>
-          <div id="expiryList" style="padding:0.5rem 0;">
-            <div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">Loading…</div>
+          <div id="expiryList">
+            <div style="padding:1rem 1.5rem;color:#737373;font-size:0.875rem;">Loading...</div>
           </div>
         </div>
 
       </div>
 
-      <!-- Recent products table -->
+      <!-- Products Table -->
       <div class="admin-table-wrap">
         <div class="admin-table-header">
           <span class="admin-table-title">📦 All Products</span>
-          <a href="add-product.html" class="btn btn-primary" style="padding:0.5rem 1.1rem;font-size:0.8125rem;">+ Add Product</a>
+          <a href="add-product.html" class="btn btn-primary"
+             style="padding:0.5rem 1.1rem;font-size:0.8125rem;">
+            + Add Product
+          </a>
         </div>
         <div style="overflow-x:auto;">
           <table class="admin-table">
@@ -133,7 +360,12 @@
               </tr>
             </thead>
             <tbody id="productsTableBody">
-              <tr><td colspan="7" style="padding:2rem;text-align:center;color:var(--gray-500);">Loading products…</td></tr>
+              <tr>
+                <td colspan="7"
+                    style="padding:2rem;text-align:center;color:#737373;">
+                  Loading products...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -144,136 +376,237 @@
 
 </div>
 
+<script src="../../js/config.js"></script>
 <script>
-  const API   = 'http://localhost:5000/api';
+
+  const API   = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:5000/api';
   const token = localStorage.getItem('kc_token');
   const user  = JSON.parse(localStorage.getItem('kc_user') || 'null');
 
+  // ─── Logout ───────────────────────────────────────────────
   function logout() {
     localStorage.removeItem('kc_token');
     localStorage.removeItem('kc_user');
     window.location.href = '../login.html';
   }
 
+  // ─── Check if Admin ───────────────────────────────────────
   function isAdmin(u) {
     return u && (u.role === 'owner_admin' || u.role === 'demo_admin');
   }
 
+  // ─── Init ─────────────────────────────────────────────────
   async function init() {
     if (!token || !isAdmin(user)) {
       document.getElementById('accessDenied').style.display = 'block';
       return;
     }
-    document.getElementById('adminShell').style.display = 'flex';
-    document.getElementById('sidebarAdminName').textContent = user.name || 'Admin';
-    document.getElementById('topbarName').textContent       = user.name || 'Admin';
-    document.getElementById('topbarInitial').textContent    = (user.name||'A')[0].toUpperCase();
+
+    document.getElementById('adminShell').style.display        = 'flex';
+    document.getElementById('sidebarAdminName').textContent    = user.name || 'Admin';
+    document.getElementById('topbarName').textContent          = user.name || 'Admin';
+    document.getElementById('topbarInitial').textContent       = (user.name || 'A')[0].toUpperCase();
 
     loadStats();
     loadProducts();
     loadAlerts();
   }
 
+  // ─── Load Stats ───────────────────────────────────────────
   async function loadStats() {
     try {
-      const [pRes, fRes, iRes] = await Promise.all([
-        fetch(`${API}/products`,         { headers:{ Authorization:`Bearer ${token}` } }),
-        fetch(`${API}/farmers`,          { headers:{ Authorization:`Bearer ${token}` } }),
-        fetch(`${API}/inquiries`,        { headers:{ Authorization:`Bearer ${token}` } }),
+      const [pRes, fRes] = await Promise.all([
+        fetch(`${API}/products`,  { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API}/farmers`,   { headers: { Authorization: `Bearer ${token}` } }),
       ]);
-      const products  = (await pRes.json()).products  || [];
-      const farmers   = (await fRes.json()).farmers   || [];
-      const inquiries = (await iRes.json()).inquiries || [];
+
+      const pData = await pRes.json();
+      const fData = await fRes.json();
+
+      const products = pData.products || pData.data || [];
+      const farmers  = fData.farmers  || fData.data || [];
+
+      document.getElementById('totalProducts').textContent = products.length;
+      document.getElementById('totalFarmers').textContent  = farmers.length;
+
+      // Count low stock from products
+      const lowStock = products.filter(p => (p.stockQuantity || 0) < 10);
+      document.getElementById('lowStockCount').textContent = lowStock.length;
+
+    } catch (err) {
+      console.error('Stats error:', err.message);
+      document.getElementById('totalProducts').textContent = '—';
+      document.getElementById('totalFarmers').textContent  = '—';
+      document.getElementById('lowStockCount').textContent = '—';
+    }
+
+    // Load inquiries separately
+    try {
+      const iRes      = await fetch(`${API}/inquiries/admin/all`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const iData     = await iRes.json();
+      const inquiries = iData.data || iData.inquiries || [];
       const pending   = inquiries.filter(i => i.status === 'pending').length;
-      document.getElementById('totalProducts').textContent    = products.length;
-      document.getElementById('totalFarmers').textContent     = farmers.length;
       document.getElementById('pendingInquiries').textContent = pending;
     } catch {
-      document.getElementById('totalProducts').textContent    = '—';
-      document.getElementById('totalFarmers').textContent     = '—';
       document.getElementById('pendingInquiries').textContent = '—';
     }
   }
 
+  // ─── Load Alerts ──────────────────────────────────────────
   async function loadAlerts() {
     try {
-      const [lsRes, exRes] = await Promise.all([
-        fetch(`${API}/alerts/low-stock`, { headers:{ Authorization:`Bearer ${token}` } }),
-        fetch(`${API}/alerts/expiry`,    { headers:{ Authorization:`Bearer ${token}` } }),
-      ]);
-      const ls = (await lsRes.json()).products || [];
-      const ex = (await exRes.json()).products || [];
+      const res  = await fetch(`${API}/products`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data     = await res.json();
+      const products = data.products || data.data || [];
 
-      document.getElementById('lowStockCount').textContent = ls.length;
+      // Low stock — less than 10
+      const lowStock = products.filter(p => (p.stockQuantity || 0) < 10);
+      document.getElementById('lowStockList').innerHTML = lowStock.length
+        ? lowStock.map(p => `
+            <div class="alert-row">
+              <div class="alert-dot dot-red"></div>
+              <span>${p.name}</span>
+              <span style="margin-left:auto;font-size:0.75rem;color:#DC2626;">
+                ${p.stockQuantity} left
+              </span>
+            </div>`).join('')
+        : '<div style="padding:1rem 1.5rem;color:#737373;font-size:0.875rem;">No low stock alerts ✓</div>';
 
-      document.getElementById('lowStockList').innerHTML = ls.length
-        ? ls.map(p => `<div class="alert-row"><div class="alert-dot dot-red"></div><span>${p.name}</span><span style="margin-left:auto;font-size:0.75rem;color:#DC2626;">${p.stockQuantity} left</span></div>`).join('')
-        : '<div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">No low stock alerts ✓</div>';
+      // Expiry — within 30 days
+      const today   = new Date();
+      const in30    = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+      const expiring = products.filter(p =>
+        p.expiryDate && new Date(p.expiryDate) <= in30 && new Date(p.expiryDate) >= today
+      );
+      document.getElementById('expiryList').innerHTML = expiring.length
+        ? expiring.map(p => `
+            <div class="alert-row">
+              <div class="alert-dot dot-orange"></div>
+              <span>${p.name}</span>
+              <span style="margin-left:auto;font-size:0.75rem;color:#F59E0B;">
+                ${new Date(p.expiryDate).toLocaleDateString('en-IN')}
+              </span>
+            </div>`).join('')
+        : '<div style="padding:1rem 1.5rem;color:#737373;font-size:0.875rem;">No expiry alerts ✓</div>';
 
-      document.getElementById('expiryList').innerHTML = ex.length
-        ? ex.map(p => `<div class="alert-row"><div class="alert-dot dot-orange"></div><span>${p.name}</span><span style="margin-left:auto;font-size:0.75rem;color:#F59E0B;">${new Date(p.expiryDate).toLocaleDateString('en-IN')}</span></div>`).join('')
-        : '<div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">No expiry alerts ✓</div>';
     } catch {
-      const msg = '<div style="padding:1rem 1.5rem;color:var(--gray-500);font-size:0.875rem;">Backend offline — connect server to see alerts</div>';
+      const msg = '<div style="padding:1rem 1.5rem;color:#737373;font-size:0.875rem;">Could not load alerts</div>';
       document.getElementById('lowStockList').innerHTML = msg;
       document.getElementById('expiryList').innerHTML   = msg;
-      document.getElementById('lowStockCount').textContent = '—';
     }
   }
 
+  // ─── Load Products Table ──────────────────────────────────
   async function loadProducts() {
     try {
-      const res  = await fetch(`${API}/products`, { headers:{ Authorization:`Bearer ${token}` } });
+      const res  = await fetch(`${API}/products`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       const data = await res.json();
-      const list = data.products || data || [];
+      const list = data.products || data.data || [];
       renderProducts(list);
     } catch {
-      renderProducts(demoProducts());
+      renderProducts([]);
     }
   }
 
+  // ─── Render Products Table ────────────────────────────────
   function renderProducts(list) {
     const tbody = document.getElementById('productsTableBody');
+
     if (!list.length) {
-      tbody.innerHTML = '<tr><td colspan="7" style="padding:2rem;text-align:center;color:var(--gray-500);">No products yet. <a href="add-product.html">Add one →</a></td></tr>';
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7"
+              style="padding:2rem;text-align:center;color:#737373;">
+            No products yet.
+            <a href="add-product.html" style="color:#2E7D32;font-weight:600;">
+              Add one →
+            </a>
+          </td>
+        </tr>`;
       return;
     }
+
     tbody.innerHTML = list.map(p => {
-      const imgSrc = p.image ? (p.image.startsWith('http') ? p.image : `${API.replace('/api','')}/uploads/${p.image}`) : null;
+      const imgSrc = p.image && p.image !== ''
+        ? (p.image.startsWith('http') ? p.image : `${API.replace('/api','')}/uploads/${p.image}`)
+        : null;
+
+      const stockClass = (p.stockQuantity || 0) < 10 ? 'pill-red' : 'pill-green';
+
       return `
         <tr>
-          <td>${imgSrc ? `<img class="thumb" src="${imgSrc}" alt="${p.name}" />` : '<span style="font-size:1.5rem;">🌿</span>'}</td>
-          <td><strong>${p.name}</strong><div style="font-size:0.75rem;color:var(--gray-500);">${p.company}</div></td>
-          <td>${p.category}</td>
-          <td>₹${(p.price||0).toLocaleString('en-IN')}</td>
-          <td><span class="${(p.stockQuantity||0) < 10 ? 'status-pill pill-red' : 'status-pill pill-green'}">${p.stockQuantity ?? '—'}</span></td>
-          <td><span class="status-pill ${p.isAvailable ? 'pill-green' : 'pill-gray'}">${p.isAvailable ? 'Available' : 'Unavailable'}</span></td>
+          <td>
+            ${imgSrc
+              ? `<img class="thumb" src="${imgSrc}" alt="${p.name}" />`
+              : `<span style="font-size:1.5rem;">${getCategoryEmoji(p.category)}</span>`
+            }
+          </td>
+          <td>
+            <strong>${p.name}</strong>
+            <div style="font-size:0.75rem;color:#737373;">${p.company || '—'}</div>
+          </td>
+          <td>${p.category || '—'}</td>
+          <td>₹${(p.price || 0).toLocaleString('en-IN')} / ${p.unit || ''}</td>
+          <td>
+            <span class="status-pill ${stockClass}">
+              ${p.stockQuantity ?? '—'}
+            </span>
+          </td>
+          <td>
+            <span class="status-pill ${p.isAvailable ? 'pill-green' : 'pill-gray'}">
+              ${p.isAvailable ? 'Available' : 'Unavailable'}
+            </span>
+          </td>
           <td style="white-space:nowrap;">
-            <a href="edit-product.html?id=${p._id||p.id}" class="btn-action btn-edit">Edit</a>
-            <button class="btn-action btn-delete" onclick="deleteProduct('${p._id||p.id}', this)">Delete</button>
+            <a href="edit-product.html?id=${p._id || p.id}"
+               class="btn-action btn-edit">Edit</a>
+            <button class="btn-action btn-delete"
+               onclick="deleteProduct('${p._id || p.id}', this)">Delete</button>
           </td>
         </tr>`;
     }).join('');
   }
 
+  // ─── Delete Product ───────────────────────────────────────
   async function deleteProduct(id, btn) {
     if (!confirm('Delete this product? This cannot be undone.')) return;
     try {
-      await fetch(`${API}/products/${id}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` } });
-      btn.closest('tr').remove();
-    } catch { alert('Could not delete — backend offline.'); }
+      const res = await fetch(`${API}/products/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        btn.closest('tr').remove();
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Could not delete product.');
+      }
+    } catch {
+      alert('Server not reachable.');
+    }
   }
 
-  function demoProducts() {
-    return [
-      { _id:'1', name:'NPK 19:19:19', company:'Jai Kisaan',  category:'Water Soluble Fertilizer', price:200,  stockQuantity:50,  isAvailable:true,  image:'../../assets/images/npk-191919.jpg' },
-      { _id:'2', name:'Cannon',       company:'NACL Ind.',    category:'Insecticide',              price:700,  stockQuantity:5,   isAvailable:true,  image:'../../assets/images/cannon.jpg' },
-      { _id:'3', name:'Coragen',      company:'FMC',          category:'Pesticide',                price:2250, stockQuantity:20,  isAvailable:true,  image:'../../assets/images/coragen.jpg' },
-      { _id:'4', name:'Coriander',    company:'Ashoka',       category:'Seeds',                    price:425,  stockQuantity:100, isAvailable:true,  image:'../../assets/images/coriander.jpg' },
-    ];
+  // ─── Category Emoji ───────────────────────────────────────
+  function getCategoryEmoji(category) {
+    if (!category) return '🌿';
+    const c = category.toLowerCase();
+    if (c.includes('fertilizer') || c.includes('water')) return '💧';
+    if (c.includes('insecticide'))                        return '🐛';
+    if (c.includes('pesticide'))                          return '🌾';
+    if (c.includes('herbicide'))                          return '🍃';
+    if (c.includes('seed'))                               return '🌱';
+    return '🌿';
   }
 
-  init();
+  // ─── Run ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', init);
+
 </script>
 
 </body>

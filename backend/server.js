@@ -17,6 +17,10 @@ const path    = require('path');
 // STEP 3: Import database connection
 // ─────────────────────────────────────────
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
+const farmerRoutes = require('./routes/farmerRoutes');
+const inquiryRoutes = require('./routes/inquiryRoutes');
 
 // ─────────────────────────────────────────
 // STEP 4: Connect to MongoDB
@@ -33,8 +37,20 @@ const app = express();
 // ─────────────────────────────────────────
 
 // Allow frontend to call backend API
+// Allow frontend to call backend API
 app.use(cors());
 
+// Allow server to read JSON data from requests
+app.use(express.json());
+
+// Allow server to read form data from requests
+app.use(express.urlencoded({ extended: true }));
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/farmers', farmerRoutes);
+app.use('/api/inquiries', inquiryRoutes);
 // Allow server to read JSON data from requests
 app.use(express.json());
 

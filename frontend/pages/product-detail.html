@@ -24,14 +24,6 @@
       position: sticky;
       top: 80px;
     }
-    .pd-img-card img {
-      width: 100%;
-      height: 300px;
-      object-fit: contain;
-      background: var(--cream);
-      border-radius: var(--radius);
-      padding: 1rem;
-    }
     .pd-img-fallback {
       width: 100%;
       height: 300px;
@@ -40,7 +32,15 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 5rem;
     }
-    .pd-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .pd-img-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .pd-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
     .pd-category {
       font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.1em; color: var(--green-fresh); margin-bottom: 0.4rem;
@@ -64,9 +64,7 @@
       margin-top: 1.5rem;
     }
     .pd-desc { font-size: 0.95rem; color: var(--gray-700); line-height: 1.75; }
-    .pd-crops {
-      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;
-    }
+    .pd-crops { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
     .pd-crop-tag {
       background: #E8F5E9; color: var(--green-deep);
       font-size: 0.78rem; font-weight: 600;
@@ -89,9 +87,7 @@
       color: var(--green-deep); font-size: 0.9rem; font-weight: 600;
       cursor: pointer; font-family: var(--font-body); transition: all 0.25s;
     }
-    .btn-fav:hover, .btn-fav.saved {
-      background: var(--green-deep); color: white;
-    }
+    .btn-fav:hover, .btn-fav.saved { background: var(--green-deep); color: white; }
     .btn-inquiry {
       padding: 0.75rem 1.5rem; border-radius: 50px;
       border: none; background: var(--cream); color: var(--green-deep);
@@ -99,7 +95,6 @@
       cursor: pointer; font-family: var(--font-body); transition: all 0.25s;
     }
     .btn-inquiry:hover { background: var(--cream-dark); }
-    /* Inquiry form modal */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.45); z-index: 500;
@@ -128,40 +123,40 @@
 </head>
 <body class="page-body">
 
-<!-- Simple top nav -->
+<!-- Navbar -->
 <nav class="inner-nav">
   <a href="../index.html" class="inner-nav-logo">
     <div class="inner-nav-mark">🌾</div>
     <span class="inner-nav-name">KrushiConnect</span>
   </a>
-  <a href="../index.html" class="inner-nav-back">← Back to Products</a>
+  <a href="products.html" class="inner-nav-back">← Back to Products</a>
 </nav>
 
 <div class="page-layout">
 
   <!-- Loading state -->
   <div id="loadingState" style="text-align:center;padding:4rem;color:var(--gray-500);">
-    Loading product…
+    Loading product...
   </div>
 
-  <!-- Product detail -->
+  <!-- Product detail grid (hidden until loaded) -->
   <div class="pd-grid" id="productDetail" style="display:none;">
 
-    <!-- Left: image -->
+    <!-- Left: Image -->
     <div class="pd-img-card">
       <div id="productImg" class="pd-img-fallback">🌿</div>
-      <div id="pdBadges" class="pd-badges" style="margin-top:1rem;"></div>
+      <div id="pdBadges" class="pd-badges"></div>
     </div>
 
-    <!-- Right: info -->
+    <!-- Right: Info -->
     <div>
-      <div class="pd-category" id="pdCategory">Category</div>
-      <h1 class="pd-name" id="pdName">Product Name</h1>
-      <div class="pd-company" id="pdCompany">Company</div>
+      <div class="pd-category" id="pdCategory"></div>
+      <h1 class="pd-name"     id="pdName"></h1>
+      <div class="pd-company" id="pdCompany"></div>
 
       <div class="pd-price-row">
-        <span class="pd-price" id="pdPrice">₹0</span>
-        <span class="pd-unit" id="pdUnit">/ kg</span>
+        <span class="pd-price" id="pdPrice"></span>
+        <span class="pd-unit"  id="pdUnit"></span>
       </div>
 
       <div id="pdAvailability"></div>
@@ -176,14 +171,18 @@
       <div class="pd-crops" id="pdCrops"></div>
 
       <div class="pd-section-title" style="margin-top:1.75rem;">Product Details</div>
-      <div id="pdMeta">
+      <div>
         <div class="pd-meta-row">
-          <span class="pd-meta-label">Expiry Date</span>
-          <span class="pd-meta-val" id="pdExpiry">—</span>
+          <span class="pd-meta-label">Category</span>
+          <span class="pd-meta-val" id="pdCategoryMeta"></span>
         </div>
         <div class="pd-meta-row">
           <span class="pd-meta-label">Stock</span>
-          <span class="pd-meta-val" id="pdStock">—</span>
+          <span class="pd-meta-val" id="pdStock"></span>
+        </div>
+        <div class="pd-meta-row">
+          <span class="pd-meta-label">Expiry Date</span>
+          <span class="pd-meta-val" id="pdExpiry"></span>
         </div>
       </div>
 
@@ -194,12 +193,14 @@
            class="btn btn-whatsapp">
           💬 WhatsApp Inquiry
         </a>
-        <button class="btn-fav" id="favBtn" onclick="toggleFav()">♡ Save to Favorites</button>
-        <button class="btn-inquiry" onclick="openInquiry()">✉ Send Inquiry</button>
+        <button class="btn-fav"     id="favBtn"  onclick="toggleFav()">♡ Save</button>
+        <button class="btn-inquiry"              onclick="openInquiry()">✉ Send Inquiry</button>
       </div>
 
       <p style="font-size:0.75rem;color:var(--gray-500);margin-top:1rem;">
-        📞 Call us: <a href="tel:9881553653" style="color:var(--green-mid);">9881553653</a> &nbsp;/&nbsp;
+        📞 Call us:
+        <a href="tel:9881553653" style="color:var(--green-mid);">9881553653</a>
+        &nbsp;/&nbsp;
         <a href="tel:9175314747" style="color:var(--green-mid);">9175314747</a>
       </p>
     </div>
@@ -211,7 +212,7 @@
     <div class="empty-state-icon">🔍</div>
     <h3>Product Not Found</h3>
     <p>This product may have been removed or the link is incorrect.</p>
-    <a href="../index.html" class="btn btn-primary">← Back to Products</a>
+    <a href="products.html" class="btn btn-primary">← Back to Products</a>
   </div>
 
 </div>
@@ -221,13 +222,13 @@
   <div class="modal-card">
     <button class="modal-close" onclick="closeInquiry()">×</button>
     <h2 class="modal-title">Send Inquiry</h2>
-    <p class="modal-sub">We'll get back to you on WhatsApp or phone.</p>
-    <div class="alert alert-error" id="inquiryError"></div>
-    <div class="alert alert-success" id="inquirySuccess"></div>
+    <p class="modal-sub">We will get back to you on WhatsApp or phone.</p>
+    <div class="alert alert-error"   id="inquiryError"   style="display:none;color:#c62828;margin-bottom:1rem;"></div>
+    <div class="alert alert-success" id="inquirySuccess" style="display:none;color:#2e7d32;margin-bottom:1rem;"></div>
     <div class="form-group">
       <label class="form-label">Your Message</label>
       <textarea class="form-input" id="inquiryMsg" rows="4"
-        placeholder="e.g. Is this product available in 500ml pack? What is the discount for bulk order?"></textarea>
+        placeholder="e.g. Is this product available? What is the bulk order discount?"></textarea>
     </div>
     <button class="btn-submit" onclick="sendInquiry()">Send Inquiry</button>
     <p style="font-size:0.75rem;color:var(--gray-500);margin-top:1rem;text-align:center;">
@@ -236,132 +237,237 @@
   </div>
 </div>
 
+<!-- config.js must load first -->
+<script src="../js/config.js"></script>
 <script>
-  // Read product ID from URL: product-detail.html?id=PRODUCT_ID
+
+  // ─── Setup ────────────────────────────────────────────────
+  const API       = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:5000/api';
+  const token     = localStorage.getItem('kc_token');
   const params    = new URLSearchParams(window.location.search);
   const productId = params.get('id');
-  const API       = 'http://localhost:5000/api';
-  const token     = localStorage.getItem('kc_token');
 
+  // ─── Load Product ─────────────────────────────────────────
   async function loadProduct() {
-    if (!productId) { showNotFound(); return; }
+    if (!productId) {
+      showNotFound();
+      return;
+    }
+
     try {
-      const res  = await fetch(`${API}/products/${productId}`);
-      if (!res.ok) { showNotFound(); return; }
+      const res = await fetch(`${API}/products/${productId}`);
+
+      if (!res.ok) {
+        showNotFound();
+        return;
+      }
+
       const data = await res.json();
-      render(data.product || data);
-    } catch {
-      // Offline demo: show static placeholder
+
+      // Handle all possible response shapes
+      const product = data.data || data.product || data.products || data;
+
+      if (!product || !product.name) {
+        showNotFound();
+        return;
+      }
+
+      render(product);
+
+    } catch (err) {
+      console.warn('Backend not reachable, showing demo:', err.message);
       renderDemo();
     }
   }
 
+  // ─── Render Product ───────────────────────────────────────
   function render(p) {
-    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('loadingState').style.display  = 'none';
     document.getElementById('productDetail').style.display = 'grid';
     document.title = `${p.name} — KrushiConnect`;
 
     // Image
     const imgWrap = document.getElementById('productImg');
-    if (p.image) {
-      imgWrap.outerHTML = `<img id="productImg" src="${p.image.startsWith('http') ? p.image : API.replace('/api','') + '/uploads/' + p.image}" alt="${p.name}" style="width:100%;height:300px;object-fit:contain;border-radius:10px;padding:1rem;background:var(--cream);" />`;
+    if (p.image && p.image !== '') {
+      const src = p.image.startsWith('http')
+        ? p.image
+        : API.replace('/api', '') + '/uploads/' + p.image;
+      imgWrap.outerHTML = `
+        <img id="productImg"
+          src="${src}"
+          alt="${p.name}"
+          style="width:100%;height:300px;object-fit:contain;border-radius:10px;padding:1rem;background:var(--cream);"
+          onerror="this.outerHTML='<div class=pd-img-fallback>${getCategoryEmoji(p.category)}</div>'"
+        />`;
+    } else {
+      imgWrap.textContent = getCategoryEmoji(p.category);
     }
 
-    document.getElementById('pdCategory').textContent = p.category;
-    document.getElementById('pdName').textContent     = p.name;
-    document.getElementById('pdCompany').textContent  = `by ${p.company}`;
-    document.getElementById('pdPrice').textContent    = `₹${p.price.toLocaleString('en-IN')}`;
-    document.getElementById('pdDesc').textContent     = p.description  || '—';
-    document.getElementById('pdUsage').textContent    = p.usage        || '—';
-    document.getElementById('pdExpiry').textContent   = p.expiryDate ? new Date(p.expiryDate).toLocaleDateString('en-IN') : '—';
-    document.getElementById('pdStock').textContent    = p.stockQuantity ? `${p.stockQuantity} units` : '—';
+    // Text fields
+    document.getElementById('pdCategory').textContent     = p.category     || '';
+    document.getElementById('pdName').textContent         = p.name         || '';
+    document.getElementById('pdCompany').textContent      = p.company ? `by ${p.company}` : '';
+    document.getElementById('pdPrice').textContent        = `₹${Number(p.price || 0).toLocaleString('en-IN')}`;
+    document.getElementById('pdUnit').textContent         = p.unit ? `/ ${p.unit}` : '';
+    document.getElementById('pdDesc').textContent         = p.description   || '—';
+    document.getElementById('pdUsage').textContent        = p.usage         || '—';
+    document.getElementById('pdCategoryMeta').textContent = p.category      || '—';
+    document.getElementById('pdStock').textContent        = p.stockQuantity != null
+      ? `${p.stockQuantity} units` : '—';
+    document.getElementById('pdExpiry').textContent       = p.expiryDate
+      ? new Date(p.expiryDate).toLocaleDateString('en-IN') : '—';
 
-    // Availability badge
-    const avDiv = document.getElementById('pdAvailability');
-    avDiv.innerHTML = p.isAvailable
+    // Availability
+    const inStock = p.isAvailable !== undefined ? p.isAvailable : (p.stockQuantity > 0);
+    document.getElementById('pdAvailability').innerHTML = inStock
       ? '<span class="status-pill pill-green">✓ In Stock</span>'
       : '<span class="status-pill pill-red">✗ Out of Stock</span>';
 
-    // Badges
-    const badges = document.getElementById('pdBadges');
-    if (p.isFeatured) badges.innerHTML += '<span class="badge badge-gold">Featured</span>';
+    // Featured badge
+    if (p.isFeatured) {
+      document.getElementById('pdBadges').innerHTML =
+        '<span class="badge badge-gold">⭐ Featured</span>';
+    }
 
-    // Crops
+    // Suitable crops
     const cropsDiv = document.getElementById('pdCrops');
-    const crops = Array.isArray(p.suitableCrops) ? p.suitableCrops : (p.suitableCrops || '').split(',');
-    crops.forEach(c => {
-      if (c.trim()) cropsDiv.innerHTML += `<span class="pd-crop-tag">${c.trim()}</span>`;
-    });
+    const crops = Array.isArray(p.suitableCrops)
+      ? p.suitableCrops
+      : (p.suitableCrops || '').split(',').filter(Boolean);
 
-    // WhatsApp with product name
+    cropsDiv.innerHTML = crops.length
+      ? crops.map(c => `<span class="pd-crop-tag">${c.trim()}</span>`).join('')
+      : '<span style="color:var(--gray-500);font-size:0.875rem;">—</span>';
+
+    // WhatsApp button with product name
     document.getElementById('waBtn').href =
-      `https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20inquire%20about%20*${encodeURIComponent(p.name)}*%20(${encodeURIComponent(p.category)}).`;
+      `https://wa.me/918390703553?text=Hello%20Shri%20Sideshwar%20Agro%20Agency%2C%20I%20would%20like%20to%20inquire%20about%20*${encodeURIComponent(p.name)}*%20(${encodeURIComponent(p.category || '')}).`;
   }
 
+  // ─── Demo Fallback (when server is off) ───────────────────
   function renderDemo() {
-    // Static demo when backend not running
     render({
-      name: 'NPK 19:19:19', company: 'Jai Kisaan', category: 'Water Soluble Fertilizer',
-      price: 200, description: 'Balanced NPK fertilizer suitable for all crops. Improves root growth and overall yield.',
-      usage: 'Dissolve 2–3 grams per litre of water. Apply through drip or foliar spray.',
-      suitableCrops: ['Sugarcane', 'Onion', 'Wheat', 'Tomato', 'Coriander'],
-      expiryDate: '2027-12-31', stockQuantity: 200, isAvailable: true, isFeatured: true,
+      name: 'NPK 19:19:19',
+      company: 'Jai Kisaan',
+      category: 'Water Soluble Fertilizers',
+      price: 200,
+      unit: 'kg',
+      description: 'Balanced NPK fertilizer suitable for all crops.',
+      usage: 'Dissolve 2-3 grams per litre of water. Apply via drip or foliar spray.',
+      suitableCrops: ['Sugarcane', 'Onion', 'Wheat', 'Tomato'],
+      stockQuantity: 200,
+      isAvailable: true,
+      isFeatured: true,
       image: '../assets/images/npk-191919.jpg'
     });
   }
 
+  // ─── Not Found ────────────────────────────────────────────
   function showNotFound() {
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('notFound').style.display     = 'block';
   }
 
+  // ─── Category Emoji ───────────────────────────────────────
+  function getCategoryEmoji(category) {
+    if (!category) return '🌿';
+    const c = category.toLowerCase();
+    if (c.includes('fertilizer') || c.includes('water')) return '💧';
+    if (c.includes('insecticide'))                        return '🐛';
+    if (c.includes('pesticide'))                          return '🌾';
+    if (c.includes('herbicide'))                          return '🍃';
+    if (c.includes('seed'))                               return '🌱';
+    return '🌿';
+  }
+
+  // ─── Favorites ────────────────────────────────────────────
   function toggleFav() {
-    if (!token) { alert('Please login to save favorites.'); return; }
-    const btn = document.getElementById('favBtn');
+    if (!token) {
+      alert('Please login to save favorites.');
+      window.location.href = 'login.html';
+      return;
+    }
+    const btn   = document.getElementById('favBtn');
     const saved = btn.classList.contains('saved');
+    fetch(`${API}/products/${productId}/favorite`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
     if (saved) {
-      fetch(`${API}/favorites/${productId}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` }});
       btn.classList.remove('saved');
-      btn.textContent = '♡ Save to Favorites';
+      btn.textContent = '♡ Save';
     } else {
-      fetch(`${API}/favorites/${productId}`, { method:'POST', headers:{ Authorization:`Bearer ${token}` }});
       btn.classList.add('saved');
       btn.textContent = '♥ Saved!';
     }
   }
 
-  function openInquiry()  { document.getElementById('inquiryModal').classList.add('open'); }
-  function closeInquiry() { document.getElementById('inquiryModal').classList.remove('open'); }
+  // ─── Inquiry Modal ────────────────────────────────────────
+  function openInquiry() {
+    document.getElementById('inquiryModal').classList.add('open');
+    document.getElementById('inquiryError').style.display   = 'none';
+    document.getElementById('inquirySuccess').style.display = 'none';
+    document.getElementById('inquiryMsg').value             = '';
+  }
 
+  function closeInquiry() {
+    document.getElementById('inquiryModal').classList.remove('open');
+  }
+
+  // Close on overlay click
+  document.getElementById('inquiryModal').addEventListener('click', function(e) {
+    if (e.target === this) closeInquiry();
+  });
+
+  // ─── Send Inquiry ─────────────────────────────────────────
   async function sendInquiry() {
+    const errorDiv   = document.getElementById('inquiryError');
+    const successDiv = document.getElementById('inquirySuccess');
+    errorDiv.style.display   = 'none';
+    successDiv.style.display = 'none';
+
     if (!token) {
-      const e = document.getElementById('inquiryError');
-      e.textContent = 'Please login to send an inquiry.'; e.classList.add('visible'); return;
+      errorDiv.textContent   = 'Please login to send an inquiry.';
+      errorDiv.style.display = 'block';
+      return;
     }
+
     const msg = document.getElementById('inquiryMsg').value.trim();
-    if (!msg) return;
+    if (!msg) {
+      errorDiv.textContent   = 'Please write a message before sending.';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
     try {
-      const res  = await fetch(`${API}/inquiries`, {
+      const res = await fetch(`${API}/inquiries/${productId}`, {
         method: 'POST',
-        headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
-        body: JSON.stringify({ productId, message: msg })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ message: msg })
       });
+
       const data = await res.json();
+
       if (res.ok) {
-        const s = document.getElementById('inquirySuccess');
-        s.textContent = 'Inquiry sent! We will contact you soon.'; s.classList.add('visible');
+        successDiv.textContent   = '✅ Inquiry sent! We will contact you soon.';
+        successDiv.style.display = 'block';
         setTimeout(closeInquiry, 2000);
       } else {
-        const e = document.getElementById('inquiryError');
-        e.textContent = data.message || 'Failed to send inquiry.'; e.classList.add('visible');
+        errorDiv.textContent   = data.message || 'Failed to send inquiry.';
+        errorDiv.style.display = 'block';
       }
     } catch {
-      const e = document.getElementById('inquiryError');
-      e.textContent = 'Server not reachable.'; e.classList.add('visible');
+      errorDiv.textContent   = 'Server not reachable. Try WhatsApp instead.';
+      errorDiv.style.display = 'block';
     }
   }
 
-  loadProduct();
+  // ─── Run ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', loadProduct);
+
 </script>
 
 </body>

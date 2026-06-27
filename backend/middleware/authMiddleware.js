@@ -1,15 +1,12 @@
 // backend/middleware/authMiddleware.js
-// Runs before any protected route handler
-// Reads the JWT from the Authorization header, verifies it,
-// and attaches the decoded user info to req.user
 
-const jwt  = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const protect = async (req, res, next) => {
   let token;
 
-  // JWT is sent as:  Authorization: Bearer <token>
+  // Get token from Authorization header
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer ')
@@ -17,6 +14,7 @@ const protect = async (req, res, next) => {
     token = req.headers.authorization.split(' ')[1];
   }
 
+  // No token found
   if (!token) {
     return res.status(401).json({
       success: false,
@@ -25,10 +23,10 @@ const protect = async (req, res, next) => {
   }
 
   try {
-    // Verify the token using our secret key
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Attach the user (without password) to the request
+    // Get user from database
     req.user = await User.findById(decoded.userId).select('-password');
 
     if (!req.user) {
@@ -38,8 +36,10 @@ const protect = async (req, res, next) => {
       });
     }
 
-    next(); // token valid — continue to the route handler
+    next();
   } catch (err) {
+    console.error('JWT Error:', err.message);
+
     return res.status(401).json({
       success: false,
       message: 'Not authorized — invalid or expired token',

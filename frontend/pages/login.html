@@ -72,6 +72,34 @@
       outline: none;
     }
     input:focus { border-color: #2E6B4F; background: white; }
+    input.input-error { border-color: #c62828; }
+
+    /* Error alert box */
+    .alert-error {
+      display: none;
+      background: #FFF3F3;
+      border: 1.5px solid #f5c6c6;
+      color: #c62828;
+      font-size: 0.85rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .alert-error.visible { display: block; }
+
+    /* Success alert box */
+    .alert-success {
+      display: none;
+      background: #F1F8E9;
+      border: 1.5px solid #c5e1a5;
+      color: #2e7d32;
+      font-size: 0.85rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .alert-success.visible { display: block; }
+
     .btn-submit {
       width: 100%;
       padding: 0.8rem;
@@ -84,7 +112,11 @@
       cursor: pointer;
       transition: background 0.25s;
     }
-    .btn-submit:hover { background: #2E6B4F; }
+    .btn-submit:hover:not(:disabled) { background: #2E6B4F; }
+    .btn-submit:disabled {
+      background: #9E9E9E;
+      cursor: not-allowed;
+    }
     .divider {
       text-align: center;
       font-size: 0.8rem;
@@ -97,27 +129,59 @@
       color: #737373;
     }
     .link-register a { color: #2E6B4F; font-weight: 600; text-decoration: none; }
-    .back { display: block; text-align: center; margin-top: 1.25rem; font-size: 0.8rem; color: #9E9E9E; text-decoration: none; }
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: #9E9E9E;
+      text-decoration: none;
+    }
     .back:hover { color: #1A3C2E; }
   </style>
 </head>
 <body>
+
   <div class="card">
+
+    <!-- Logo -->
     <a href="../index.html" class="logo">
       <div class="logo-mark">🌾</div>
       <span class="logo-name">KrushiConnect</span>
     </a>
+
     <h2>Welcome Back</h2>
     <p class="sub">Log in to your farmer account</p>
 
-    <form id="loginForm">
+    <!-- Error & Success Messages -->
+    <div class="alert-error"   id="errorMsg"></div>
+    <div class="alert-success" id="successMsg"></div>
+
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)">
+
       <label for="email">Email Address</label>
-      <input type="email" id="email" placeholder="your@email.com" required />
+      <input
+        type="email"
+        id="email"
+        placeholder="your@email.com"
+        required
+        autocomplete="email"
+      />
 
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter your password" required />
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter your password"
+        required
+        autocomplete="current-password"
+      />
 
-      <button type="submit" class="btn-submit">Login</button>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Login
+      </button>
+
     </form>
 
     <div class="divider">— or —</div>
@@ -126,14 +190,113 @@
       New here? <a href="register.html">Create a farmer account</a>
     </p>
 
-    <a href="../index.html" class="back">← Back to homepage</a>
+    <a href="../index.html" class="back">← Back to Home</a>
+
   </div>
 
+  <script src="../js/config.js"></script>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Login functionality will be connected to the backend in Phase 8.');
-    });
+
+    // ─── If already logged in, redirect away ──────────────
+    const existingToken = localStorage.getItem('kc_token');
+    const existingUser  = JSON.parse(localStorage.getItem('kc_user') || 'null');
+    if (existingToken && existingUser) {
+      if (existingUser.role === 'admin' || existingUser.role === 'owner_admin' || existingUser.role === 'demo_admin') {
+        window.location.href = '../index.html';
+      } else {
+        window.location.href = '../index.html';
+      }
+    }
+
+    // ─── API base URL ─────────────────────────────────────
+    const API = typeof API_BASE_URL !== 'undefined'
+      ? API_BASE_URL
+      : 'http://localhost:5000/api';
+
+    // ─── Handle Login Form Submit ─────────────────────────
+    async function handleLogin(event) {
+      event.preventDefault();
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const btn      = document.getElementById('submitBtn');
+      const errorDiv = document.getElementById('errorMsg');
+      const successDiv = document.getElementById('successMsg');
+
+      // Clear previous messages
+      errorDiv.textContent = '';
+      errorDiv.classList.remove('visible');
+      successDiv.textContent = '';
+      successDiv.classList.remove('visible');
+
+      // Basic validation
+      if (!email || !password) {
+        showError('Please enter both email and password.');
+        return;
+      }
+
+      // Show loading state
+      btn.disabled    = true;
+      btn.textContent = 'Logging in...';
+
+      try {
+        const response = await fetch(`${API}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          // Show error from server
+          showError(data.message || 'Invalid email or password.');
+          btn.disabled    = false;
+          btn.textContent = 'Login';
+          return;
+        }
+
+        // ── Login successful ──
+        const token = data.token;
+        const user  = data.user || data.farmer || data.data;
+
+        // Save to localStorage
+        localStorage.setItem('kc_token', token);
+        localStorage.setItem('kc_user',  JSON.stringify(user));
+
+        // Show success
+        successDiv.textContent = `Welcome back, ${user.name || 'User'}! Redirecting...`;
+        successDiv.classList.add('visible');
+
+        // Redirect based on role
+        setTimeout(() => {
+          const role = user.role || '';
+          if (role === 'admin' || role === 'owner_admin' || role === 'demo_admin') {
+            window.location.href = 'admin/dashboard.html';
+          } else {
+            // Go back to previous page or home
+            const returnTo = sessionStorage.getItem('returnTo') || '../index.html';
+            sessionStorage.removeItem('returnTo');
+            window.location.href = returnTo;
+          }
+        }, 1000);
+
+      } catch (err) {
+        showError('Cannot connect to server. Make sure the server is running.');
+        btn.disabled    = false;
+        btn.textContent = 'Login';
+        console.error('Login error:', err.message);
+      }
+    }
+
+    // ─── Show Error Helper ────────────────────────────────
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMsg');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('visible');
+    }
+
   </script>
+
 </body>
 </html>
