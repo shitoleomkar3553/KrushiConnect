@@ -8,12 +8,165 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/pages.css" />
-</head>
-<body class="page-body">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F7F3EC;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+    .auth-card {
+      background: white;
+      border-radius: 18px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 8px 28px rgba(26,60,46,0.12);
+    }
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.75rem;
+      text-decoration: none;
+    }
+    .auth-logo-mark {
+      width: 36px; height: 36px;
+      background: #1A3C2E;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .auth-logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #1A3C2E;
+    }
+    .auth-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #1A3C2E;
+      margin-bottom: 0.4rem;
+    }
+    .auth-sub {
+      font-size: 0.875rem;
+      color: #737373;
+      margin-bottom: 1.5rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+    .form-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #404040;
+      margin-bottom: 0.35rem;
+    }
+    .form-input {
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #D4D4D4;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-family: 'Inter', sans-serif;
+      color: #2C1810;
+      background: #FAFAFA;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-input:focus { border-color: #2E6B4F; background: white; }
+    .form-input.input-error { border-color: #c62828; }
+    .form-error {
+      font-size: 0.75rem;
+      color: #c62828;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    .form-error.visible { display: block; }
 
-<div class="auth-wrap">
+    /* Alert boxes */
+    .alert-error {
+      display: none;
+      background: #FFF3F3;
+      border: 1.5px solid #f5c6c6;
+      color: #c62828;
+      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .alert-error.visible { display: block; }
+    .alert-success {
+      display: none;
+      background: #F1F8E9;
+      border: 1.5px solid #c5e1a5;
+      color: #2e7d32;
+      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .alert-success.visible { display: block; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.8rem;
+      background: #1A3C2E;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s;
+      font-family: inherit;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover:not(:disabled) { background: #2E6B4F; }
+    .btn-submit:disabled { background: #9E9E9E; cursor: not-allowed; }
+
+    .auth-divider {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9E9E9E;
+      margin: 1.25rem 0;
+    }
+    .auth-link-row {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #737373;
+    }
+    .auth-link-row a { color: #2E6B4F; font-weight: 600; text-decoration: none; }
+    .auth-back {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: #9E9E9E;
+      text-decoration: none;
+    }
+    .auth-back:hover { color: #1A3C2E; }
+
+    @media (max-width: 500px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
   <div class="auth-card">
 
+    <!-- Logo -->
     <a href="../index.html" class="auth-logo">
       <div class="auth-logo-mark">🌾</div>
       <span class="auth-logo-name">KrushiConnect</span>
@@ -22,56 +175,60 @@
     <h1 class="auth-title">Create Account</h1>
     <p class="auth-sub">Register as a farmer to save products and send inquiries</p>
 
-    <div class="alert alert-error" id="alertError"></div>
-    <div class="alert alert-success" id="alertSuccess"></div>
+    <!-- Messages -->
+    <div class="alert-error"   id="alertError"></div>
+    <div class="alert-success" id="alertSuccess"></div>
 
+    <!-- Form -->
     <form id="registerForm" novalidate>
 
-      <div class="form-grid" style="gap:1rem;">
-
+      <div class="form-grid">
         <div class="form-group">
           <label class="form-label" for="name">Full Name *</label>
-          <input class="form-input" type="text" id="name" placeholder="Ramesh Patil" required />
+          <input class="form-input" type="text" id="name"
+            placeholder="Ramesh Patil" required />
           <span class="form-error" id="nameErr">Please enter your full name</span>
         </div>
-
         <div class="form-group">
           <label class="form-label" for="phone">Mobile Number *</label>
-          <input class="form-input" type="tel" id="phone" placeholder="9876543210" maxlength="10" required />
+          <input class="form-input" type="tel" id="phone"
+            placeholder="9876543210" maxlength="10" required />
           <span class="form-error" id="phoneErr">Enter a valid 10-digit number</span>
         </div>
-
       </div>
 
       <div class="form-group">
         <label class="form-label" for="email">Email Address *</label>
-        <input class="form-input" type="email" id="email" placeholder="you@example.com" required />
+        <input class="form-input" type="email" id="email"
+          placeholder="you@example.com" required />
         <span class="form-error" id="emailErr">Please enter a valid email</span>
       </div>
 
       <div class="form-group">
         <label class="form-label" for="village">Village / Town *</label>
-        <input class="form-input" type="text" id="village" placeholder="Pimpalgaon, Daund" required />
+        <input class="form-input" type="text" id="village"
+          placeholder="Pimpalgaon, Daund" required />
         <span class="form-error" id="villageErr">Please enter your village or town</span>
       </div>
 
-      <div class="form-grid" style="gap:1rem;">
-
+      <div class="form-grid">
         <div class="form-group">
           <label class="form-label" for="password">Password *</label>
-          <input class="form-input" type="password" id="password" placeholder="Min 8 characters" required />
+          <input class="form-input" type="password" id="password"
+            placeholder="Min 8 characters" required />
           <span class="form-error" id="passErr">Password must be at least 8 characters</span>
         </div>
-
         <div class="form-group">
           <label class="form-label" for="confirmPassword">Confirm Password *</label>
-          <input class="form-input" type="password" id="confirmPassword" placeholder="Repeat password" required />
+          <input class="form-input" type="password" id="confirmPassword"
+            placeholder="Repeat password" required />
           <span class="form-error" id="confirmErr">Passwords do not match</span>
         </div>
-
       </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">Create Farmer Account</button>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Create Farmer Account
+      </button>
 
     </form>
 
@@ -81,87 +238,133 @@
       Already have an account? <a href="login.html">Login here</a>
     </p>
 
-    <a href="../index.html" class="auth-back">← Back to homepage</a>
+    <a href="../index.html" class="auth-back">← Back to Home</a>
 
   </div>
-</div>
 
-<script>
-  const form = document.getElementById('registerForm');
+  <script src="../js/config.js"></script>
+  <script>
 
-  function showErr(id, show) {
-    document.getElementById(id).classList.toggle('visible', show);
-    // mark input red
-    const input = document.getElementById(id.replace('Err',''));
-    if (input) input.classList.toggle('error', show);
-  }
+    // ─── If already logged in, redirect away ──────────────
+    const existingToken = localStorage.getItem('kc_token');
+    if (existingToken) {
+      window.location.href = '../index.html';
+    }
 
-  function validate() {
-    let ok = true;
-    const name    = document.getElementById('name').value.trim();
-    const phone   = document.getElementById('phone').value.trim();
-    const email   = document.getElementById('email').value.trim();
-    const village = document.getElementById('village').value.trim();
-    const pass    = document.getElementById('password').value;
-    const confirm = document.getElementById('confirmPassword').value;
+    const API = typeof API_BASE_URL !== 'undefined'
+      ? API_BASE_URL
+      : 'http://localhost:5000/api';
 
-    showErr('nameErr',    !name);                            if (!name) ok = false;
-    showErr('phoneErr',   !/^\d{10}$/.test(phone));         if (!/^\d{10}$/.test(phone)) ok = false;
-    showErr('emailErr',   !/\S+@\S+\.\S+/.test(email));     if (!/\S+@\S+\.\S+/.test(email)) ok = false;
-    showErr('villageErr', !village);                         if (!village) ok = false;
-    showErr('passErr',    pass.length < 8);                  if (pass.length < 8) ok = false;
-    showErr('confirmErr', pass !== confirm);                 if (pass !== confirm) ok = false;
+    // ─── Clear all errors ─────────────────────────────────
+    function clearErrors() {
+      document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('.form-input').forEach(el => el.classList.remove('input-error'));
+      document.getElementById('alertError').classList.remove('visible');
+      document.getElementById('alertSuccess').classList.remove('visible');
+    }
 
-    return ok;
-  }
+    // ─── Show field error ─────────────────────────────────
+    function showFieldError(inputId, errId) {
+      document.getElementById(inputId).classList.add('input-error');
+      document.getElementById(errId).classList.add('visible');
+    }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+    // ─── Show global error ────────────────────────────────
+    function showError(msg) {
+      const el = document.getElementById('alertError');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
 
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Creating account…';
+    // ─── Show success ─────────────────────────────────────
+    function showSuccess(msg) {
+      const el = document.getElementById('alertSuccess');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
 
-    const body = {
-      name    : document.getElementById('name').value.trim(),
-      phone   : document.getElementById('phone').value.trim(),
-      email   : document.getElementById('email').value.trim(),
-      village : document.getElementById('village').value.trim(),
-      password: document.getElementById('password').value,
-    };
+    // ─── Handle Form Submit ───────────────────────────────
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearErrors();
 
-    try {
-      const res  = await fetch('http://localhost:5000/api/auth/register', {
-        method : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body   : JSON.stringify(body),
-      });
-      const data = await res.json();
+      const name            = document.getElementById('name').value.trim();
+      const phone           = document.getElementById('phone').value.trim();
+      const email           = document.getElementById('email').value.trim();
+      const village         = document.getElementById('village').value.trim();
+      const password        = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
 
-      if (res.ok) {
+      // ── Validation ──
+      let hasError = false;
+
+      if (!name) {
+        showFieldError('name', 'nameErr');
+        hasError = true;
+      }
+      if (!phone || phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+        showFieldError('phone', 'phoneErr');
+        hasError = true;
+      }
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        showFieldError('email', 'emailErr');
+        hasError = true;
+      }
+      if (!village) {
+        showFieldError('village', 'villageErr');
+        hasError = true;
+      }
+      if (!password || password.length < 8) {
+        showFieldError('password', 'passErr');
+        hasError = true;
+      }
+      if (password !== confirmPassword) {
+        showFieldError('confirmPassword', 'confirmErr');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // ── Submit ──
+      const btn = document.getElementById('submitBtn');
+      btn.disabled    = true;
+      btn.textContent = 'Creating Account...';
+
+      try {
+        const res = await fetch(`${API}/auth/register`, {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ name, phone, email, village, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.message || 'Registration failed. Please try again.');
+          btn.disabled    = false;
+          btn.textContent = 'Create Farmer Account';
+          return;
+        }
+
+        // ── Success — save token and redirect ──
         localStorage.setItem('kc_token', data.token);
         localStorage.setItem('kc_user',  JSON.stringify(data.user));
-        const s = document.getElementById('alertSuccess');
-        s.textContent = 'Account created! Redirecting…';
-        s.classList.add('visible');
-        setTimeout(() => window.location.href = '../index.html', 1200);
-      } else {
-        const err = document.getElementById('alertError');
-        err.textContent = data.message || 'Registration failed. Please try again.';
-        err.classList.add('visible');
-        btn.disabled = false;
+
+        showSuccess(`✅ Account created! Welcome, ${data.user.name}. Redirecting...`);
+
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 1500);
+
+      } catch (err) {
+        showError('Cannot connect to server. Make sure the server is running.');
+        btn.disabled    = false;
         btn.textContent = 'Create Farmer Account';
+        console.error('Register error:', err.message);
       }
-    } catch {
-      const err = document.getElementById('alertError');
-      err.textContent = 'Could not connect to server. Make sure the backend is running.';
-      err.classList.add('visible');
-      btn.disabled = false;
-      btn.textContent = 'Create Farmer Account';
-    }
-  });
-</script>
+    });
+
+  </script>
 
 </body>
 </html>

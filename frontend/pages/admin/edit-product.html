@@ -9,203 +9,44 @@
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="stylesheet" href="../../css/pages.css" />
   <style>
-    .admin-shell {
-      display: flex;
-      min-height: 100vh;
-      background: #F5F7F2;
-    }
-    .admin-sidebar {
-      width: 220px;
-      min-height: 100vh;
-      background: #1A3C2E;
-      display: flex;
-      flex-direction: column;
-      padding: 1.5rem 0;
-      position: fixed;
-      top: 0; left: 0;
-      z-index: 100;
-    }
-    .admin-sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0 1.25rem 1.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 1rem;
-      text-decoration: none;
-    }
-    .admin-sidebar-logo span {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      color: white;
-    }
-    .admin-nav-section {
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.4);
-      padding: 1rem 1.25rem 0.4rem;
-    }
-    .admin-nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.6rem 1.25rem;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.2s;
-      border-left: 3px solid transparent;
-    }
-    .admin-nav-link:hover,
-    .admin-nav-link.active {
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border-left-color: #C8A96E;
-    }
-    .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
-    .admin-sidebar-footer {
-      margin-top: auto;
-      padding: 1rem 1.25rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .admin-main {
-      margin-left: 220px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .admin-topbar {
-      background: white;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #E5E7EB;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .admin-topbar-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      color: #1A3C2E;
-      font-weight: 700;
-    }
-    .admin-topbar-user {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.875rem;
-      color: #555;
-    }
-    .admin-user-avatar {
-      width: 32px; height: 32px;
-      background: #1A3C2E;
-      color: white;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.875rem;
-    }
-    .admin-content { padding: 2rem; }
-    .content-card {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      max-width: 800px;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-    }
-    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
-    .form-group.full { grid-column: 1 / -1; }
-    .form-label { font-size: 0.8rem; font-weight: 600; color: #404040; }
-    .form-input {
-      padding: 0.7rem 1rem;
-      border: 1.5px solid #D4D4D4;
-      border-radius: 8px;
-      font-size: 0.9375rem;
-      font-family: 'Inter', sans-serif;
-      color: #2C1810;
-      background: #FAFAFA;
-      transition: border-color 0.2s;
-      outline: none;
-      width: 100%;
-    }
-    .form-input:focus { border-color: #2E6B4F; background: white; }
-    textarea.form-input { resize: vertical; }
-    .form-hint { font-size: 0.75rem; color: #9E9E9E; margin-top: 0.2rem; }
-    .img-preview-box {
-      border: 2px dashed #D4D4D4;
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      min-height: 120px;
-      justify-content: center;
-    }
-    .img-preview-box:hover { border-color: #2E6B4F; }
-    .img-preview-box img { max-height: 140px; max-width: 100%; object-fit: contain; border-radius: 8px; }
-    .upload-hint { font-size: 0.875rem; color: #9E9E9E; }
-    .alert-error {
-      display: none;
-      background: #FFF3F3;
-      border: 1.5px solid #f5c6c6;
-      color: #c62828;
-      font-size: 0.875rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 1.25rem;
-    }
-    .alert-error.visible { display: block; }
-    .alert-success {
-      display: none;
-      background: #F1F8E9;
-      border: 1.5px solid #c5e1a5;
-      color: #2e7d32;
-      font-size: 0.875rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 1.25rem;
-    }
-    .alert-success.visible { display: block; }
-    .btn-submit {
-      padding: 0.8rem 2rem;
-      background: #1A3C2E;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.25s;
-      font-family: inherit;
-    }
-    .btn-submit:hover:not(:disabled) { background: #2E6B4F; }
-    .btn-submit:disabled { background: #9E9E9E; cursor: not-allowed; }
-    .btn-action {
-      display: inline-block;
-      padding: 0.45rem 1rem;
-      border-radius: 6px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      font-family: inherit;
-      text-decoration: none;
-    }
-    .btn-edit   { background: #E8F5E9; color: #2E7D32; }
-    .btn-delete { background: #FFEBEE; color: #C62828; }
+    .admin-shell { display:flex; min-height:100vh; background:#F5F7F2; }
+    .admin-sidebar { width:220px; min-height:100vh; background:#1A3C2E; display:flex; flex-direction:column; padding:1.5rem 0; position:fixed; top:0; left:0; z-index:100; }
+    .admin-sidebar-logo { display:flex; align-items:center; gap:0.6rem; padding:0 1.25rem 1.5rem; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:1rem; text-decoration:none; }
+    .admin-sidebar-logo span { font-family:'Playfair Display',serif; font-size:1rem; color:white; }
+    .admin-nav-section { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.4); padding:1rem 1.25rem 0.4rem; }
+    .admin-nav-link { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.25rem; color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.875rem; font-weight:500; transition:all 0.2s; border-left:3px solid transparent; }
+    .admin-nav-link:hover, .admin-nav-link.active { background:rgba(255,255,255,0.08); color:white; border-left-color:#C8A96E; }
+    .nav-icon { font-size:1rem; width:20px; text-align:center; }
+    .admin-sidebar-footer { margin-top:auto; padding:1rem 1.25rem; border-top:1px solid rgba(255,255,255,0.1); }
+    .admin-main { margin-left:220px; flex:1; display:flex; flex-direction:column; }
+    .admin-topbar { background:white; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #E5E7EB; position:sticky; top:0; z-index:50; }
+    .admin-topbar-title { font-family:'Playfair Display',serif; font-size:1.2rem; color:#1A3C2E; font-weight:700; }
+    .admin-topbar-user { display:flex; align-items:center; gap:0.6rem; font-size:0.875rem; color:#555; }
+    .admin-user-avatar { width:32px; height:32px; background:#1A3C2E; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.875rem; }
+    .admin-content { padding:2rem; }
+    .content-card { background:white; border-radius:12px; padding:2rem; box-shadow:0 2px 8px rgba(0,0,0,0.06); max-width:800px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+    .form-group { display:flex; flex-direction:column; gap:0.35rem; }
+    .form-group.full { grid-column:1 / -1; }
+    .form-label { font-size:0.8rem; font-weight:600; color:#404040; }
+    .form-input { padding:0.7rem 1rem; border:1.5px solid #D4D4D4; border-radius:8px; font-size:0.9375rem; font-family:'Inter',sans-serif; color:#2C1810; background:#FAFAFA; transition:border-color 0.2s; outline:none; width:100%; }
+    .form-input:focus { border-color:#2E6B4F; background:white; }
+    textarea.form-input { resize:vertical; }
+    .form-hint { font-size:0.75rem; color:#9E9E9E; margin-top:0.2rem; }
+    .img-preview-box { border:2px dashed #D4D4D4; border-radius:10px; padding:1.5rem; text-align:center; cursor:pointer; transition:border-color 0.2s; display:flex; flex-direction:column; align-items:center; gap:0.5rem; min-height:120px; justify-content:center; }
+    .img-preview-box:hover { border-color:#2E6B4F; }
+    .img-preview-box img { max-height:140px; max-width:100%; object-fit:contain; border-radius:8px; }
+    .upload-hint { font-size:0.875rem; color:#9E9E9E; }
+    .alert-error { display:none; background:#FFF3F3; border:1.5px solid #f5c6c6; color:#c62828; font-size:0.875rem; padding:0.75rem 1rem; border-radius:8px; margin-bottom:1.25rem; }
+    .alert-error.visible { display:block; }
+    .alert-success { display:none; background:#F1F8E9; border:1.5px solid #c5e1a5; color:#2e7d32; font-size:0.875rem; padding:0.75rem 1rem; border-radius:8px; margin-bottom:1.25rem; }
+    .alert-success.visible { display:block; }
+    .btn-submit { padding:0.8rem 2rem; background:#1A3C2E; color:white; border:none; border-radius:50px; font-size:0.9375rem; font-weight:600; cursor:pointer; transition:background 0.25s; font-family:inherit; }
+    .btn-submit:hover:not(:disabled) { background:#2E6B4F; }
+    .btn-submit:disabled { background:#9E9E9E; cursor:not-allowed; }
+    .btn-action { display:inline-block; padding:0.45rem 1rem; border-radius:6px; font-size:0.8125rem; font-weight:600; cursor:pointer; border:none; font-family:inherit; text-decoration:none; }
+    .btn-edit   { background:#E8F5E9; color:#2E7D32; }
+    .btn-delete { background:#FFEBEE; color:#C62828; }
   </style>
 </head>
 <body class="page-body">
@@ -229,36 +70,25 @@
 <!-- Admin Shell -->
 <div class="admin-shell" id="adminShell" style="display:none;">
 
-  <!-- Sidebar -->
   <aside class="admin-sidebar">
     <a href="dashboard.html" class="admin-sidebar-logo">
       <span style="font-size:1.4rem;">🌾</span>
       <span>KrushiConnect</span>
     </a>
-
     <div class="admin-nav-section">Products</div>
     <a href="dashboard.html"   class="admin-nav-link active"><span class="nav-icon">📊</span> Dashboard</a>
     <a href="add-product.html" class="admin-nav-link"><span class="nav-icon">➕</span> Add Product</a>
-
     <div class="admin-nav-section">Users</div>
     <a href="farmers.html"   class="admin-nav-link"><span class="nav-icon">👨‍🌾</span> Farmers</a>
     <a href="inquiries.html" class="admin-nav-link"><span class="nav-icon">✉</span> Inquiries</a>
-
     <div class="admin-nav-section">Site</div>
     <a href="../../index.html" class="admin-nav-link"><span class="nav-icon">🏠</span> View Website</a>
-
     <div class="admin-sidebar-footer">
       <div id="sidebarName" style="color:rgba(255,255,255,0.7);margin-bottom:0.4rem;font-size:0.85rem;"></div>
-      <button onclick="logout()"
-        style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);
-               border:none;border-radius:6px;padding:0.4rem 0.75rem;
-               font-size:0.75rem;cursor:pointer;font-family:inherit;">
-        Logout
-      </button>
+      <button onclick="logout()" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">Logout</button>
     </div>
   </aside>
 
-  <!-- Main -->
   <main class="admin-main">
     <div class="admin-topbar">
       <span class="admin-topbar-title">Edit Product</span>
@@ -270,34 +100,23 @@
 
     <div class="admin-content">
 
-      <!-- Loading -->
-      <div id="loadingState"
-           style="text-align:center;padding:3rem;color:#737373;">
+      <div id="loadingState" style="text-align:center;padding:3rem;color:#737373;">
         Loading product data...
       </div>
 
-      <!-- Form Card -->
       <div class="content-card" id="formCard" style="display:none;">
 
-        <div style="display:flex;align-items:center;justify-content:space-between;
-                    margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem;">
-          <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#1A3C2E;"
-              id="formTitle">Edit Product</h2>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem;">
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#1A3C2E;" id="formTitle">Edit Product</h2>
           <div style="display:flex;gap:0.5rem;">
-            <button onclick="toggleAvailability()" class="btn-action btn-edit">
-              Toggle Availability
-            </button>
-            <button onclick="deleteProduct()" class="btn-action btn-delete">
-              Delete Product
-            </button>
+            <button onclick="toggleAvailability()" class="btn-action btn-edit">Toggle Availability</button>
+            <button onclick="deleteProduct()"      class="btn-action btn-delete">Delete Product</button>
           </div>
         </div>
 
-        <!-- Messages -->
         <div class="alert-error"   id="formError"></div>
         <div class="alert-success" id="formSuccess"></div>
 
-        <!-- Form -->
         <form id="editProductForm" novalidate>
           <div class="form-grid">
 
@@ -349,18 +168,13 @@
               <input class="form-input" type="date" id="expiryDate" />
             </div>
 
-            <div class="form-group"
-                 style="display:flex;align-items:center;gap:1.5rem;padding-top:1.5rem;">
-              <label style="display:flex;align-items:center;gap:0.5rem;
-                            cursor:pointer;font-size:0.875rem;font-weight:500;">
-                <input type="checkbox" id="isAvailable"
-                  style="width:16px;height:16px;accent-color:#1A3C2E;" />
+            <div class="form-group" style="display:flex;align-items:center;gap:1.5rem;padding-top:1.5rem;">
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.875rem;font-weight:500;">
+                <input type="checkbox" id="isAvailable" style="width:16px;height:16px;accent-color:#1A3C2E;" />
                 Available for sale
               </label>
-              <label style="display:flex;align-items:center;gap:0.5rem;
-                            cursor:pointer;font-size:0.875rem;font-weight:500;">
-                <input type="checkbox" id="isFeatured"
-                  style="width:16px;height:16px;accent-color:#1A3C2E;" />
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.875rem;font-weight:500;">
+                <input type="checkbox" id="isFeatured" style="width:16px;height:16px;accent-color:#1A3C2E;" />
                 Featured Product
               </label>
             </div>
@@ -377,66 +191,43 @@
 
             <div class="form-group full">
               <label class="form-label">Suitable Crops</label>
-              <input class="form-input" type="text" id="suitableCrops"
-                placeholder="Sugarcane, Onion, Wheat (comma separated)" />
+              <input class="form-input" type="text" id="suitableCrops" placeholder="Sugarcane, Onion, Wheat (comma separated)" />
               <span class="form-hint">Separate each crop with a comma</span>
             </div>
 
             <div class="form-group full">
               <label class="form-label">Product Image</label>
               <div id="currentImgWrap" style="margin-bottom:0.75rem;display:none;">
-                <p style="font-size:0.78rem;color:#737373;margin-bottom:0.4rem;">
-                  Current image:
-                </p>
-                <img id="currentImg" src="" alt="Current"
-                  style="height:100px;object-fit:contain;background:#F0F7F0;
-                         border-radius:8px;padding:0.5rem;" />
+                <p style="font-size:0.78rem;color:#737373;margin-bottom:0.4rem;">Current image:</p>
+                <img id="currentImg" src="" alt="Current" style="height:100px;object-fit:contain;background:#F0F7F0;border-radius:8px;padding:0.5rem;" />
               </div>
-              <div class="img-preview-box" id="imgPreview"
-                   onclick="document.getElementById('imageFile').click()">
+              <div class="img-preview-box" id="imgPreview" onclick="document.getElementById('imageFile').click()">
                 <span style="font-size:2rem;">📷</span>
-                <span class="upload-hint">
-                  Click to replace image<br/>
-                  <span style="font-size:0.75rem;opacity:0.7;">
-                    Leave empty to keep current image
-                  </span>
-                </span>
+                <span class="upload-hint">Click to replace image<br/><span style="font-size:0.75rem;opacity:0.7;">Leave empty to keep current image</span></span>
               </div>
-              <input type="file" id="imageFile" accept="image/*"
-                style="display:none;" onchange="previewImage(this)" />
+              <input type="file" id="imageFile" accept="image/*" style="display:none;" onchange="previewImage(this)" />
             </div>
 
           </div>
 
           <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;align-items:center;">
-            <button type="submit" class="btn-submit" id="submitBtn">
-              Save Changes
-            </button>
-            <a href="dashboard.html"
-               style="padding:0.8rem 1.5rem;background:#F5F5F5;color:#555;
-                      border-radius:50px;text-decoration:none;font-weight:600;
-                      font-size:0.9375rem;">
-              Cancel
-            </a>
+            <button type="submit" class="btn-submit" id="submitBtn">Save Changes</button>
+            <a href="dashboard.html" style="padding:0.8rem 1.5rem;background:#F5F5F5;color:#555;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9375rem;">Cancel</a>
           </div>
-
         </form>
       </div>
     </div>
   </main>
-
 </div>
 
 <script src="../../js/config.js"></script>
 <script>
-
   const API       = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:5000/api';
   const token     = localStorage.getItem('kc_token');
   const user      = JSON.parse(localStorage.getItem('kc_user') || 'null');
   const params    = new URLSearchParams(window.location.search);
   const productId = params.get('id');
 
-  // ─── Check Admin ──────────────────────────────────────────
   function isAdmin(u) {
     return u && (u.role === 'owner_admin' || u.role === 'demo_admin');
   }
@@ -447,7 +238,6 @@
     window.location.href = '../login.html';
   }
 
-  // ─── Show Messages ────────────────────────────────────────
   function showError(msg) {
     const el = document.getElementById('formError');
     el.textContent = msg;
@@ -464,59 +254,48 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  // ─── Init ─────────────────────────────────────────────────
   async function init() {
     if (!token || !isAdmin(user)) {
       document.getElementById('accessDenied').style.display = 'block';
       return;
     }
-
-    document.getElementById('adminShell').style.display     = 'flex';
-    document.getElementById('sidebarName').textContent      = user.name || 'Admin';
-    document.getElementById('topbarName').textContent       = user.name || 'Admin';
-    document.getElementById('topbarInitial').textContent    = (user.name || 'A')[0].toUpperCase();
+    document.getElementById('adminShell').style.display  = 'flex';
+    document.getElementById('sidebarName').textContent   = user.name || 'Admin';
+    document.getElementById('topbarName').textContent    = user.name || 'Admin';
+    document.getElementById('topbarInitial').textContent = (user.name || 'A')[0].toUpperCase();
 
     if (!productId) {
       document.getElementById('loadingState').style.display = 'none';
       document.getElementById('notFound').style.display     = 'block';
       return;
     }
-
     await loadProduct();
   }
 
-  // ─── Load Product Data ────────────────────────────────────
   async function loadProduct() {
     try {
-      const res  = await fetch(`${API}/products/${productId}`, {
+      const res = await fetch(`${API}/products/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
       if (!res.ok) {
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('notFound').style.display     = 'block';
         return;
       }
-
       const data    = await res.json();
       const product = data.data || data.product || data;
-
       if (!product || !product.name) {
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('notFound').style.display     = 'block';
         return;
       }
-
       fillForm(product);
-
     } catch (err) {
-      document.getElementById('loadingState').textContent =
-        'Could not connect to server.';
+      document.getElementById('loadingState').textContent = 'Could not connect to server.';
       console.error('Load product error:', err.message);
     }
   }
 
-  // ─── Fill Form with Product Data ─────────────────────────
   function fillForm(p) {
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('formCard').style.display     = 'block';
@@ -531,41 +310,35 @@
     document.getElementById('isAvailable').checked = p.isAvailable   !== false;
     document.getElementById('isFeatured').checked  = p.isFeatured    || false;
 
-    // Category dropdown
     const catSelect = document.getElementById('category');
     for (let opt of catSelect.options) {
       if (opt.value === p.category) { opt.selected = true; break; }
     }
 
-    // Unit dropdown
     const unitSelect = document.getElementById('unit');
     for (let opt of unitSelect.options) {
       if (opt.value === p.unit) { opt.selected = true; break; }
     }
 
-    // Expiry date
     if (p.expiryDate) {
       document.getElementById('expiryDate').value =
         new Date(p.expiryDate).toISOString().split('T')[0];
     }
 
-    // Suitable crops — array to comma string
     const crops = Array.isArray(p.suitableCrops)
       ? p.suitableCrops.join(', ')
       : (p.suitableCrops || '');
     document.getElementById('suitableCrops').value = crops;
 
-    // Current image
     if (p.image && p.image !== '') {
       const imgSrc = p.image.startsWith('http')
         ? p.image
         : API.replace('/api', '') + '/uploads/' + p.image;
-      document.getElementById('currentImg').src         = imgSrc;
+      document.getElementById('currentImg').src              = imgSrc;
       document.getElementById('currentImgWrap').style.display = 'block';
     }
   }
 
-  // ─── Image Preview ────────────────────────────────────────
   function previewImage(input) {
     const file = input.files[0];
     if (!file) return;
@@ -578,22 +351,17 @@
     reader.onload = (e) => {
       document.getElementById('imgPreview').innerHTML =
         `<img src="${e.target.result}" alt="Preview" />
-         <span class="form-hint" style="margin-top:0.5rem;">
-           ${file.name} — Click to change
-         </span>`;
+         <span class="form-hint" style="margin-top:0.5rem;">${file.name} — Click to change</span>`;
     };
     reader.readAsDataURL(file);
   }
 
-  // ─── Toggle Availability ──────────────────────────────────
-  async function toggleAvailability() {
+  function toggleAvailability() {
     const checkbox   = document.getElementById('isAvailable');
-    const newVal     = !checkbox.checked;
-    checkbox.checked = newVal;
-    showSuccess(`Availability set to: ${newVal ? 'Available' : 'Unavailable'} — click Save Changes to confirm.`);
+    checkbox.checked = !checkbox.checked;
+    showSuccess(`Availability set to: ${checkbox.checked ? 'Available' : 'Unavailable'} — click Save Changes to confirm.`);
   }
 
-  // ─── Delete Product ───────────────────────────────────────
   async function deleteProduct() {
     if (!confirm('Delete this product permanently? This cannot be undone.')) return;
     try {
@@ -613,7 +381,6 @@
     }
   }
 
-  // ─── Handle Form Submit ───────────────────────────────────
   document.getElementById('editProductForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -633,44 +400,41 @@
     const usage         = document.getElementById('usage').value.trim();
     const cropsRaw      = document.getElementById('suitableCrops').value.trim();
 
-    // Validation
     if (!name)        { showError('Product name is required.');  return; }
     if (!company)     { showError('Company name is required.');  return; }
     if (!category)    { showError('Please select a category.');  return; }
     if (!price)       { showError('Price is required.');         return; }
     if (!description) { showError('Description is required.');   return; }
 
-    const suitableCrops = cropsRaw
-      ? cropsRaw.split(',').map(c => c.trim()).filter(Boolean)
-      : [];
-
-    const productData = {
-      name,
-      company,
-      category,
-      price        : Number(price),
-      unit,
-      stockQuantity: stockQuantity ? Number(stockQuantity) : 0,
-      expiryDate   : expiryDate || null,
-      isAvailable,
-      isFeatured,
-      description,
-      usage,
-      suitableCrops,
-    };
-
     const btn = document.getElementById('submitBtn');
     btn.disabled    = true;
     btn.textContent = 'Saving...';
 
     try {
+      // ── Build FormData so image upload works ──
+      const formData = new FormData();
+      formData.append('name',          name);
+      formData.append('company',       company);
+      formData.append('category',      category);
+      formData.append('price',         price);
+      formData.append('unit',          unit);
+      formData.append('stockQuantity', stockQuantity || 0);
+      formData.append('description',   description);
+      formData.append('usage',         usage);
+      formData.append('isAvailable',   isAvailable);
+      formData.append('isFeatured',    isFeatured);
+      formData.append('expiryDate',    expiryDate || '');
+      formData.append('suitableCrops', cropsRaw);
+
+      // Attach new image only if selected
+      const imageFile = document.getElementById('imageFile').files[0];
+      if (imageFile) formData.append('image', imageFile);
+
+      // ⚠️ Do NOT set Content-Type — browser sets it for FormData
       const res = await fetch(`${API}/products/${productId}`, {
         method : 'PUT',
-        headers: {
-          'Content-Type' : 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(productData)
+        headers: { 'Authorization': `Bearer ${token}` },
+        body   : formData
       });
 
       const data = await res.json();
@@ -693,9 +457,7 @@
     }
   });
 
-  // ─── Run ──────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', init);
-
 </script>
 
 </body>
