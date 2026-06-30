@@ -306,9 +306,10 @@
 <!-- WhatsApp float -->
 <a href="https://wa.me/918390703553" target="_blank" class="wa-float" title="Chat on WhatsApp">💬</a>
 
+<script src="../js/config.js"></script>
 <script src="../js/navbar.js"></script>
 <script>
-  const API = 'http://localhost:5000/api';
+  const API = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:5000/api';
   let allProducts   = [];
   let activeCategory = 'all';
 
