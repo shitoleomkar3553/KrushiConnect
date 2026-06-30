@@ -393,17 +393,17 @@
 
     grid.innerHTML = list.map(p => {
       const id      = p._id || p.id;
-      const imgSrc  = p.image
-        ? (p.image.startsWith('http') ? p.image : `${API.replace('/api','')}/uploads/${p.image}`)
-        : (localImgs[p.name] || null);
       const emoji   = catEmoji[p.category] || '🌿';
+      const imgSrc  = (p.image && p.image.startsWith('http'))
+        ? p.image
+        : (localImgs[p.name] || null);
       const isAvail = p.isAvailable !== false;
 
       return `
         <a href="product-detail.html?id=${id}" class="product-card">
           <div class="product-card-img">
             ${imgSrc
-              ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy" />`
+              ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.outerHTML='<span class=\\'img-emoji\\'>${emoji}</span>'" />`
               : `<span class="img-emoji">${emoji}</span>`}
             ${p.isFeatured
               ? `<div class="product-card-badge"><span class="badge badge-gold">Featured</span></div>`

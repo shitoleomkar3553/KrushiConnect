@@ -57,7 +57,7 @@ app.use(express.json());
 // Allow server to read form data from requests
 app.use(express.urlencoded({ extended: true }));
 
-// Serve product images as static files
+// Serve legacy local product images (dev only — production uses Cloudinary URLs)
 // Example: http://localhost:5000/uploads/product1.jpg
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

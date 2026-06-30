@@ -3,26 +3,9 @@
 
 const multer = require('multer');
 const path   = require('path');
-const fs     = require('fs');
 
-// Ensure uploads folder exists
-const uploadDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Storage config — save to /uploads with unique filename
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    // product-1234567890.jpg
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e6);
-    const ext    = path.extname(file.originalname).toLowerCase();
-    cb(null, `product-${unique}${ext}`);
-  },
-});
+// Buffer files in memory — uploaded to Cloudinary in the controller
+const storage = multer.memoryStorage();
 
 // File filter — only images allowed
 const fileFilter = (req, file, cb) => {

@@ -1,7 +1,7 @@
 // KrushiConnect — Scroll animations and counter effects
 
 // Reveal elements on scroll
-const observer = new IntersectionObserver((entries) => {
+const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
@@ -9,7 +9,12 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+function observeReveals(root) {
+  const scope = root || document;
+  scope.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+}
+
+observeReveals();
 
 // Animated counter for hero stats
 function animateCounter(el, target, duration = 1400) {

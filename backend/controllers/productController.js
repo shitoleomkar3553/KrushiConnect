@@ -4,6 +4,7 @@
 const Product = require('../models/Product');
 const path    = require('path');
 const fs      = require('fs');
+const { uploadToCloudinary, deleteFromCloudinary } = require('../utils/imageUpload');
 
 // GET /api/products
 // Public — get all products, supports ?category=&search=&featured=true
@@ -64,8 +65,12 @@ const createProduct = async (req, res) => {
         : suitableCrops;
     }
 
-    // Image filename from multer (if uploaded)
-    const image = req.file ? req.file.filename : '';
+    // Upload image to Cloudinary (if provided)
+    let image = '';
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file);
+      image = result.secure_url;
+    }
 
     const product = await Product.create({
       name, company, category,
@@ -105,8 +110,17 @@ const updateProduct = async (req, res) => {
     if (updates.price)        updates.price         = Number(updates.price);
     if (updates.stockQuantity !== undefined) updates.stockQuantity = Number(updates.stockQuantity);
 
-    // If new image uploaded, save filename
-    if (req.file) updates.image = req.file.filename;
+    const existing = await Product.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    // If new image uploaded, replace on Cloudinary
+    if (req.file) {
+      if (existing.image) await deleteFromCloudinary(existing.image);
+      const result = await uploadToCloudinary(req.file);
+      updates.image = result.secure_url;
+    }
 
     const product = await Product.findByIdAndUpdate(
       req.params.id,
@@ -133,10 +147,14 @@ const deleteProduct = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    // Delete image file from uploads folder if it exists
+    // Delete image from Cloudinary or local uploads folder
     if (product.image) {
-      const imgPath = path.join(__dirname, '..', 'uploads', product.image);
-      if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+      if (product.image.includes('cloudinary.com')) {
+        await deleteFromCloudinary(product.image);
+      } else {
+        const imgPath = path.join(__dirname, '..', 'uploads', product.image);
+        if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+      }
     }
 
     await product.deleteOne();

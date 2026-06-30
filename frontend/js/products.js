@@ -29,36 +29,36 @@ async function loadFeaturedProducts() {
   try {
     grid.innerHTML = '<p style="color:#666;padding:20px;">Loading products...</p>';
 
-    const response = await fetch(apiUrl + '/products');
+    // Prefer featured products; fall back to all if none marked featured
+    let response = await fetch(apiUrl + '/products?featured=true');
     if (!response.ok) { restoreStaticCards(grid); return; }
 
-    const data = await response.json();
-    const products = data.products || data.data || [];
+    let data = await response.json();
+    let products = data.products || data.data || [];
+
+    if (!products.length) {
+      response = await fetch(apiUrl + '/products');
+      if (!response.ok) { restoreStaticCards(grid); return; }
+      data = await response.json();
+      products = (data.products || data.data || []).filter(p => p.isFeatured);
+      if (!products.length) products = (data.products || data.data || []).slice(0, 5);
+    }
 
     if (!products.length) { restoreStaticCards(grid); return; }
 
-    const featured = products.slice(0, 5);
     grid.innerHTML = "";
 
-    featured.forEach(product => {
+    products.forEach((product, i) => {
       const card = document.createElement("div");
-      card.className = "product-card reveal";
-
-      let imgSrc = null;
-      if (product.image) {
-        imgSrc = product.image.startsWith("http")
-          ? product.image
-          : apiUrl.replace('/api', '') + '/uploads/' + product.image;
-      } else if (localImgs[product.name]) {
-        imgSrc = localImgs[product.name];
-      }
+      card.className = "product-card reveal" + (i > 0 ? " reveal-delay-" + Math.min(i, 4) : "");
 
       const emoji = getCategoryEmoji(product.category);
+      const imgSrc = resolveProductImage(product, apiUrl);
 
       card.innerHTML =
         '<div class="product-card-img">' +
           (imgSrc
-            ? '<img src="' + imgSrc + '" alt="' + product.name + '" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML=\'<div style=display:flex;align-items:center;justify-content:center;height:180px;font-size:3.5rem;background:#f0f7f0;border-radius:8px;>' + emoji + '</div>\'" />'
+            ? '<img src="' + imgSrc + '" alt="' + product.name + '" loading="lazy" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement(\'div\'),{style:\'display:flex;align-items:center;justify-content:center;height:180px;font-size:3.5rem;background:#f0f7f0;border-radius:8px;\',textContent:\'' + emoji + '\'}))" />'
             : '<div style="display:flex;align-items:center;justify-content:center;height:180px;font-size:3.5rem;background:#f0f7f0;border-radius:8px;">' + emoji + '</div>'
           ) +
           (product.isFeatured ? '<span class="product-badge"><span class="badge badge-green">Featured</span></span>' : '') +
@@ -76,10 +76,20 @@ async function loadFeaturedProducts() {
       grid.appendChild(card);
     });
 
+    if (typeof observeReveals === 'function') observeReveals(grid);
+
   } catch (error) {
     console.warn("Backend not reachable, keeping static cards:", error.message);
     restoreStaticCards(grid);
+    if (typeof observeReveals === 'function') observeReveals(grid);
   }
+}
+
+// Resolve image URL — Cloudinary/local assets only; skip broken /uploads filenames
+function resolveProductImage(product, apiUrl) {
+  if (product.image && product.image.startsWith('http')) return product.image;
+  if (localImgs[product.name]) return localImgs[product.name];
+  return null;
 }
 
 // ─── Restore Static Hardcoded Cards (grid layout) ─────────────
@@ -143,6 +153,7 @@ function restoreStaticCards(grid) {
         '</div>' +
       '</div>' +
     '</div>';
+  if (typeof observeReveals === 'function') observeReveals(grid);
 }
 
 // ─── Run after DOM is fully ready ────────────────────────────

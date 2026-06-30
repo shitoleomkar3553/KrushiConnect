@@ -59,7 +59,7 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
 
-    // Filename or URL of product image
+    // Filename or Cloudinary URL of product image
     image: {
       type   : String,
       default: '',
